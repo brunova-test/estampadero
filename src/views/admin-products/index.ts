@@ -1,1 +1,4 @@
-export { AdminProductsManager } from "./ui/AdminProductsManager";
+export {
+  AdminProductCreationModal,
+  AdminProductsManager,
+} from "./ui/AdminProductsManager";

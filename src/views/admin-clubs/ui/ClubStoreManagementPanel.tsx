@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 
 import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
 import { routes } from "elestampadero/shared/config/routes";
 import { createClubQrPdf } from "elestampadero/shared/lib/qr-pdf";
+import { AdminProductCreationModal } from "elestampadero/views/admin-products";
 import { ModernSpinner } from "elestampadero/shared/ui/motion";
 
 interface ClubStoreManagementPanelProps {
@@ -143,6 +144,7 @@ export function ClubStoreManagementPanel({
   const [storeUrl, setStoreUrl] = useState("");
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -218,12 +220,13 @@ export function ClubStoreManagementPanel({
               Abrir tienda
             </Link>
             {club.hasActiveAgreement ? (
-              <Link
+              <button
+                type="button"
                 className="is-primary"
-                href={`/admin/productos?crear=1&clubId=${encodeURIComponent(club.id)}`}
+                onClick={() => setIsProductModalOpen(true)}
               >
                 + Agregar producto
-              </Link>
+              </button>
             ) : (
               <button
                 type="button"
@@ -306,6 +309,12 @@ export function ClubStoreManagementPanel({
           </div>
         </article>
       </div>
+      {isProductModalOpen ? (
+        <AdminProductCreationModal
+          clubId={club.id}
+          onClose={() => setIsProductModalOpen(false)}
+        />
+      ) : null}
     </section>
   );
 }

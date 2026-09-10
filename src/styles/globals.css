@@ -19801,6 +19801,23 @@ body .admin-editor-actions {
   font-weight: 800;
   white-space: nowrap;
 }
+.admin-product-club-association-notice {
+  display: grid;
+  gap: 4px;
+  grid-column: 1 / -1;
+  border: 1px solid rgb(84 154 125 / 32%);
+  border-radius: 8px;
+  padding: 11px 13px;
+  background: #f1fff9;
+  color: #2c6a57;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.admin-product-club-association-notice strong {
+  color: #1c5942;
+  font-size: 13px;
+}
 
 @media (max-width: 1040px) {
   .admin-club-detail-hero .admin-club-detail-tabs {

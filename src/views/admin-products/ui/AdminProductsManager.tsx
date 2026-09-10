@@ -485,6 +485,32 @@ export function AdminProductsManager({
   );
 }
 
+export function AdminProductCreationModal({
+  clubId,
+  onClose,
+}: {
+  clubId: string;
+  onClose: () => void;
+}) {
+  const clubsQuery = api.clubs.list.useQuery();
+  const linesQuery = api.catalog.lines.useQuery();
+  const clubs = clubsQuery.data ?? [];
+  const lines = linesQuery.data ?? [];
+  const selectedClub = clubs.find((club) => club.id === clubId);
+
+  if (!selectedClub || !clubsQuery.data || !linesQuery.data) return null;
+
+  return (
+    <ProductEditorModal
+      draft={emptyDraft(clubId)}
+      clubs={clubs}
+      lines={lines}
+      lockedClubId={clubId}
+      onClose={onClose}
+    />
+  );
+}
+
 function ProductFilterSelect({
   label,
   value,
@@ -1812,6 +1838,15 @@ function ProductEditorModal({
                     </div>
                   </details>
                 </fieldset>
+                {lockedClubId && selectedClub ? (
+                  <div className="admin-product-club-association-notice" role="note">
+                    <strong>Producto asociado automáticamente</strong>
+                    <span>
+                      Quedará publicado en la tienda de {selectedClub.name} y
+                      las ventas aplicarán las comisiones del convenio activo.
+                    </span>
+                  </div>
+                ) : null}
                 <Field label="Descripción" wide>
                   <textarea
                     rows={3}
