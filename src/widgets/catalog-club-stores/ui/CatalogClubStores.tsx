@@ -62,7 +62,7 @@ export function CatalogClubStores({
   if (!clubs.length) return null;
 
   return (
-    <section className="club-store-hero bg-ink relative overflow-hidden text-white">
+    <section className="club-store-hero catalog-club-stores-banner relative overflow-hidden text-white">
       <div className="club-store-hero__pattern" aria-hidden="true" />
       <Container className="relative z-10 py-4 sm:py-5">
         <div className="mb-3 flex flex-wrap items-end justify-between gap-2">

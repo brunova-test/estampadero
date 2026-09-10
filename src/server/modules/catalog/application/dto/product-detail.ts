@@ -18,6 +18,6 @@ export interface ProductDetailDto {
   showStock: boolean;
   images: { url: string; alt: string | null; color: string | null }[];
   variants: ProductVariantDto[];
-  club: { slug: string; name: string } | null;
+  club: { slug: string; name: string; logoUrl: string | null } | null;
   category: { slug: string; name: string } | null;
 }

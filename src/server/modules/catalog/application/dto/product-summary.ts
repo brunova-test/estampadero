@@ -17,6 +17,6 @@ export interface ProductSummaryDto {
   variants: { id: string; size: string; color: string; stock: number | null }[];
   defaultVariant: { id: string; size: string; color: string } | null;
   createdAt: Date;
-  club: { slug: string; name: string } | null;
+  club: { slug: string; name: string; logoUrl: string | null } | null;
   category: { slug: string; name: string } | null;
 }

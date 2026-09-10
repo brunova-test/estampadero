@@ -17,7 +17,7 @@ export interface ProductSummary {
   variants: ProductVariant[];
   defaultVariant: { id: string; size: string; color: string } | null;
   createdAt: Date;
-  club: { slug: string; name: string } | null;
+  club: { slug: string; name: string; logoUrl: string | null } | null;
   category: { slug: string; name: string } | null;
 }
 
@@ -41,6 +41,6 @@ export interface ProductDetail {
   showStock: boolean;
   images: { url: string; alt: string | null; color: string | null }[];
   variants: ProductVariant[];
-  club: { slug: string; name: string } | null;
+  club: { slug: string; name: string; logoUrl: string | null } | null;
   category: { slug: string; name: string } | null;
 }

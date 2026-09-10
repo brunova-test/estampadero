@@ -15,7 +15,7 @@ import type { VariantForPricingDto } from "../../application/dto/variant-pricing
 const summaryInclude = {
   images: { orderBy: { position: "asc" as const } },
   variants: true,
-  club: { select: { slug: true, name: true } },
+  club: { select: { slug: true, name: true, logoUrl: true } },
   category: { select: { slug: true, name: true } },
 } satisfies Prisma.ProductInclude;
 
@@ -153,7 +153,7 @@ export const prismaCatalogRepository: CatalogRepository = {
       include: {
         images: { orderBy: { position: "asc" } },
         variants: true,
-        club: { select: { slug: true, name: true } },
+        club: { select: { slug: true, name: true, logoUrl: true } },
         category: { select: { slug: true, name: true } },
       },
     });
