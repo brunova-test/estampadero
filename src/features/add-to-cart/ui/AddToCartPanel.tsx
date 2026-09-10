@@ -153,8 +153,8 @@ export function AddToCartPanel({
           disabled={!selectedVariant || !isAvailable}
           className={`relative overflow-hidden ${
             compact
-              ? "min-h-12 w-fit max-w-full min-w-[210px] !px-6 !py-3.5 !text-sm whitespace-nowrap"
-              : "min-w-[220px]"
+              ? "product-add-to-cart-button min-h-12 w-fit max-w-full min-w-[210px] !px-6 !py-3.5 !text-sm whitespace-nowrap"
+              : "product-add-to-cart-button min-w-[220px]"
           }`}
         >
           <span

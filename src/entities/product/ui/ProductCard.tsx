@@ -250,7 +250,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
             data-variant="primary"
             disabled={isOutOfStock}
             onClick={handleAddToCart}
-            className="catalog-product-card__cart-button brand-action relative flex min-h-12 w-full items-center justify-center overflow-hidden rounded-none bg-[linear-gradient(135deg,#190d2a,#2e0470)] px-3 py-3 text-center font-sans text-sm leading-tight font-semibold tracking-[0.01em] text-white normal-case shadow-[0_10px_22px_-16px_rgba(28,10,48,.82)] disabled:cursor-not-allowed disabled:opacity-45 @[150px]:text-sm @[176px]:text-base @[176px]:whitespace-nowrap"
+            className="catalog-product-card__cart-button brand-action relative flex min-h-12 w-full items-center justify-center overflow-hidden rounded-lg bg-[#2e0470] px-3 py-3 text-center font-sans text-sm leading-tight font-semibold tracking-[0.01em] text-white normal-case whitespace-nowrap shadow-[0_10px_22px_-16px_rgba(28,10,48,.82)] disabled:cursor-not-allowed disabled:opacity-45 @[150px]:text-sm @[176px]:text-base"
             title={
               selectedVariant
                 ? `Agregar talle ${selectedVariant.size}, color ${selectedVariant.color}`
