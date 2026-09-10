@@ -19801,6 +19801,107 @@ body .admin-editor-actions {
   font-weight: 800;
   white-space: nowrap;
 }
+
+/* Product editor: keep the association control self-contained even when
+   browser/default admin styles are loaded after the legacy form rules. */
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > summary {
+  display: grid !important;
+  width: 100%;
+  min-height: 50px;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > summary::-webkit-details-marker,
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > summary::marker {
+  display: none;
+  content: "";
+}
+
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > summary
+  > span:first-child {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 7px;
+}
+
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > summary
+  > span:first-child
+  img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > summary
+  > strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > summary
+  > small {
+  min-width: max-content;
+}
+
+.admin-product-information-card
+  .admin-product-partner-select
+  > details[open]
+  > summary {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.admin-product-information-card
+  .admin-product-partner-select
+  > details
+  > .admin-product-partner-select__menu {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 760px) {
+  .admin-product-information-card
+    .admin-product-partner-select
+    > details
+    > summary
+    > small {
+    display: none;
+  }
+}
 .admin-product-club-association-notice {
   display: grid;
   gap: 4px;
