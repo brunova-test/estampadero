@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { routes } from "elestampadero/shared/config/routes";
-import { Container } from "elestampadero/shared/ui";
+import { BackLink, Container } from "elestampadero/shared/ui";
 import { StoreFooter } from "elestampadero/widgets/store-footer";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/server";
@@ -18,6 +18,7 @@ export async function ClubProfileView({ slug }: { slug: string }) {
       <main className="flex-1">
         <section className="bg-ink text-white">
           <Container className="grid gap-8 py-12 md:grid-cols-[180px_minmax(0,1fr)] md:items-center md:py-16">
+            <BackLink fallback={routes.catalog} className="club-profile-back-link" />
             <div className="relative size-32 overflow-hidden rounded-2xl border border-white/15 bg-white p-3 shadow-xl md:size-44">
               <Image
                 src={club.logoUrl ?? "/images/linea-club.png"}

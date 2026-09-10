@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
 import { routes } from "elestampadero/shared/config/routes";
-import { Container } from "elestampadero/shared/ui";
+import { BackLink, Container } from "elestampadero/shared/ui";
 import { StoreFooter } from "elestampadero/widgets/store-footer";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/server";
@@ -64,6 +64,7 @@ export async function ClubStoreView({
             <div className="club-store-hero__pattern" aria-hidden="true" />
           )}
           <Container className="relative z-10 py-7 sm:py-10 lg:py-12">
+            <BackLink fallback={routes.catalog} className="club-store-back-link" />
             <nav className="mb-5 flex items-center gap-2 text-sm text-white/70">
               <Link href={routes.home} className="hover:text-mint">
                 Inicio

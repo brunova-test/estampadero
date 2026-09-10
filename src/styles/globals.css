@@ -1688,7 +1688,7 @@
   line-height: 1;
 }
 .catalog-club-stores-banner {
-  background: linear-gradient(115deg, #2e0470 0%, #3e068e 58%, #4361ee 100%);
+  background: linear-gradient(115deg, #0e0a1a 0%, #281a33 58%, #2e0470 100%);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   font-feature-settings: "kern" 1, "liga" 1;
 }
@@ -1832,18 +1832,47 @@
 .catalog-club-store-card__action {
   grid-column: 1 / -1;
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid rgb(255 255 255 / 12%);
   padding-top: 6px;
   color: #80ffdb;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 650;
-  letter-spacing: 0.005em;
+  letter-spacing: 0.012em;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease;
+}
+.catalog-club-store-card__action::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, #80ffdb, #a6ddcf 50%, #80ffdb);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.catalog-club-store-card:hover .catalog-club-store-card__action,
+.catalog-club-store-card:focus-visible .catalog-club-store-card__action,
+.catalog-club-store-card.is-active .catalog-club-store-card__action {
+  border-color: rgb(128 255 219 / 65%);
+  color: #2e0470;
+}
+.catalog-club-store-card:hover .catalog-club-store-card__action::before,
+.catalog-club-store-card:focus-visible .catalog-club-store-card__action::before,
+.catalog-club-store-card.is-active .catalog-club-store-card__action::before {
+  transform: scaleX(1);
 }
 .catalog-club-store-card__action span {
-  font-size: 17px;
+  position: relative;
+  z-index: 1;
+  font-size: 19px;
   transition: transform 180ms ease;
 }
 .catalog-club-store-card:hover .catalog-club-store-card__action span,
@@ -20037,6 +20066,71 @@ body .admin-editor-actions {
   width: 44px;
   height: 44px;
   border-radius: 9px;
+}
+
+.public-back-link {
+  display: inline-flex;
+  min-height: 38px;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgb(255 255 255 / 34%);
+  border-radius: 999px;
+  padding: 7px 14px 7px 10px;
+  background: rgb(255 255 255 / 10%);
+  color: currentColor;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+.public-back-link svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.public-back-link:hover,
+.public-back-link:focus-visible {
+  border-color: var(--color-mint);
+  background: var(--color-mint);
+  color: var(--color-deep);
+  outline: none;
+  transform: translateX(-2px);
+}
+.catalog-back-link,
+.product-detail-back-link {
+  border-color: rgb(46 4 112 / 18%);
+  background: #ffffff;
+  color: var(--color-deep);
+}
+.catalog-back-link:hover,
+.catalog-back-link:focus-visible,
+.product-detail-back-link:hover,
+.product-detail-back-link:focus-visible {
+  border-color: var(--color-mint);
+  background: var(--color-mint);
+}
+.catalog-back-link {
+  margin-bottom: 18px;
+}
+.club-store-back-link {
+  margin-bottom: 22px;
+}
+.club-profile-back-link {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+.product-detail-back-link {
+  margin-bottom: -2px;
 }
 
 @media (max-width: 560px) {

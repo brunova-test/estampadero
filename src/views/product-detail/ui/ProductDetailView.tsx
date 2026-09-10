@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { AddToCartPanel } from "elestampadero/features/add-to-cart";
 import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
-import { Container } from "elestampadero/shared/ui";
+import { BackLink, Container } from "elestampadero/shared/ui";
 import { formatCents } from "elestampadero/shared/lib/money";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/server";
@@ -29,6 +29,7 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
       <StoreHeader />
       <main className="flex-1">
         <Container className="grid gap-6 py-6 md:gap-10 md:py-10 lg:grid-cols-2">
+          <BackLink fallback="/catalogo" className="product-detail-back-link lg:col-span-2" />
           <div className="flex flex-col gap-3">
             {product.club ? (
               <div className="product-detail-club" title={`Producto de ${product.club.name}`}>
