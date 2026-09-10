@@ -96,7 +96,7 @@ export async function ClubStoreView({
                   alt={`Logo de ${club.name}`}
                   fill
                   sizes="(max-width: 640px) 88px, 132px"
-                  className="object-contain"
+                  className="club-store-logo__image object-contain"
                   priority
                 />
               </div>
@@ -122,21 +122,50 @@ export async function ClubStoreView({
           </Container>
         </section>
 
-        <div className="border-deep/10 bg-white shadow-sm">
-          <Container className="flex min-h-14 items-center gap-6 overflow-x-auto text-sm font-bold whitespace-nowrap">
+        <div className="club-store-nav">
+          <Container className="club-store-nav__inner">
             <Link
-              className="text-deep border-deep border-b-2 py-4"
+              className="club-store-nav__link is-active"
               href={routes.clubStore(slug)}
             >
+              <svg
+                className="club-store-nav__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="m3 10 9-7 9 7" />
+                <path d="M5 9v11h14V9" />
+                <path d="M9 20v-6h6v6" />
+              </svg>
               Inicio de la tienda
             </Link>
-            <a className="text-muted hover:text-deep py-4" href="#productos">
+            <a className="club-store-nav__link" href="#productos">
+              <svg
+                className="club-store-nav__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M6 8h12l1 12H5L6 8Z" />
+                <path d="M9 9V6a3 3 0 0 1 6 0v3" />
+              </svg>
               Todos los productos
             </a>
             <Link
-              className="text-muted hover:text-deep py-4"
+              className="club-store-nav__link"
               href={routes.clubProfile(slug)}
             >
+              <svg
+                className="club-store-nav__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M4 21V8l8-5 8 5v13" />
+                <path d="M8 21v-8h8v8" />
+                <path d="M9 9h.01M12 9h.01M15 9h.01" />
+              </svg>
               Sobre el club
             </Link>
           </Container>

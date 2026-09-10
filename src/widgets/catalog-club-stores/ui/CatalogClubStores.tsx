@@ -117,7 +117,7 @@ export function CatalogClubStores({
                       alt=""
                       fill
                       sizes="84px"
-                      className="object-contain p-0.5"
+                      className="catalog-club-store-card__logo-image object-contain"
                     />
                   </span>
                   <span className="catalog-club-store-card__copy">
