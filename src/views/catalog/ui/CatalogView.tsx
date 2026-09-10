@@ -1,4 +1,5 @@
 import { Container } from "elestampadero/shared/ui";
+import { CatalogClubStores } from "elestampadero/widgets/catalog-club-stores";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/server";
 
@@ -31,7 +32,7 @@ function toValidLine(value: string | undefined) {
 export async function CatalogView({ searchParams }: CatalogViewProps) {
   const line = toValidLine(searchParams.linea);
 
-  const [products, categories] = await Promise.all([
+  const [products, categories, clubs] = await Promise.all([
     api.catalog.list({
       categorySlug: searchParams.categoria,
       clubSlug: searchParams.club,
@@ -39,6 +40,7 @@ export async function CatalogView({ searchParams }: CatalogViewProps) {
       search: searchParams.q,
     }),
     api.catalog.categories(),
+    api.clubs.publicList(),
   ]);
   const clubName = searchParams.club ? products[0]?.club?.name : null;
 
@@ -46,6 +48,7 @@ export async function CatalogView({ searchParams }: CatalogViewProps) {
     <div className="flex min-h-screen flex-col bg-white">
       <StoreHeader />
       <main className="flex-1">
+        <CatalogClubStores clubs={clubs} activeClub={searchParams.club} />
         <Container className="catalog-container pt-0 pb-6 md:py-10">
           <h1 className="catalog-title font-display text-ink mb-6 hidden text-2xl font-black lg:block">
             {searchParams.club

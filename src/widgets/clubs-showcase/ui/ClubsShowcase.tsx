@@ -7,48 +7,26 @@ import { useMemo, useState } from "react";
 import { routes } from "elestampadero/shared/config/routes";
 import { RevealGroup } from "elestampadero/shared/ui/motion";
 
-const CLUBS = [
-  {
-    name: "Club Atlético",
-    subtitle: "Fútbol · Masculino y femenino",
-    image: "/images/club-futbol.png",
-    tags: ["12 productos", "Entrega 10 días"],
-    slug: "club-atletico",
-  },
-  {
-    name: "Escuela N°14",
-    subtitle: "Escolar · Nivel primario",
-    image: "/images/club-escuela.png",
-    tags: ["8 productos", "Talles 4 a 16"],
-    slug: "escuela-n14",
-  },
-  {
-    name: "Vóley Norte",
-    subtitle: "Vóley · Todas las categorías",
-    image: "/images/club-voley.png",
-    tags: ["15 productos", "Envío a todo el país"],
-    slug: "voley-norte",
-  },
-  {
-    name: "Rugby Sur",
-    subtitle: "Rugby · Juveniles y plantel",
-    image: "/images/club-rugby.png",
-    tags: ["6 productos", "Camiseta y buzo"],
-    slug: "rugby-sur",
-  },
-];
+interface ClubShowcaseItem {
+  slug: string;
+  name: string;
+  sport: string | null;
+  description: string | null;
+  logoUrl: string | null;
+  productCount: number;
+}
 
-export function ClubsShowcase() {
+export function ClubsShowcase({ clubs }: { clubs: ClubShowcaseItem[] }) {
   const [search, setSearch] = useState("");
   const filteredClubs = useMemo(() => {
     const normalizedSearch = search.trim().toLocaleLowerCase("es");
-    if (!normalizedSearch) return CLUBS;
-    return CLUBS.filter((club) =>
-      `${club.name} ${club.subtitle}`
+    if (!normalizedSearch) return clubs;
+    return clubs.filter((club) =>
+      `${club.name} ${club.sport ?? ""} ${club.description ?? ""}`
         .toLocaleLowerCase("es")
         .includes(normalizedSearch),
     );
-  }, [search]);
+  }, [clubs, search]);
 
   return (
     <section
@@ -109,14 +87,13 @@ export function ClubsShowcase() {
       {filteredClubs.length ? (
         <RevealGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-[clamp(16px,1.4vw,28px)]">
           {filteredClubs.map((club) => (
-            <Link
+            <article
               key={club.slug}
-              href={`${routes.catalog}?club=${club.slug}`}
               className="brand-card-cut group flex min-h-0 flex-row items-center justify-start gap-4 bg-white/[.07] p-5 text-left transition-colors hover:bg-white/[.11] md:min-h-[clamp(430px,32vw,640px)] md:flex-col md:justify-center md:gap-[clamp(12px,1vw,20px)] md:p-[clamp(18px,1.4vw,28px)] md:text-center"
             >
               <div className="relative h-16 w-16 shrink-0 md:h-[clamp(150px,10.5vw,210px)] md:w-[clamp(150px,10.5vw,210px)]">
                 <Image
-                  src={club.image}
+                  src={club.logoUrl ?? "/images/linea-club.png"}
                   alt=""
                   fill
                   className="object-contain"
@@ -127,27 +104,33 @@ export function ClubsShowcase() {
                   {club.name}
                 </h3>
                 <p className="text-[13px] text-[#a99fc4] md:text-[clamp(17px,1.3vw,26px)]">
-                  {club.subtitle}
+                  {club.sport ?? "Institución asociada"}
                 </p>
               </div>
               <div className="hidden flex-wrap justify-center gap-2.5 md:flex">
-                {club.tags.map((tag, index) => (
-                  <span
-                    key={tag}
-                    className={`px-[clamp(10px,.9vw,18px)] py-[clamp(6px,.4vw,8px)] text-[clamp(14px,1.2vw,24px)] font-semibold ${
-                      index === 0
-                        ? "bg-mint/15 text-mint"
-                        : "bg-white/10 text-white"
-                    }`}
-                  >
-                    {tag}
-                  </span>
-                ))}
+                <span className="bg-mint/15 text-mint px-[clamp(10px,.9vw,18px)] py-[clamp(6px,.4vw,8px)] text-[clamp(14px,1.2vw,24px)] font-semibold">
+                  {club.productCount} producto
+                  {club.productCount === 1 ? "" : "s"}
+                </span>
+                <span className="bg-white/10 px-[clamp(10px,.9vw,18px)] py-[clamp(6px,.4vw,8px)] text-[clamp(14px,1.2vw,24px)] font-semibold text-white">
+                  Tienda oficial
+                </span>
               </div>
-              <span className="text-mint hidden text-[clamp(16px,1.3vw,26px)] font-semibold group-hover:underline md:block">
-                Ver tienda ›
-              </span>
-            </Link>
+              <div className="ml-auto flex shrink-0 items-center gap-2 md:ml-0 md:flex-col">
+                <Link
+                  href={routes.clubProfile(club.slug)}
+                  className="hidden text-sm font-semibold text-white/75 hover:text-white hover:underline md:block"
+                >
+                  Ver perfil
+                </Link>
+                <Link
+                  href={routes.clubStore(club.slug)}
+                  className="bg-mint text-deep inline-flex min-h-10 items-center justify-center px-4 text-sm font-extrabold transition-transform hover:-translate-y-0.5 md:min-h-12 md:px-6 md:text-base"
+                >
+                  Ir a la tienda
+                </Link>
+              </div>
+            </article>
           ))}
         </RevealGroup>
       ) : (

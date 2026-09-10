@@ -7,6 +7,7 @@ import {
   adminMutationRateLimit,
   adminProcedure,
   createTRPCRouter,
+  publicProcedure,
   protectedProcedure,
   staffProcedure,
 } from "elestampadero/server/api/trpc";
@@ -113,6 +114,60 @@ async function assertClubManagement(
 }
 
 export const clubsRouter = createTRPCRouter({
+  publicList: publicProcedure.query(async ({ ctx }) => {
+    const clubs = await ctx.db.club.findMany({
+      where: { isActive: true },
+      select: {
+        slug: true,
+        name: true,
+        sport: true,
+        description: true,
+        logoUrl: true,
+        _count: {
+          select: { products: { where: { status: "PUBLISHED" } } },
+        },
+      },
+      orderBy: { name: "asc" },
+    });
+
+    return clubs.map((club) => ({
+      slug: club.slug,
+      name: club.name,
+      sport: club.sport,
+      description: club.description,
+      logoUrl: club.logoUrl,
+      productCount: club._count.products,
+    }));
+  }),
+
+  publicBySlug: publicProcedure
+    .input(z.object({ slug: z.string().min(1).max(120) }))
+    .query(async ({ ctx, input }) => {
+      const club = await ctx.db.club.findFirst({
+        where: { slug: input.slug, isActive: true },
+        select: {
+          slug: true,
+          name: true,
+          sport: true,
+          description: true,
+          logoUrl: true,
+          _count: {
+            select: { products: { where: { status: "PUBLISHED" } } },
+          },
+        },
+      });
+
+      if (!club) return null;
+      return {
+        slug: club.slug,
+        name: club.name,
+        sport: club.sport,
+        description: club.description,
+        logoUrl: club.logoUrl,
+        productCount: club._count.products,
+      };
+    }),
+
   list: staffProcedure.query(() => listClubsUseCase()),
 
   create: adminProcedure

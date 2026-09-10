@@ -10,9 +10,10 @@ import { RevealOnScroll } from "elestampadero/shared/ui/motion";
 import { api } from "elestampadero/trpc/server";
 
 export async function HomeView() {
-  const [publishedProducts, productsBySales] = await Promise.all([
+  const [publishedProducts, productsBySales, clubs] = await Promise.all([
     api.catalog.list({ sort: "NEWEST" }),
     api.catalog.list({ sort: "BEST_SELLING" }),
+    api.clubs.publicList(),
   ]);
   const newArrivals = [...publishedProducts].sort((left, right) => {
     const manualPriority = Number(right.isFeatured) - Number(left.isFeatured);
@@ -49,7 +50,7 @@ export async function HomeView() {
           />
         </RevealOnScroll>
         <RevealOnScroll>
-          <ClubsShowcase />
+          <ClubsShowcase clubs={clubs} />
         </RevealOnScroll>
       </main>
       <StoreFooter showAbout />

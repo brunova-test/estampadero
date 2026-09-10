@@ -76,7 +76,7 @@ const PRODUCT_COLOR_PALETTE = [
 const UNDEFINED_COLOR = "Sin definir";
 const UNDEFINED_SIZE = "Sin definir";
 
-function emptyDraft(): ProductDraft {
+function emptyDraft(clubId = ""): ProductDraft {
   return {
     id: null,
     name: "",
@@ -84,10 +84,10 @@ function emptyDraft(): ProductDraft {
     description: "",
     price: "",
     compareAtPrice: "",
-    line: "",
+    line: clubId ? "CLUB" : "",
     lineId: "",
-    status: "DRAFT",
-    clubId: "",
+    status: clubId ? "PUBLISHED" : "DRAFT",
+    clubId,
     allowsCustomPrint: false,
     isFeatured: false,
     showStock: false,
@@ -140,10 +140,14 @@ export function AdminProductsManager({
   initialProducts,
   clubs,
   initialLines,
+  initialClubId,
+  initialCreateMode = false,
 }: {
   initialProducts: Product[];
   clubs: Club[];
   initialLines: CatalogLine[];
+  initialClubId?: string;
+  initialCreateMode?: boolean;
 }) {
   const productsQuery = api.catalog.adminList.useQuery(undefined, {
     initialData: initialProducts,
@@ -156,10 +160,18 @@ export function AdminProductsManager({
   const [status, setStatus] = useState("");
   const [clubId, setClubId] = useState("");
   const [page, setPage] = useState(1);
-  const [draft, setDraft] = useState<ProductDraft | null>(null);
+  const preselectedClubId = clubs.some(
+    (club) =>
+      club.id === initialClubId && club.isActive && club.hasActiveAgreement,
+  )
+    ? (initialClubId ?? "")
+    : "";
+  const [draft, setDraft] = useState<ProductDraft | null>(() =>
+    initialCreateMode ? emptyDraft(preselectedClubId) : null,
+  );
   const [section, setSection] = useState<
     "catalog" | "approved" | "lines" | "new"
-  >("catalog");
+  >(initialCreateMode ? "new" : "catalog");
 
   const products = productsQuery.data ?? initialProducts;
   const lines = linesQuery.data ?? initialLines;
@@ -238,7 +250,7 @@ export function AdminProductsManager({
         }`}
         onClick={() => {
           setSection("new");
-          setDraft(emptyDraft());
+          setDraft(emptyDraft(preselectedClubId));
         }}
       >
         <ProductSectionIcon kind="new" />
@@ -260,10 +272,7 @@ export function AdminProductsManager({
     return (
       <>
         {sectionTabs}
-        <CatalogLinesPanel
-          initialLines={lines}
-          products={products}
-        />
+        <CatalogLinesPanel initialLines={lines} products={products} />
       </>
     );
   }
@@ -276,6 +285,7 @@ export function AdminProductsManager({
           draft={draft}
           clubs={clubs}
           lines={lines}
+          lockedClubId={preselectedClubId || undefined}
           embedded
           onClose={() => {
             setDraft(null);
@@ -311,20 +321,17 @@ export function AdminProductsManager({
           options={[
             ["", "Todas"],
             ...Object.entries(LINE_LABELS),
-            ...lines.map((customLine) => [customLine.id, customLine.name] as [
-              string,
-              string,
-            ]),
+            ...lines.map(
+              (customLine) =>
+                [customLine.id, customLine.name] as [string, string],
+            ),
           ]}
         />
         <ProductFilterSelect
           label="Estado"
           value={status}
           onChange={setStatus}
-          options={[
-            ["", "Todos"],
-            ...Object.entries(STATUS_LABELS),
-          ]}
+          options={[["", "Todos"], ...Object.entries(STATUS_LABELS)]}
         />
         <ProductFilterSelect
           label="Club"
@@ -500,8 +507,19 @@ function ProductFilterSelect({
           <small>{label}</small>
           <strong>{selectedLabel}</strong>
         </span>
-        <svg className="admin-product-filter-dropdown__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="m7 9 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+          className="admin-product-filter-dropdown__chevron"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="m7 9 5 5 5-5"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </summary>
       <div className="admin-product-filter-dropdown__menu">
@@ -742,7 +760,9 @@ function CatalogLinesPanel({
                           <strong>{product.name}</strong>
                           <small>{product.code}</small>
                         </div>
-                        <span className="admin-chip">{STATUS_LABELS[product.status]}</span>
+                        <span className="admin-chip">
+                          {STATUS_LABELS[product.status]}
+                        </span>
                       </article>
                     ))}
                     {lineProducts.length === 0 ? (
@@ -1077,12 +1097,14 @@ function ProductEditorModal({
   draft: initialDraft,
   clubs,
   lines,
+  lockedClubId,
   embedded = false,
   onClose,
 }: {
   draft: ProductDraft;
   clubs: Club[];
   lines: CatalogLine[];
+  lockedClubId?: string;
   embedded?: boolean;
   onClose: () => void;
 }) {
@@ -1090,11 +1112,11 @@ function ProductEditorModal({
     ...initialDraft,
     clubId: clubs.some(
       (club) =>
-        club.id === initialDraft.clubId &&
+        club.id === (lockedClubId ?? initialDraft.clubId) &&
         club.isActive &&
         club.hasActiveAgreement,
     )
-      ? initialDraft.clubId
+      ? (lockedClubId ?? initialDraft.clubId)
       : "",
   }));
   const [newSize, setNewSize] = useState("");
@@ -1689,16 +1711,29 @@ function ProductEditorModal({
                 <span />
               </div>
               <div className="admin-product-form-grid">
-                <fieldset className="admin-product-partner-select">
+                <fieldset
+                  className={`admin-product-partner-select${
+                    lockedClubId ? "admin-product-partner-select--locked" : ""
+                  }`}
+                >
                   <legend>Socio o convenio asociado</legend>
                   <details
+                    onToggle={(event) => {
+                      if (lockedClubId)
+                        event.currentTarget.removeAttribute("open");
+                    }}
                     onBlur={(event) => {
                       if (!event.currentTarget.contains(event.relatedTarget)) {
                         event.currentTarget.removeAttribute("open");
                       }
                     }}
                   >
-                    <summary>
+                    <summary
+                      aria-disabled={lockedClubId ? true : undefined}
+                      onClick={(event) => {
+                        if (lockedClubId) event.preventDefault();
+                      }}
+                    >
                       <span aria-hidden="true">
                         {selectedClub?.logoUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
@@ -1708,20 +1743,24 @@ function ProductEditorModal({
                         )}
                       </span>
                       <strong>{selectedClub?.name ?? "Sin asociación"}</strong>
-                      <svg
-                        className="admin-product-partner-select__chevron"
-                        aria-hidden="true"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                      >
-                        <path
-                          d="m5 8 5 5 5-5"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      {lockedClubId ? (
+                        <small>Asociación automática</small>
+                      ) : (
+                        <svg
+                          className="admin-product-partner-select__chevron"
+                          aria-hidden="true"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                        >
+                          <path
+                            d="m5 8 5 5 5-5"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
                     </summary>
                     <div className="admin-product-partner-select__menu">
                       <button

@@ -14,4 +14,6 @@ export const routes = {
   account: "/cuenta",
   admin: "/admin",
   club: "/club",
+  clubProfile: (slug: string) => `/clubes/${slug}`,
+  clubStore: (slug: string) => `/tiendas/${slug}`,
 } as const;

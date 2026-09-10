@@ -21,16 +21,20 @@ interface ProductFiltersProps {
   activeClub?: string;
   activeSearch?: string;
   pendingHref?: string | null;
+  basePath?: string;
   onNavigate: (href: string) => void;
 }
 
-function buildHref(params: Record<string, string | undefined>) {
+function buildHref(
+  params: Record<string, string | undefined>,
+  basePath: string = routes.catalog,
+) {
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     if (value) search.set(key, value);
   }
   const query = search.toString();
-  return query ? `${routes.catalog}?${query}` : routes.catalog;
+  return query ? `${basePath}?${query}` : basePath;
 }
 
 function PendingFilterLink({
@@ -90,6 +94,7 @@ export function ProductFilters({
   activeClub,
   activeSearch,
   pendingHref = null,
+  basePath = routes.catalog,
   onNavigate,
 }: ProductFiltersProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -100,12 +105,15 @@ export function ProductFilters({
     const searchValue = form.get("q");
     const search = typeof searchValue === "string" ? searchValue.trim() : "";
     onNavigate(
-      buildHref({
-        categoria: activeCategory,
-        linea: activeLine,
-        club: activeClub,
-        q: search || undefined,
-      }),
+      buildHref(
+        {
+          categoria: activeCategory,
+          linea: activeLine,
+          club: activeClub,
+          q: search || undefined,
+        },
+        basePath,
+      ),
     );
   }
 
@@ -162,9 +170,10 @@ export function ProductFilters({
           className="catalog-quick-filters mt-4 flex gap-2.5 overflow-x-auto pb-0.5"
         >
           <PendingFilterLink
-            href={buildHref({ club: activeClub, q: activeSearch })}
+            href={buildHref({ club: activeClub, q: activeSearch }, basePath)}
             isPending={
-              pendingHref === buildHref({ club: activeClub, q: activeSearch })
+              pendingHref ===
+              buildHref({ club: activeClub, q: activeSearch }, basePath)
             }
             onNavigate={onNavigate}
             className={`shrink-0 rounded-lg border px-5 py-2 text-sm font-semibold ${
@@ -178,20 +187,26 @@ export function ProductFilters({
           {categories.map((category) => (
             <PendingFilterLink
               key={category.slug}
-              href={buildHref({
-                categoria: category.slug,
-                linea: activeLine,
-                club: activeClub,
-                q: activeSearch,
-              })}
-              isPending={
-                pendingHref ===
-                buildHref({
+              href={buildHref(
+                {
                   categoria: category.slug,
                   linea: activeLine,
                   club: activeClub,
                   q: activeSearch,
-                })
+                },
+                basePath,
+              )}
+              isPending={
+                pendingHref ===
+                buildHref(
+                  {
+                    categoria: category.slug,
+                    linea: activeLine,
+                    club: activeClub,
+                    q: activeSearch,
+                  },
+                  basePath,
+                )
               }
               onNavigate={onNavigate}
               className={`shrink-0 rounded-lg border px-5 py-2 text-sm font-semibold ${
@@ -214,8 +229,10 @@ export function ProductFilters({
             Filtrar
           </h2>
           <PendingFilterLink
-            href={buildHref({ club: activeClub })}
-            isPending={pendingHref === buildHref({ club: activeClub })}
+            href={buildHref({ club: activeClub }, basePath)}
+            isPending={
+              pendingHref === buildHref({ club: activeClub }, basePath)
+            }
             onNavigate={onNavigate}
             className="border-deep/15 text-deep hover:border-mint hover:bg-mint hover:text-deep rounded-full border px-3 py-1.5 text-xs font-bold transition-[color,background-color,border-color,transform] duration-300 hover:-translate-y-0.5"
           >
@@ -230,18 +247,24 @@ export function ProductFilters({
           {categories.map((category) => (
             <li key={category.slug}>
               <PendingFilterLink
-                href={buildHref({
-                  categoria: category.slug,
-                  linea: activeLine,
-                  club: activeClub,
-                })}
-                isPending={
-                  pendingHref ===
-                  buildHref({
+                href={buildHref(
+                  {
                     categoria: category.slug,
                     linea: activeLine,
                     club: activeClub,
-                  })
+                  },
+                  basePath,
+                )}
+                isPending={
+                  pendingHref ===
+                  buildHref(
+                    {
+                      categoria: category.slug,
+                      linea: activeLine,
+                      club: activeClub,
+                    },
+                    basePath,
+                  )
                 }
                 onNavigate={onNavigate}
                 className={`group flex min-h-11 items-center rounded-xl border px-3 py-2.5 text-sm font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 ${
@@ -263,18 +286,24 @@ export function ProductFilters({
           {LINES.map((line) => (
             <li key={line.value}>
               <PendingFilterLink
-                href={buildHref({
-                  categoria: activeCategory,
-                  linea: line.value,
-                  club: activeClub,
-                })}
-                isPending={
-                  pendingHref ===
-                  buildHref({
+                href={buildHref(
+                  {
                     categoria: activeCategory,
                     linea: line.value,
                     club: activeClub,
-                  })
+                  },
+                  basePath,
+                )}
+                isPending={
+                  pendingHref ===
+                  buildHref(
+                    {
+                      categoria: activeCategory,
+                      linea: line.value,
+                      club: activeClub,
+                    },
+                    basePath,
+                  )
                 }
                 onNavigate={onNavigate}
                 className={`group flex min-h-11 items-center rounded-xl border px-3 py-2.5 text-sm font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 ${

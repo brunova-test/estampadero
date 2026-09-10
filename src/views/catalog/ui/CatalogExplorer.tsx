@@ -27,6 +27,7 @@ interface CatalogExplorerProps {
   activeLine?: string;
   activeClub?: string;
   activeSearch?: string;
+  basePath?: string;
 }
 
 export function CatalogExplorer({
@@ -36,6 +37,7 @@ export function CatalogExplorer({
   activeLine,
   activeClub,
   activeSearch,
+  basePath,
 }: CatalogExplorerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -116,6 +118,7 @@ export function CatalogExplorer({
         activeClub={activeClub}
         activeSearch={activeSearch}
         pendingHref={isPending ? pendingHref : null}
+        basePath={basePath}
         onNavigate={handleFilterNavigation}
       />
 
@@ -128,7 +131,7 @@ export function CatalogExplorer({
             <button
               type="button"
               onClick={() => setIsSortOpen((isOpen) => !isOpen)}
-              className="border-deep/15 bg-white text-ink hover:border-deep/35 focus-visible:ring-deep/25 flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-4 py-2 font-semibold shadow-sm transition focus-visible:ring-2 focus-visible:outline-none"
+              className="border-deep/15 text-ink hover:border-deep/35 focus-visible:ring-deep/25 flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border bg-white px-4 py-2 font-semibold shadow-sm transition focus-visible:ring-2 focus-visible:outline-none"
               aria-label="Ordenar productos"
               aria-haspopup="menu"
               aria-expanded={isSortOpen}
@@ -156,7 +159,7 @@ export function CatalogExplorer({
                 id="catalog-sort-menu"
                 role="menu"
                 aria-label="Ordenar productos"
-                className="border-deep/15 bg-white text-ink absolute top-[calc(100%+0.4rem)] right-0 z-30 w-full min-w-max overflow-hidden rounded-lg border py-1 shadow-xl"
+                className="border-deep/15 text-ink absolute top-[calc(100%+0.4rem)] right-0 z-30 w-full min-w-max overflow-hidden rounded-lg border bg-white py-1 shadow-xl"
               >
                 {SORT_OPTIONS.map((option) => (
                   <button
@@ -168,7 +171,7 @@ export function CatalogExplorer({
                       setSort(option.value);
                       setIsSortOpen(false);
                     }}
-                    className={`hover:bg-paper focus-visible:bg-paper block w-full px-4 py-2 text-left whitespace-nowrap outline-none transition-colors ${
+                    className={`hover:bg-paper focus-visible:bg-paper block w-full px-4 py-2 text-left whitespace-nowrap transition-colors outline-none ${
                       sort === option.value ? "bg-deep text-white" : ""
                     }`}
                   >

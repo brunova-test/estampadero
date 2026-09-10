@@ -2,7 +2,14 @@ import { AdminPage, AdminPanel } from "elestampadero/shared/ui/admin";
 import { api } from "elestampadero/trpc/server";
 import { AdminProductsManager } from "elestampadero/views/admin-products";
 
-export default async function AdminProductsPage() {
+interface AdminProductsPageProps {
+  searchParams: Promise<{ crear?: string; clubId?: string }>;
+}
+
+export default async function AdminProductsPage({
+  searchParams,
+}: AdminProductsPageProps) {
+  const requested = await searchParams;
   const [products, clubs, lines] = await Promise.all([
     api.catalog.adminList(),
     api.clubs.list(),
@@ -20,6 +27,8 @@ export default async function AdminProductsPage() {
           initialProducts={products}
           clubs={clubs}
           initialLines={lines}
+          initialClubId={requested.clubId}
+          initialCreateMode={requested.crear === "1"}
         />
       </AdminPanel>
     </AdminPage>

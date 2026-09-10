@@ -20,11 +20,13 @@ import {
 import { ModernSpinner } from "elestampadero/shared/ui/motion";
 import { api, type RouterOutputs } from "elestampadero/trpc/react";
 
+import { ClubStoreManagementPanel } from "./ClubStoreManagementPanel";
+
 type AgreementSummary = RouterOutputs["agreements"]["listByClub"][number];
 type ClubProduct = RouterOutputs["catalog"]["list"][number];
 type CommissionEntry = RouterOutputs["commissions"]["listByClub"][number];
 type AgreementStatusAction = "ACTIVE" | "PAUSED" | "CANCELLED";
-type ClubDetailPanel = "mobbex" | "access" | "summary" | "agreements";
+type ClubDetailPanel = "mobbex" | "access" | "summary" | "agreements" | "store";
 
 const STATUS_LABELS: Record<string, string> = {
   ACTIVE: "Activo",
@@ -212,6 +214,18 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
           >
             <AdminDetailIcon name="chart" />
             Resumen del club
+          </button>
+          <button
+            id="admin-club-tab-store"
+            type="button"
+            role="tab"
+            aria-selected={activeDetailPanel === "store"}
+            aria-controls="admin-club-panel-store"
+            className={activeDetailPanel === "store" ? "is-active" : undefined}
+            onClick={() => selectDetailPanel("store")}
+          >
+            <AdminDetailIcon name="store" />
+            Tienda y QR
           </button>
           <button
             id="admin-club-tab-access"
@@ -731,6 +745,14 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
                 </div>
               </dl>
             </section>
+            <div
+              id="admin-club-panel-store"
+              role="tabpanel"
+              aria-labelledby="admin-club-tab-store"
+              hidden={activeDetailPanel !== "store" || isDetailPanelLoading}
+            >
+              <ClubStoreManagementPanel club={club} />
+            </div>
           </div>
 
           <section
@@ -1051,6 +1073,7 @@ type AdminDetailIconName =
   | "pause"
   | "percent"
   | "transfer"
+  | "store"
   | "trash"
   | "user";
 
@@ -1095,6 +1118,12 @@ function AdminDetailIcon({ name }: { name: AdminDetailIconName }) {
     pause: <path d="M8 5v14m8-14v14" />,
     percent: <path d="m6 18 12-12M7 7h.01M17 17h.01" />,
     transfer: <path d="M5 8h14m-4-3 4 3-4 3M19 16H5m4-3-4 3 4 3" />,
+    store: (
+      <>
+        <path d="M4 10h16l-1.5-6h-13L4 10Zm1 0v10h14V10" />
+        <path d="M8 20v-6h4v6m-8-10c0 2 3 2 4 0 1 2 3 2 4 0 1 2 3 2 4 0 1 2 4 2 4 0" />
+      </>
+    ),
     trash: (
       <path d="M5 7h14m-9-3h4l1 3H9l1-3Zm-4 3 1 13h10l1-13M10 11v8m4-8v8" />
     ),
