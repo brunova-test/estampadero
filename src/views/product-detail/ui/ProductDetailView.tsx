@@ -23,6 +23,7 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
   const clubBranding = product.club
     ? getClubStoreBranding(product.club.slug)
     : null;
+  const ownerName = product.club?.name ?? "El Estampadero";
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
@@ -31,14 +32,16 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
         <Container className="grid gap-6 py-6 md:gap-10 md:py-10 lg:grid-cols-2">
           <BackLink fallback="/catalogo" className="product-detail-back-link lg:col-span-2" />
           <div className="flex flex-col gap-3">
-            {product.club ? (
-              <div className="product-detail-club" title={`Producto de ${product.club.name}`}>
+            <div
+              className={`product-detail-club ${!product.club ? "is-platform" : ""}`}
+              title={`Producto de ${ownerName}`}
+            >
                 <span className="product-detail-club__logo">
                   <Image
                     src={
                       clubBranding?.logoUrl ??
-                      product.club.logoUrl ??
-                      "/images/linea-club.png"
+                      product.club?.logoUrl ??
+                      "/images/icono.jpg"
                     }
                     alt=""
                     fill
@@ -46,9 +49,8 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
                     className="object-contain"
                   />
                 </span>
-                <span>{product.club.name}</span>
-              </div>
-            ) : null}
+                <span>{ownerName}</span>
+            </div>
             <div className="relative aspect-square overflow-hidden bg-white md:rounded-lg">
               {product.images[0] ? (
                 <Image

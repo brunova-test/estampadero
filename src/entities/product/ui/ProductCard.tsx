@@ -25,6 +25,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
   const clubBranding = product.club
     ? getClubStoreBranding(product.club.slug)
     : null;
+  const ownerName = product.club?.name ?? "El Estampadero";
   const selectableColors = product.colors.filter((color) =>
     images.some((image) => image.color === color),
   );
@@ -94,14 +95,16 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
 
   return (
     <article className="catalog-product-card border-deep/8 hover:border-deep/25 @container relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-3 shadow-[0_10px_28px_-28px_rgba(46,4,112,.35)] transition-colors duration-150 sm:p-3.5">
-      {product.club ? (
-        <div className="catalog-product-card__club" title={`Producto de ${product.club.name}`}>
+      <div
+        className={`catalog-product-card__club ${!product.club ? "is-platform" : ""}`}
+        title={`Producto de ${ownerName}`}
+      >
           <span className="catalog-product-card__club-logo">
             <Image
               src={
                 clubBranding?.logoUrl ??
-                product.club.logoUrl ??
-                "/images/linea-club.png"
+                product.club?.logoUrl ??
+                "/images/icono.jpg"
               }
               alt=""
               fill
@@ -109,9 +112,8 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
               className="object-contain"
             />
           </span>
-          <span>{product.club.name}</span>
-        </div>
-      ) : null}
+          <span>{ownerName}</span>
+      </div>
       <div className="catalog-product-card__media relative aspect-square w-full overflow-hidden rounded-xl bg-white">
         {activeImage ? (
           <Image

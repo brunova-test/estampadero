@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 
 import { AddToCartPanel } from "elestampadero/features/add-to-cart";
 import { formatCents } from "elestampadero/shared/lib/money";
+import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
 import { api } from "elestampadero/trpc/react";
 import type { ProductSummary } from "elestampadero/entities/product";
 
@@ -72,6 +73,12 @@ export function ProductQuickViewModal({
             color: null,
           }));
   const activeImage = images[activeImageIndex] ?? images[0];
+  const ownerName = detail?.club?.name ?? "El Estampadero";
+  const ownerBranding = detail?.club
+    ? getClubStoreBranding(detail.club.slug)
+    : {};
+  const ownerLogo =
+    ownerBranding.logoUrl ?? detail?.club?.logoUrl ?? "/images/icono.jpg";
 
   return createPortal(
     <m.div
@@ -251,8 +258,32 @@ export function ProductQuickViewModal({
             </div>
 
             <div className="product-quick-view__content product-detail-scrollbar flex flex-col p-5 sm:p-7 lg:h-full lg:justify-center lg:overflow-y-auto">
+              <div className="product-quick-view__brand">
+                {ownerBranding.bannerUrl ? (
+                  <Image
+                    src={ownerBranding.bannerUrl}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 45vw, 100vw"
+                    className="product-quick-view__brand-image"
+                  />
+                ) : null}
+                <div className="product-quick-view__brand-overlay" aria-hidden="true" />
+                <span className="product-quick-view__brand-name">
+                  {ownerName}
+                </span>
+                <span className="product-quick-view__brand-logo">
+                  <Image
+                    src={ownerLogo}
+                    alt={`Logo de ${ownerName}`}
+                    fill
+                    sizes="52px"
+                    className="object-contain"
+                  />
+                </span>
+              </div>
               <span className="text-muted font-mono text-xs font-semibold tracking-[.15em] uppercase">
-                {detail.club?.name ?? detail.category?.name ?? "Indumentaria"}
+                {detail.category?.name ?? "Indumentaria"}
               </span>
               <h2
                 id={`quick-view-${product.id}`}

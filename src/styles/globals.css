@@ -1834,15 +1834,15 @@
   display: flex;
   position: relative;
   align-items: center;
-  justify-content: space-between;
   border-top: 1px solid rgb(255 255 255 / 12%);
   margin: 0 -10px -10px;
   width: calc(100% + 20px);
   padding: 10px;
   color: #80ffdb;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 650;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
   letter-spacing: 0.012em;
   isolation: isolate;
   overflow: hidden;
@@ -1879,16 +1879,6 @@
 .catalog-club-store-card.is-active .catalog-club-store-card__action::before {
   opacity: 1;
   transform: scaleX(1);
-}
-.catalog-club-store-card__action span {
-  position: relative;
-  z-index: 1;
-  font-size: 19px;
-  transition: transform 180ms ease;
-}
-.catalog-club-store-card:hover .catalog-club-store-card__action span,
-.catalog-club-store-card:focus-visible .catalog-club-store-card__action span {
-  transform: translateX(3px);
 }
 
 @media (min-width: 980px) {
@@ -20073,6 +20063,9 @@ body .admin-editor-actions {
   width: 30px;
   height: 30px;
 }
+.catalog-product-card__club.is-platform .catalog-product-card__club-logo img {
+  transform: scale(1.8);
+}
 @container (max-width: 180px) {
   .catalog-product-card__custom-badge {
     top: 3.25rem;
@@ -20093,6 +20086,62 @@ body .admin-editor-actions {
   width: 44px;
   height: 44px;
   border-radius: 9px;
+}
+.product-detail-club.is-platform .product-detail-club__logo img {
+  transform: scale(1.45);
+}
+.product-quick-view__brand {
+  position: relative;
+  display: flex;
+  min-height: 84px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  overflow: hidden;
+  margin: -4px -4px 20px;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(115deg, #0e0a1a 0%, #281a33 60%, #3e068e 100%);
+  color: #ffffff;
+  isolation: isolate;
+}
+.product-quick-view__brand-image,
+.product-quick-view__brand-overlay {
+  position: absolute;
+  inset: 0;
+}
+.product-quick-view__brand-image {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center 48%;
+}
+.product-quick-view__brand-overlay {
+  z-index: -1;
+  background: linear-gradient(90deg, rgb(14 10 26 / 92%), rgb(46 4 112 / 48%));
+}
+.product-quick-view__brand-name {
+  position: relative;
+  z-index: 1;
+  max-width: calc(100% - 64px);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+}
+.product-quick-view__brand-logo {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  overflow: hidden;
+  border: 2px solid rgb(255 255 255 / 84%);
+  border-radius: 10px;
+  background: #ffffff;
+}
+.product-quick-view__brand-logo img[src*="icono.jpg"] {
+  transform: scale(1.7);
 }
 
 .public-back-link {

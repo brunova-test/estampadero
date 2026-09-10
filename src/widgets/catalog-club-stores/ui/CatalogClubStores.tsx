@@ -129,7 +129,7 @@ export function CatalogClubStores({
                     </em>
                   </span>
                   <span className="catalog-club-store-card__action">
-                    Ver indumentaria <span aria-hidden="true">→</span>
+                    Ver indumentaria
                   </span>
                 </Link>
               );
