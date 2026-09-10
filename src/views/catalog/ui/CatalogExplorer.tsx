@@ -159,7 +159,7 @@ export function CatalogExplorer({
                 id="catalog-sort-menu"
                 role="menu"
                 aria-label="Ordenar productos"
-                className="border-deep/15 text-ink relative z-30 mt-2 w-full min-w-max overflow-hidden rounded-lg border bg-white py-1 shadow-xl"
+                className="border-deep/15 text-ink absolute top-[calc(100%+0.4rem)] right-0 z-50 w-full min-w-max overflow-hidden rounded-lg border bg-white py-1 shadow-xl"
               >
                 {SORT_OPTIONS.map((option) => (
                   <button
