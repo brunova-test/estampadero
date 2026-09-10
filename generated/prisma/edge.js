@@ -829,7 +829,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\facun\\elestampadero\\generated\\prisma",
+      "value": "C:\\Users\\facun\\Documents\\proyectos\\elestapadero-master\\elestapadero-master\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -847,7 +847,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\facun\\elestampadero\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\facun\\Documents\\proyectos\\elestapadero-master\\elestapadero-master\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -861,7 +861,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
