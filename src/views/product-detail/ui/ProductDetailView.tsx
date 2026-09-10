@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { AddToCartPanel } from "elestampadero/features/add-to-cart";
+import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
 import { Container } from "elestampadero/shared/ui";
 import { formatCents } from "elestampadero/shared/lib/money";
 import { StoreHeader } from "elestampadero/widgets/store-header";
@@ -19,6 +20,9 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
     (sum, variant) => sum + (variant.stock ?? 0),
     0,
   );
+  const clubBranding = product.club
+    ? getClubStoreBranding(product.club.slug)
+    : null;
 
   return (
     <div className="bg-paper flex min-h-screen flex-col">
@@ -26,6 +30,24 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
       <main className="flex-1">
         <Container className="grid gap-6 py-6 md:gap-10 md:py-10 lg:grid-cols-2">
           <div className="flex flex-col gap-3">
+            {product.club ? (
+              <div className="product-detail-club" title={`Producto de ${product.club.name}`}>
+                <span className="product-detail-club__logo">
+                  <Image
+                    src={
+                      clubBranding?.logoUrl ??
+                      product.club.logoUrl ??
+                      "/images/linea-club.png"
+                    }
+                    alt=""
+                    fill
+                    sizes="42px"
+                    className="object-contain"
+                  />
+                </span>
+                <span>{product.club.name}</span>
+              </div>
+            ) : null}
             <div className="relative aspect-square overflow-hidden bg-white md:rounded-lg">
               {product.images[0] ? (
                 <Image

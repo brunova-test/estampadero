@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { useCartStore } from "elestampadero/entities/cart";
+import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
 import { colorToHex } from "elestampadero/shared/lib/color-swatch";
 import { formatCents } from "elestampadero/shared/lib/money";
 import { CartIcon } from "elestampadero/shared/ui";
@@ -21,6 +22,9 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
       : product.imageUrl
         ? [{ url: product.imageUrl, color: null }]
         : [];
+  const clubBranding = product.club
+    ? getClubStoreBranding(product.club.slug)
+    : null;
   const selectableColors = product.colors.filter((color) =>
     images.some((image) => image.color === color),
   );
@@ -90,6 +94,24 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
 
   return (
     <article className="catalog-product-card border-deep/8 hover:border-deep/25 @container relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-3 shadow-[0_10px_28px_-28px_rgba(46,4,112,.35)] transition-colors duration-150 sm:p-3.5">
+      {product.club ? (
+        <div className="catalog-product-card__club" title={`Producto de ${product.club.name}`}>
+          <span className="catalog-product-card__club-logo">
+            <Image
+              src={
+                clubBranding?.logoUrl ??
+                product.club.logoUrl ??
+                "/images/linea-club.png"
+              }
+              alt=""
+              fill
+              sizes="28px"
+              className="object-contain"
+            />
+          </span>
+          <span>{product.club.name}</span>
+        </div>
+      ) : null}
       <div className="catalog-product-card__media relative aspect-square w-full overflow-hidden rounded-xl bg-white">
         {activeImage ? (
           <Image

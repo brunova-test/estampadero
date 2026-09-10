@@ -19985,6 +19985,53 @@ body .admin-editor-actions {
   outline: 2px solid var(--color-mint);
   outline-offset: 3px;
 }
+.catalog-product-card__club,
+.product-detail-club {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--color-deep);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.004em;
+  line-height: 1.2;
+}
+.catalog-product-card__club {
+  min-height: 32px;
+  margin: 0 1px 9px;
+}
+.catalog-product-card__club > span:last-child,
+.product-detail-club > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.catalog-product-card__club-logo,
+.product-detail-club__logo {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid rgb(46 4 112 / 16%);
+  border-radius: 7px;
+  background: #ffffff;
+}
+.catalog-product-card__club-logo {
+  width: 30px;
+  height: 30px;
+}
+.product-detail-club {
+  width: fit-content;
+  margin-bottom: 2px;
+  font-size: 14px;
+}
+.product-detail-club__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 9px;
+}
 
 @media (max-width: 560px) {
   .admin-clubs-list > a {
