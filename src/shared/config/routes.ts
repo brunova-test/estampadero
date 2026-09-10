@@ -1,0 +1,17 @@
+export const routes = {
+  home: "/",
+  about: "/nosotros",
+  catalog: "/catalogo",
+  graduates: "/#promo-egresados",
+  clubs: "/#clubes",
+  promotions: "/#promociones",
+  specialRequest: "/pedido-especial",
+  joinClub: "/sumar-club",
+  cart: "/carrito",
+  checkout: "/checkout",
+  signIn: "/ingresar",
+  access: "/acceso",
+  account: "/cuenta",
+  admin: "/admin",
+  club: "/club",
+} as const;
