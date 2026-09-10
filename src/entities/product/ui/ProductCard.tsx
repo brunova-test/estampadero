@@ -157,7 +157,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
           </svg>
         </button>
         {product.compareAtCents ? (
-          <span className="bg-mint font-display text-deep pointer-events-none absolute top-3 left-3 z-20 rounded-full px-3 py-1.5 text-sm font-black shadow-[0_8px_20px_-10px_rgba(46,4,112,.7)]">
+          <span className="catalog-product-card__discount-badge bg-mint font-display text-deep pointer-events-none absolute top-3 left-3 z-20 rounded-full px-3 py-1.5 text-sm font-black shadow-[0_8px_20px_-10px_rgba(46,4,112,.7)]">
             -
             {Math.round(
               ((product.compareAtCents - product.priceInCents) /
@@ -168,7 +168,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
           </span>
         ) : null}
         {product.allowsCustomPrint ? (
-          <span className="bg-deep pointer-events-none absolute top-3 right-11 z-20 rounded-full px-2.5 py-1 text-[9px] font-bold tracking-wide text-white uppercase shadow-sm md:right-3">
+          <span className="catalog-product-card__custom-badge bg-deep pointer-events-none absolute top-3 right-11 z-20 rounded-full px-2.5 py-1 text-[9px] font-bold tracking-wide text-white uppercase shadow-sm md:right-3">
             Personalizable
           </span>
         ) : null}
@@ -248,7 +248,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
             data-variant="primary"
             disabled={isOutOfStock}
             onClick={handleAddToCart}
-            className="catalog-product-card__cart-button brand-action relative flex min-h-12 w-full items-center justify-center overflow-hidden rounded-none bg-[linear-gradient(135deg,var(--color-deep),var(--color-mid))] px-3 py-3 text-center font-sans text-sm leading-tight font-semibold tracking-[0.01em] text-white normal-case shadow-[0_10px_22px_-18px_rgba(46,4,112,.72)] disabled:cursor-not-allowed disabled:opacity-45 @[150px]:text-sm @[176px]:text-base @[176px]:whitespace-nowrap"
+            className="catalog-product-card__cart-button brand-action relative flex min-h-12 w-full items-center justify-center overflow-hidden rounded-none bg-[linear-gradient(135deg,#190d2a,#2e0470)] px-3 py-3 text-center font-sans text-sm leading-tight font-semibold tracking-[0.01em] text-white normal-case shadow-[0_10px_22px_-16px_rgba(28,10,48,.82)] disabled:cursor-not-allowed disabled:opacity-45 @[150px]:text-sm @[176px]:text-base @[176px]:whitespace-nowrap"
             title={
               selectedVariant
                 ? `Agregar talle ${selectedVariant.size}, color ${selectedVariant.color}`
