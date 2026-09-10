@@ -279,44 +279,48 @@ export function ProductFilters({
           ))}
         </ul>
 
-        <h3 className="text-muted mb-2 text-xs font-bold tracking-[.12em] uppercase">
-          Línea
-        </h3>
-        <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
-          {LINES.map((line) => (
-            <li key={line.value}>
-              <PendingFilterLink
-                href={buildHref(
-                  {
-                    categoria: activeCategory,
-                    linea: line.value,
-                    club: activeClub,
-                  },
-                  basePath,
-                )}
-                isPending={
-                  pendingHref ===
-                  buildHref(
-                    {
-                      categoria: activeCategory,
-                      linea: line.value,
-                      club: activeClub,
-                    },
-                    basePath,
-                  )
-                }
-                onNavigate={onNavigate}
-                className={`group flex min-h-11 items-center rounded-xl border px-3 py-2.5 text-sm font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 ${
-                  activeLine === line.value
-                    ? "border-deep bg-deep text-white shadow-[0_9px_20px_-13px_rgba(46,4,112,.85)]"
-                    : "border-deep/10 bg-paper/55 text-ink hover:border-mint hover:bg-mint/20 hover:shadow-[0_9px_20px_-15px_rgba(46,4,112,.55)]"
-                }`}
-              >
-                {line.label}
-              </PendingFilterLink>
-            </li>
-          ))}
-        </ul>
+        {!activeClub ? (
+          <>
+            <h3 className="text-muted mb-2 text-xs font-bold tracking-[.12em] uppercase">
+              Línea
+            </h3>
+            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+              {LINES.map((line) => (
+                <li key={line.value}>
+                  <PendingFilterLink
+                    href={buildHref(
+                      {
+                        categoria: activeCategory,
+                        linea: line.value,
+                        club: activeClub,
+                      },
+                      basePath,
+                    )}
+                    isPending={
+                      pendingHref ===
+                      buildHref(
+                        {
+                          categoria: activeCategory,
+                          linea: line.value,
+                          club: activeClub,
+                        },
+                        basePath,
+                      )
+                    }
+                    onNavigate={onNavigate}
+                    className={`group flex min-h-11 items-center rounded-xl border px-3 py-2.5 text-sm font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 ${
+                      activeLine === line.value
+                        ? "border-deep bg-deep text-white shadow-[0_9px_20px_-13px_rgba(46,4,112,.85)]"
+                        : "border-deep/10 bg-paper/55 text-ink hover:border-mint hover:bg-mint/20 hover:shadow-[0_9px_20px_-15px_rgba(46,4,112,.55)]"
+                    }`}
+                  >
+                    {line.label}
+                  </PendingFilterLink>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
       </div>
     </aside>
   );

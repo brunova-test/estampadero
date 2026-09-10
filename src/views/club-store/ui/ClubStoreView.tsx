@@ -19,26 +19,13 @@ interface ClubStoreViewProps {
   };
 }
 
-const VALID_LINES = new Set([
-  "CLUB",
-  "URBANA",
-  "TRAINING",
-  "TRABAJO",
-  "ESCOLAR",
-]);
-
-function toValidLine(value: string | undefined) {
-  const upper = value?.toUpperCase();
-  return upper && VALID_LINES.has(upper)
-    ? (upper as "CLUB" | "URBANA" | "TRAINING" | "TRABAJO" | "ESCOLAR")
-    : undefined;
-}
-
 export async function ClubStoreView({
   slug,
   searchParams,
 }: ClubStoreViewProps) {
-  const line = toValidLine(searchParams.linea);
+  // La tienda ya está filtrada por institución; no mostramos ni aplicamos
+  // una línea redundante dentro del catálogo del club.
+  const line = undefined;
   const [club, products, categories] = await Promise.all([
     api.clubs.publicBySlug({ slug }),
     api.catalog.list({

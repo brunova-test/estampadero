@@ -110,7 +110,7 @@ export function CatalogExplorer({
   }
 
   return (
-    <div className="catalog-explorer flex flex-col gap-8 lg:flex-row">
+    <div className="catalog-explorer catalog-explorer--scaled flex flex-col gap-8 lg:flex-row">
       <ProductFilters
         categories={categories}
         activeCategory={displayedCategory}

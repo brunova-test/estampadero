@@ -19985,6 +19985,12 @@ body .admin-editor-actions {
   outline: 2px solid var(--color-mint);
   outline-offset: 3px;
 }
+
+/* Escala de lectura del catálogo y de las tiendas filtradas por club. */
+.catalog-explorer--scaled {
+  width: calc(100% / 1.1);
+  zoom: 1.1;
+}
 .catalog-product-card__club,
 .product-detail-club {
   display: flex;

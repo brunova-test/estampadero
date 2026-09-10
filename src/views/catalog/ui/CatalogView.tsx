@@ -1,4 +1,4 @@
-import { Container } from "elestampadero/shared/ui";
+import { BackLink, Container } from "elestampadero/shared/ui";
 import { CatalogClubStores } from "elestampadero/widgets/catalog-club-stores";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/server";
@@ -50,6 +50,7 @@ export async function CatalogView({ searchParams }: CatalogViewProps) {
       <main className="flex-1">
         <CatalogClubStores clubs={clubs} activeClub={searchParams.club} />
         <Container className="catalog-container pt-0 pb-6 md:py-10">
+          <BackLink fallback="/" className="catalog-back-link" />
           <h1 className="catalog-title font-display text-ink mb-6 hidden text-2xl font-black lg:block">
             {searchParams.club
               ? `Productos de ${clubName ?? searchParams.club}`
