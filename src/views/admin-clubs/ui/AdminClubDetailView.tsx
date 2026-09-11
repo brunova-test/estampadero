@@ -51,7 +51,7 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
   const [payoutCbu, setPayoutCbu] = useState("");
   const [mobbexEntityId, setMobbexEntityId] = useState("");
   const [activeDetailPanel, setActiveDetailPanel] =
-    useState<ClubDetailPanel>("mobbex");
+    useState<ClubDetailPanel>("summary");
   const [isDetailPanelLoading, setIsDetailPanelLoading] = useState(false);
   const detailPanelTimer = useRef<number | null>(null);
   const [passwordResetOpen, setPasswordResetOpen] = useState(false);
