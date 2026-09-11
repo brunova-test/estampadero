@@ -19818,6 +19818,56 @@ body .admin-editor-actions {
   white-space: nowrap;
 }
 
+.admin-product-partner-select__locked-value {
+  display: grid;
+  width: 100%;
+  min-height: 52px;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid #80cdb8;
+  border-radius: 8px;
+  padding: 7px 13px;
+  background: #f1fff9;
+}
+
+.admin-product-partner-select__locked-value > span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 7px;
+  background: #fff;
+  color: #24755f;
+}
+
+.admin-product-partner-select__locked-value > span img,
+.admin-product-partner-select__locked-value > span svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.admin-product-partner-select__locked-value > strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #314a42;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-product-partner-select__locked-value > small {
+  color: #24755f;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 /* Product editor: keep the association control self-contained even when
    browser/default admin styles are loaded after the legacy form rules. */
 .admin-product-information-card
@@ -19910,6 +19960,12 @@ body .admin-editor-actions {
 }
 
 @media (max-width: 760px) {
+  .admin-product-partner-select__locked-value {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+  .admin-product-partner-select__locked-value > small {
+    display: none;
+  }
   .admin-product-information-card
     .admin-product-partner-select
     > details

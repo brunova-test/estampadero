@@ -1743,23 +1743,8 @@ function ProductEditorModal({
                   }`}
                 >
                   <legend>Socio o convenio asociado</legend>
-                  <details
-                    onToggle={(event) => {
-                      if (lockedClubId)
-                        event.currentTarget.removeAttribute("open");
-                    }}
-                    onBlur={(event) => {
-                      if (!event.currentTarget.contains(event.relatedTarget)) {
-                        event.currentTarget.removeAttribute("open");
-                      }
-                    }}
-                  >
-                    <summary
-                      aria-disabled={lockedClubId ? true : undefined}
-                      onClick={(event) => {
-                        if (lockedClubId) event.preventDefault();
-                      }}
-                    >
+                  {lockedClubId ? (
+                    <div className="admin-product-partner-select__locked-value">
                       <span aria-hidden="true">
                         {selectedClub?.logoUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
@@ -1769,9 +1754,32 @@ function ProductEditorModal({
                         )}
                       </span>
                       <strong>{selectedClub?.name ?? "Sin asociación"}</strong>
-                      {lockedClubId ? (
-                        <small>Asociación automática</small>
-                      ) : (
+                      <small>Asociación automática</small>
+                    </div>
+                  ) : (
+                    <details
+                      onBlur={(event) => {
+                        if (
+                          !event.currentTarget.contains(event.relatedTarget)
+                        ) {
+                          event.currentTarget.removeAttribute("open");
+                        }
+                      }}
+                    >
+                      <summary>
+                        <span aria-hidden="true">
+                          {selectedClub?.logoUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={selectedClub.logoUrl} alt="" />
+                          ) : (
+                            <ProductPartnerIcon
+                              linked={Boolean(selectedClub)}
+                            />
+                          )}
+                        </span>
+                        <strong>
+                          {selectedClub?.name ?? "Sin asociación"}
+                        </strong>
                         <svg
                           className="admin-product-partner-select__chevron"
                           aria-hidden="true"
@@ -1786,60 +1794,65 @@ function ProductEditorModal({
                             strokeLinejoin="round"
                           />
                         </svg>
-                      )}
-                    </summary>
-                    <div className="admin-product-partner-select__menu">
-                      <button
-                        type="button"
-                        className={!draft.clubId ? "is-selected" : undefined}
-                        onClick={(event) => {
-                          updateField("clubId", "");
-                          event.currentTarget
-                            .closest("details")
-                            ?.removeAttribute("open");
-                        }}
-                      >
-                        <span aria-hidden="true">
-                          <ProductPartnerIcon linked={false} />
-                        </span>
-                        <span>
-                          <strong>Sin asociación</strong>
-                          <small>Producto independiente</small>
-                        </span>
-                      </button>
-                      {agreementClubs.map((club) => (
+                      </summary>
+                      <div className="admin-product-partner-select__menu">
                         <button
-                          key={club.id}
                           type="button"
-                          className={
-                            draft.clubId === club.id ? "is-selected" : undefined
-                          }
+                          className={!draft.clubId ? "is-selected" : undefined}
                           onClick={(event) => {
-                            updateField("clubId", club.id);
+                            updateField("clubId", "");
                             event.currentTarget
                               .closest("details")
                               ?.removeAttribute("open");
                           }}
                         >
                           <span aria-hidden="true">
-                            {club.logoUrl ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={club.logoUrl} alt="" />
-                            ) : (
-                              <ProductPartnerIcon linked />
-                            )}
+                            <ProductPartnerIcon linked={false} />
                           </span>
                           <span>
-                            <strong>{club.name}</strong>
-                            <small>Convenio activo</small>
+                            <strong>Sin asociación</strong>
+                            <small>Producto independiente</small>
                           </span>
                         </button>
-                      ))}
-                    </div>
-                  </details>
+                        {agreementClubs.map((club) => (
+                          <button
+                            key={club.id}
+                            type="button"
+                            className={
+                              draft.clubId === club.id
+                                ? "is-selected"
+                                : undefined
+                            }
+                            onClick={(event) => {
+                              updateField("clubId", club.id);
+                              event.currentTarget
+                                .closest("details")
+                                ?.removeAttribute("open");
+                            }}
+                          >
+                            <span aria-hidden="true">
+                              {club.logoUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={club.logoUrl} alt="" />
+                              ) : (
+                                <ProductPartnerIcon linked />
+                              )}
+                            </span>
+                            <span>
+                              <strong>{club.name}</strong>
+                              <small>Convenio activo</small>
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </details>
+                  )}
                 </fieldset>
                 {lockedClubId && selectedClub ? (
-                  <div className="admin-product-club-association-notice" role="note">
+                  <div
+                    className="admin-product-club-association-notice"
+                    role="note"
+                  >
                     <strong>Producto asociado automáticamente</strong>
                     <span>
                       Quedará publicado en la tienda de {selectedClub.name} y
