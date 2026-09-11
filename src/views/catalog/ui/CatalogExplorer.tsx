@@ -28,6 +28,7 @@ interface CatalogExplorerProps {
   activeClub?: string;
   activeSearch?: string;
   basePath?: string;
+  showProductCount?: boolean;
 }
 
 export function CatalogExplorer({
@@ -38,6 +39,7 @@ export function CatalogExplorer({
   activeClub,
   activeSearch,
   basePath,
+  showProductCount = true,
 }: CatalogExplorerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -126,10 +128,16 @@ export function CatalogExplorer({
         aria-busy={isPending}
         className="relative isolate min-h-[320px] flex-1"
       >
-        <div className="catalog-products-meta text-muted relative z-[100] mb-5 flex flex-wrap items-center justify-between gap-3 text-base">
-          <p className="catalog-products-count">
-            {products.length} producto{products.length === 1 ? "" : "s"}
-          </p>
+        <div
+          className={`catalog-products-meta text-muted relative z-[100] mb-5 flex flex-wrap items-center gap-3 text-base ${
+            showProductCount ? "justify-between" : "justify-end"
+          }`}
+        >
+          {showProductCount ? (
+            <p className="catalog-products-count">
+              {products.length} producto{products.length === 1 ? "" : "s"}
+            </p>
+          ) : null}
           <div ref={sortMenuRef} className="relative min-w-44">
             <button
               type="button"

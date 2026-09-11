@@ -2,6 +2,15 @@ import { z } from "zod";
 
 import { safeTextSchema } from "elestampadero/server/security/safe-text";
 
+const checkoutLineSchema = z.object({
+  variantId: z.string().min(1).max(60),
+  quantity: z.number().int().min(1).max(20),
+});
+
+export const cartAvailabilityInputSchema = z.object({
+  lines: z.array(checkoutLineSchema).min(1).max(40),
+});
+
 export const submitCheckoutInputSchema = z
   .object({
     checkoutRequestId: z.string().uuid(),
@@ -45,15 +54,7 @@ export const submitCheckoutInputSchema = z
       minMessage: "El código postal debe tener al menos 2 caracteres.",
       maxMessage: "El código postal no puede superar los 20 caracteres.",
     }).optional(),
-    lines: z
-      .array(
-        z.object({
-          variantId: z.string().min(1).max(60),
-          quantity: z.number().int().min(1).max(20),
-        }),
-      )
-      .min(1)
-      .max(40),
+    lines: z.array(checkoutLineSchema).min(1).max(40),
   })
   .refine(
     (input) => input.deliveryMethod !== "SHIPPING" || !!input.shippingAddress,

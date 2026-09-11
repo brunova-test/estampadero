@@ -182,6 +182,7 @@ export async function ClubStoreView({
             activeClub={slug}
             activeSearch={searchParams.q}
             basePath={routes.clubStore(slug)}
+            showProductCount={false}
           />
         </Container>
       </main>

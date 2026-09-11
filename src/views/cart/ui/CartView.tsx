@@ -8,9 +8,15 @@ import { cartSubtotalCents, useCartStore } from "elestampadero/entities/cart";
 import type { CartLine } from "elestampadero/entities/cart";
 import { routes } from "elestampadero/shared/config/routes";
 import { formatCents } from "elestampadero/shared/lib/money";
-import { ButtonLink, Container, TrashIcon } from "elestampadero/shared/ui";
+import {
+  Button,
+  ButtonLink,
+  Container,
+  TrashIcon,
+} from "elestampadero/shared/ui";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { ProductQuickViewModal } from "elestampadero/widgets/product-grid/ui/ProductQuickViewModal";
+import { api } from "elestampadero/trpc/react";
 
 const CART_ITEMS_PER_PAGE = 5;
 
@@ -20,7 +26,36 @@ export function CartView() {
   const removeLine = useCartStore((state) => state.removeLine);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLine, setSelectedLine] = useState<CartLine | null>(null);
-  const subtotal = cartSubtotalCents(lines);
+  const availabilityQuery = api.checkout.availability.useQuery(
+    {
+      lines: lines.map((line) => ({
+        variantId: line.variantId,
+        quantity: line.quantity,
+      })),
+    },
+    { enabled: lines.length > 0, refetchOnWindowFocus: true },
+  );
+  const availabilityByVariantId = new Map(
+    availabilityQuery.data?.map((availability) => [
+      availability.variantId,
+      availability,
+    ]) ?? [],
+  );
+  const unavailableVariantIds = new Set(
+    availabilityQuery.data
+      ?.filter((availability) => !availability.isAvailable)
+      .map((availability) => availability.variantId) ?? [],
+  );
+  const subtotal = cartSubtotalCents(
+    lines.filter((line) => !unavailableVariantIds.has(line.variantId)),
+  );
+  const hasUnavailableLines = unavailableVariantIds.size > 0;
+  const isCheckingAvailability =
+    lines.length > 0 && availabilityQuery.isPending;
+  const canContinueToCheckout =
+    !isCheckingAvailability &&
+    !availabilityQuery.isError &&
+    !hasUnavailableLines;
   const pageCount = Math.ceil(lines.length / CART_ITEMS_PER_PAGE);
   const visibleLines = lines.slice(
     (currentPage - 1) * CART_ITEMS_PER_PAGE,
@@ -70,79 +105,103 @@ export function CartView() {
           ) : (
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
               <div className="flex flex-col divide-y divide-black/5 rounded-lg bg-white">
-                {visibleLines.map((line) => (
-                  <div
-                    key={line.variantId}
-                    className="cart-product-row flex flex-wrap gap-4 p-5 md:flex-nowrap md:gap-5 md:p-6"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => openProductDetail(line)}
-                      aria-label={`Ver detalle de ${line.productName}`}
-                      className="bg-paper relative h-20 w-20 shrink-0 overflow-hidden rounded-lg md:h-24 md:w-24"
+                {visibleLines.map((line) => {
+                  const availability = availabilityByVariantId.get(
+                    line.variantId,
+                  );
+                  const isUnavailable = availability?.isAvailable === false;
+
+                  return (
+                    <div
+                      key={line.variantId}
+                      aria-disabled={isUnavailable || undefined}
+                      className={`cart-product-row flex flex-wrap gap-4 p-5 transition md:flex-nowrap md:gap-5 md:p-6 ${
+                        isUnavailable ? "bg-black/[0.04] grayscale" : ""
+                      }`}
                     >
-                      {line.imageUrl ? (
-                        <Image
-                          src={line.imageUrl}
-                          alt={line.productName}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : null}
-                    </button>
-                    <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                      <h2 className="text-ink text-lg leading-tight font-extrabold md:text-xl">
-                        {line.productName}
-                      </h2>
-                      <span className="text-muted text-base leading-snug font-semibold md:text-lg">
-                        Talle {line.size} · {line.color} · {line.quantity}{" "}
-                        {line.quantity === 1 ? "unidad" : "unidades"}
-                      </span>
-                      {line.clubName ? (
-                        <span className="text-deep text-base font-semibold">
-                          Producto de {line.clubName}
-                        </span>
-                      ) : null}
                       <button
                         type="button"
-                        onClick={() => removeLine(line.variantId)}
-                        aria-label={`Eliminar ${line.productName} del carrito`}
-                        className="brand-action bg-deep hover:bg-mid focus-visible:bg-mid mt-2 inline-flex w-fit items-center gap-2 px-3 py-2 text-sm font-bold text-white"
+                        onClick={() => openProductDetail(line)}
+                        disabled={isUnavailable}
+                        aria-label={`Ver detalle de ${line.productName}`}
+                        className="bg-paper relative h-20 w-20 shrink-0 overflow-hidden rounded-lg disabled:cursor-not-allowed disabled:opacity-45 md:h-24 md:w-24"
                       >
-                        <TrashIcon className="h-4 w-4" />
-                        Eliminar
+                        {line.imageUrl ? (
+                          <Image
+                            src={line.imageUrl}
+                            alt={line.productName}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : null}
                       </button>
-                    </div>
-                    <div className="flex w-full shrink-0 items-center justify-between pl-24 md:w-auto md:flex-col md:items-end md:pl-0">
-                      <div className="flex items-center gap-2.5">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            updateQuantity(line.variantId, line.quantity - 1)
-                          }
-                          className="h-9 w-9 rounded border border-black/10 text-lg font-bold"
-                        >
-                          −
-                        </button>
-                        <span className="w-8 text-center text-lg font-bold">
-                          {line.quantity}
+                      <div
+                        className={`flex min-w-0 flex-1 flex-col gap-1.5 ${
+                          isUnavailable ? "opacity-55" : ""
+                        }`}
+                      >
+                        <h2 className="text-ink text-lg leading-tight font-extrabold md:text-xl">
+                          {line.productName}
+                        </h2>
+                        <span className="text-muted text-base leading-snug font-semibold md:text-lg">
+                          Talle {line.size} · {line.color} · {line.quantity}{" "}
+                          {line.quantity === 1 ? "unidad" : "unidades"}
                         </span>
+                        {line.clubName ? (
+                          <span className="text-deep text-base font-semibold">
+                            Producto de {line.clubName}
+                          </span>
+                        ) : null}
+                        {isUnavailable ? (
+                          <span className="w-fit rounded-full bg-black/10 px-2.5 py-1 text-xs font-extrabold text-black/70">
+                            {availability.reason === "INSUFFICIENT_STOCK"
+                              ? "Stock insuficiente"
+                              : "Producto no disponible"}
+                          </span>
+                        ) : null}
                         <button
                           type="button"
-                          onClick={() =>
-                            updateQuantity(line.variantId, line.quantity + 1)
-                          }
-                          className="h-9 w-9 rounded border border-black/10 text-lg font-bold"
+                          onClick={() => removeLine(line.variantId)}
+                          aria-label={`Eliminar ${line.productName} del carrito`}
+                          className="brand-action bg-deep hover:bg-mid focus-visible:bg-mid mt-2 inline-flex w-fit items-center gap-2 px-3 py-2 text-sm font-bold text-white"
                         >
-                          +
+                          <TrashIcon className="h-4 w-4" />
+                          Eliminar
                         </button>
                       </div>
-                      <span className="font-display text-deep text-xl font-bold">
-                        {formatCents(line.priceInCents * line.quantity)}
-                      </span>
+                      <div className="flex w-full shrink-0 items-center justify-between pl-24 md:w-auto md:flex-col md:items-end md:pl-0">
+                        <div className="flex items-center gap-2.5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateQuantity(line.variantId, line.quantity - 1)
+                            }
+                            disabled={isUnavailable}
+                            className="h-9 w-9 rounded border border-black/10 text-lg font-bold disabled:cursor-not-allowed disabled:opacity-35"
+                          >
+                            −
+                          </button>
+                          <span className="w-8 text-center text-lg font-bold">
+                            {line.quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateQuantity(line.variantId, line.quantity + 1)
+                            }
+                            disabled={isUnavailable}
+                            className="h-9 w-9 rounded border border-black/10 text-lg font-bold disabled:cursor-not-allowed disabled:opacity-35"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <span className="font-display text-deep text-xl font-bold">
+                          {formatCents(line.priceInCents * line.quantity)}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               {pageCount > 1 ? (
                 <nav
@@ -206,12 +265,41 @@ export function CartView() {
                     {formatCents(subtotal)}
                   </span>
                 </div>
-                <ButtonLink
-                  href={routes.checkout}
-                  className="mt-4 !min-h-11 w-full !px-4 !py-3 !text-sm !leading-tight"
-                >
-                  Continuar al pago
-                </ButtonLink>
+                {canContinueToCheckout ? (
+                  <ButtonLink
+                    href={routes.checkout}
+                    className="mt-4 !min-h-11 w-full !px-4 !py-3 !text-sm !leading-tight"
+                  >
+                    Continuar al pago
+                  </ButtonLink>
+                ) : (
+                  <Button
+                    type="button"
+                    disabled
+                    className="mt-4 !min-h-11 w-full !px-4 !py-3 !text-sm !leading-tight disabled:cursor-not-allowed disabled:opacity-45"
+                  >
+                    {isCheckingAvailability
+                      ? "Verificando disponibilidad"
+                      : "Continuar al pago"}
+                  </Button>
+                )}
+                {hasUnavailableLines ? (
+                  <p className="mt-3 text-sm font-semibold text-red-600">
+                    Eliminá los productos no disponibles para continuar.
+                  </p>
+                ) : null}
+                {availabilityQuery.isError ? (
+                  <div className="mt-3 text-sm text-red-600">
+                    <p>No pudimos verificar la disponibilidad.</p>
+                    <button
+                      type="button"
+                      onClick={() => void availabilityQuery.refetch()}
+                      className="mt-1 font-bold underline"
+                    >
+                      Reintentar
+                    </button>
+                  </div>
+                ) : null}
               </div>
             </div>
           )}

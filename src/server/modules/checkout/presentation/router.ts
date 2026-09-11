@@ -7,15 +7,26 @@ import {
 import { createOrderUseCase } from "elestampadero/server/modules/orders";
 import { getVariantsForPricingUseCase } from "elestampadero/server/modules/catalog";
 
+import { checkCartAvailability } from "../application/use-cases/check-cart-availability";
 import { submitCheckout } from "../application/use-cases/submit-checkout";
-import { submitCheckoutInputSchema } from "./schemas";
+import {
+  cartAvailabilityInputSchema,
+  submitCheckoutInputSchema,
+} from "./schemas";
 
+const checkCartAvailabilityUseCase = checkCartAvailability({
+  getVariantsForPricing: getVariantsForPricingUseCase,
+});
 const submitCheckoutUseCase = submitCheckout({
   getVariantsForPricing: getVariantsForPricingUseCase,
   createOrder: createOrderUseCase,
 });
 
 export const checkoutRouter = createTRPCRouter({
+  availability: publicProcedure
+    .input(cartAvailabilityInputSchema)
+    .query(({ input }) => checkCartAvailabilityUseCase(input.lines)),
+
   submit: publicProcedure
     .input(submitCheckoutInputSchema)
     .use(
