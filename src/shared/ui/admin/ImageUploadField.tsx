@@ -22,6 +22,7 @@ export function ImageUploadField({
   uploadLabel = "Subir desde mi PC",
   labelIcon,
   showUrlInput = true,
+  showPreviews = true,
 }: {
   value: string;
   onChange: (url: string) => void;
@@ -33,11 +34,14 @@ export function ImageUploadField({
   uploadLabel?: string;
   labelIcon?: ReactNode;
   showUrlInput?: boolean;
+  showPreviews?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [previewUrls, setPreviewUrls] = useState<string[]>(value ? [value] : []);
+  const [previewUrls, setPreviewUrls] = useState<string[]>(
+    value ? [value] : [],
+  );
 
   useEffect(() => {
     if (!value) setPreviewUrls([]);
@@ -160,10 +164,16 @@ export function ImageUploadField({
           }}
         />
       </div>
-      {previewUrls.length ? (
-        <div className="admin-image-upload-field__previews" aria-label="Vista previa de imágenes">
+      {showPreviews && previewUrls.length ? (
+        <div
+          className="admin-image-upload-field__previews"
+          aria-label="Vista previa de imágenes"
+        >
           {previewUrls.map((url, index) => (
-            <div className="admin-image-upload-field__preview" key={`${url}-${index}`}>
+            <div
+              className="admin-image-upload-field__preview"
+              key={`${url}-${index}`}
+            >
               <Image
                 src={url}
                 alt={`Vista previa ${index + 1}`}

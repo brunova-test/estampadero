@@ -1965,6 +1965,7 @@ function ProductEditorModal({
                 <ImageUploadField
                   value=""
                   multiple
+                  showPreviews={false}
                   label="Subir varias imágenes"
                   placeholder="Seleccioná una o varias imágenes desde tu PC"
                   onChange={() => undefined}
@@ -1979,13 +1980,37 @@ function ProductEditorModal({
                     ])
                   }
                 />
+                {draft.images.some((image) => image.url) ? (
+                  <div className="admin-product-images-overview">
+                    <strong>Todas las imágenes</strong>
+                    <div
+                      className="admin-product-images-overview__track"
+                      aria-label="Todas las imágenes del producto"
+                    >
+                      {draft.images.map((image, index) =>
+                        image.url ? (
+                          <figure key={image.id ?? `${image.url}-${index}`}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={image.url} alt={image.alt || ""} />
+                            <figcaption>
+                              {image.color === UNDEFINED_COLOR
+                                ? `Imagen ${index + 1}`
+                                : image.color}
+                            </figcaption>
+                          </figure>
+                        ) : null,
+                      )}
+                    </div>
+                  </div>
+                ) : null}
                 <div className="admin-product-images-editor">
                   {draft.images.map((image, index) => (
                     <div
                       key={image.id ?? index}
                       className="admin-product-image-row"
                     >
-                      <div className="admin-product-image-preview">
+                      <div className="admin-product-image-row__header">
+                        <strong>Imagen {index + 1}</strong>
                         <button
                           type="button"
                           className="admin-product-image-remove"
@@ -2000,19 +2025,14 @@ function ProductEditorModal({
                             )
                           }
                         >
-                          ×
+                          Eliminar
                         </button>
-                        {image.url ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={image.url} alt="" />
-                        ) : (
-                          <span>Vista previa</span>
-                        )}
                       </div>
                       <div className="admin-product-image-content">
                         <ImageUploadField
                           required
                           value={image.url}
+                          showPreviews={false}
                           label="Archivo o URL"
                           placeholder="/images/producto.png"
                           onChange={(url) => {
@@ -2049,6 +2069,22 @@ function ProductEditorModal({
                             />
                           </Field>
                         </div>
+                        {image.url ? (
+                          <div className="admin-product-image-color-preview">
+                            <span>
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={image.url} alt="" />
+                            </span>
+                            <div>
+                              <strong>
+                                {image.color === UNDEFINED_COLOR
+                                  ? "Sin color asociado"
+                                  : image.color}
+                              </strong>
+                              <small>Miniatura de referencia</small>
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   ))}
