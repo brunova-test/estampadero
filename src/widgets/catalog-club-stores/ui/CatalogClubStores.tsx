@@ -24,12 +24,14 @@ export function CatalogClubStores({
   activeClub?: string;
 }) {
   const storesRef = useRef<HTMLDivElement>(null);
+  const [hasOverflow, setHasOverflow] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   const updateScrollControls = useCallback(() => {
     const stores = storesRef.current;
     if (!stores) return;
+    setHasOverflow(stores.scrollWidth > stores.clientWidth + 2);
     setCanScrollLeft(stores.scrollLeft > 2);
     setCanScrollRight(
       stores.scrollLeft + stores.clientWidth < stores.scrollWidth - 2,
@@ -80,7 +82,9 @@ export function CatalogClubStores({
           </p>
         </div>
 
-        <div className="catalog-club-stores-shell">
+        <div
+          className={`catalog-club-stores-shell ${hasOverflow ? "has-overflow" : ""}`}
+        >
           <button
             type="button"
             className="catalog-club-stores-arrow catalog-club-stores-arrow--previous"
@@ -92,7 +96,7 @@ export function CatalogClubStores({
           </button>
           <div
             ref={storesRef}
-            className="catalog-club-stores"
+            className={`catalog-club-stores ${clubs.length > 4 ? "is-carousel" : ""}`}
             role="list"
             onScroll={updateScrollControls}
           >

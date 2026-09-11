@@ -8,9 +8,12 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    // Railway exposes this direct URL after enabling PgBouncer. Migrations
-    // require a dedicated Postgres session; runtime queries still use the
-    // pooled DATABASE_URL configured in src/server/db.ts.
-    url: process.env.DATABASE_UNPOOLED_URL ?? env("DATABASE_URL"),
+    // Prisma Migrate needs a session/direct connection. Supabase calls this
+    // DIRECT_URL; DATABASE_UNPOOLED_URL remains as a Railway-compatible
+    // fallback while environments are migrated.
+    url:
+      process.env.DIRECT_URL ??
+      process.env.DATABASE_UNPOOLED_URL ??
+      env("DATABASE_URL"),
   },
 });

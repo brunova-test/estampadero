@@ -3,10 +3,15 @@ import { PrismaClient } from "../../generated/prisma";
 
 function getApplicationDatabaseUrl() {
   const databaseUrl = new URL(env.DATABASE_URL);
-  const unpooledUrl = process.env.DATABASE_UNPOOLED_URL;
+  const railwayUnpooledUrl = process.env.DATABASE_UNPOOLED_URL;
+  const usesSupavisorTransactionMode = databaseUrl.port === "6543";
+  const usesRailwayTransactionPooler =
+    railwayUnpooledUrl && railwayUnpooledUrl !== env.DATABASE_URL;
+
+  // Supavisor transaction mode (6543) and Railway PgBouncer do not support
+  // Prisma prepared statements. Session/direct connections must keep them.
   if (
-    unpooledUrl &&
-    unpooledUrl !== env.DATABASE_URL &&
+    (usesSupavisorTransactionMode || usesRailwayTransactionPooler) &&
     !databaseUrl.searchParams.has("pgbouncer")
   ) {
     databaseUrl.searchParams.set("pgbouncer", "true");

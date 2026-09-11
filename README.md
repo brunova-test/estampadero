@@ -14,12 +14,13 @@ npm run dev
 
 Completá `.env` con los valores locales antes de iniciar la aplicación.
 
-## Arquitectura en Railway
+## Arquitectura de producción
 
-El despliegue recomendado usa tres servicios dentro del mismo proyecto Railway:
+El despliegue recomendado usa Railway para ejecutar la aplicación y Supabase
+para PostgreSQL:
 
 1. **Web**: la aplicación Next.js.
-2. **PostgreSQL + PgBouncer**: base de datos y pool de conexiones de Railway.
+2. **Supabase PostgreSQL + Supavisor**: base de datos y pool de conexiones.
 3. **Cron**: servicio efímero que ejecuta la reconciliación diaria de pagos.
 
 Railway puede detectar el proyecto automáticamente, pero el repositorio incluye
@@ -41,15 +42,16 @@ El build genera una imagen Next.js standalone y el servicio se inicia con
 
 ## Base de datos
 
-Agregá PostgreSQL desde **New → Database → PostgreSQL**. Luego abrí el servicio
-Postgres y elegí **Database → Config → Connection Pooling → Add PgBouncer**, en
-modo **Transaction**. Railway actualizará `DATABASE_URL` al endpoint privado del
-pooler y agregará `DATABASE_UNPOOLED_URL` para las operaciones que necesitan una
-sesión directa. La aplicación detecta esta separación, activa el modo PgBouncer
-de Prisma y limita cada réplica a 10 conexiones por defecto.
+En Supabase copiá desde **Connect** dos cadenas de conexión: Transaction pooler
+(puerto `6543`) para `DATABASE_URL` y Session pooler (puerto `5432`) para
+`DIRECT_URL`. La aplicación detecta el puerto transaccional, activa el modo
+PgBouncer de Prisma y limita cada réplica a 10 conexiones por defecto.
 
-Las migraciones usan automáticamente `DATABASE_UNPOOLED_URL` cuando existe. Si
-una migración falla, el despliegue no debe pasar a servir la nueva versión.
+Las migraciones usan automáticamente `DIRECT_URL`. Si una migración falla, el
+despliegue no debe pasar a servir la nueva versión.
+
+Para trasladar los datos existentes desde Railway, seguí la guía de
+[migración Railway → Supabase](docs/migracion-railway-supabase.md).
 
 No ejecutes `prisma db push` en producción. Para cambios de esquema:
 
@@ -85,9 +87,8 @@ que estén marcadas como compartidas:
 
 ### Obligatorias
 
-- `DATABASE_URL` — conexión PostgreSQL; apunta a PgBouncer en Railway.
-- `DATABASE_UNPOOLED_URL` — conexión directa para migraciones; Railway la crea
-  al habilitar PgBouncer.
+- `DATABASE_URL` — Supabase Transaction pooler, puerto `6543`; uso de la app.
+- `DIRECT_URL` — Supabase Session pooler, puerto `5432`; uso de Prisma Migrate.
 - `PRISMA_CONNECTION_LIMIT=10` — máximo de conexiones por réplica Web.
 - `PRISMA_POOL_TIMEOUT_SECONDS=15` — espera máxima por una conexión libre.
 - `UNPAID_ORDER_EXPIRATION_HOURS=24` — antigüedad para cancelar pedidos impagos

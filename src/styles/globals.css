@@ -1660,6 +1660,9 @@
   scrollbar-color: rgb(128 255 219 / 50%) transparent;
   scrollbar-width: thin;
 }
+.catalog-club-stores-shell:not(.has-overflow) .catalog-club-stores-arrow {
+  display: none;
+}
 .catalog-club-stores-arrow {
   position: absolute;
   z-index: 4;
@@ -1690,14 +1693,25 @@
 .catalog-club-stores-banner {
   background: linear-gradient(115deg, #0e0a1a 0%, #281a33 58%, #2e0470 100%);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-feature-settings: "kern" 1, "liga" 1;
+  font-feature-settings:
+    "kern" 1,
+    "liga" 1;
 }
 .catalog-club-stores-banner .club-store-hero__pattern {
   opacity: 0.22;
   background:
     radial-gradient(circle at 84% 18%, rgb(128 255 219 / 42%), transparent 22%),
-    linear-gradient(115deg, transparent 0 34%, rgb(128 255 219 / 13%) 34% 50%, transparent 50%),
-    repeating-linear-gradient(135deg, transparent 0 26px, rgb(255 255 255 / 6%) 26px 27px);
+    linear-gradient(
+      115deg,
+      transparent 0 34%,
+      rgb(128 255 219 / 13%) 34% 50%,
+      transparent 50%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 26px,
+      rgb(255 255 255 / 6%) 26px 27px
+    );
 }
 .catalog-club-stores-banner h1 {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -1726,8 +1740,7 @@
   transform: translateY(-50%) scale(1.06);
 }
 .catalog-club-stores-arrow:disabled {
-  visibility: hidden;
-  opacity: 0;
+  opacity: 0.34;
   pointer-events: none;
 }
 .catalog-club-store-card {
@@ -1884,6 +1897,9 @@
 @media (min-width: 980px) {
   .catalog-club-stores {
     grid-auto-columns: minmax(220px, 1fr);
+  }
+  .catalog-club-stores.is-carousel {
+    grid-auto-columns: calc((100% - 30px) / 4);
   }
 }
 
