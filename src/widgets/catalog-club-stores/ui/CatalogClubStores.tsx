@@ -92,7 +92,15 @@ export function CatalogClubStores({
             disabled={!canScrollLeft}
             onClick={() => scrollStores(-1)}
           >
-            <span aria-hidden="true">‹</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+              <path
+                d="m15 18-6-6 6-6"
+                stroke="currentColor"
+                strokeWidth="2.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
           <div
             ref={storesRef}
@@ -146,7 +154,15 @@ export function CatalogClubStores({
             disabled={!canScrollRight}
             onClick={() => scrollStores(1)}
           >
-            <span aria-hidden="true">›</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+              <path
+                d="m9 6 6 6-6 6"
+                stroke="currentColor"
+                strokeWidth="2.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </Container>

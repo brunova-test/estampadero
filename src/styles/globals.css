@@ -1687,11 +1687,10 @@
     opacity 160ms ease,
     transform 160ms ease;
 }
-.catalog-club-stores-arrow > span {
-  margin-top: -2px;
-  font-family: Arial, sans-serif;
-  font-size: 29px;
-  line-height: 1;
+.catalog-club-stores-arrow > svg {
+  display: block;
+  width: 19px;
+  height: 19px;
 }
 .catalog-club-stores-banner {
   background: linear-gradient(115deg, #0e0a1a 0%, #281a33 58%, #2e0470 100%);
@@ -1730,10 +1729,10 @@
   letter-spacing: -0.006em;
 }
 .catalog-club-stores-arrow--previous {
-  left: -18px;
+  left: -24px;
 }
 .catalog-club-stores-arrow--next {
-  right: -18px;
+  right: -24px;
 }
 .catalog-club-stores-arrow:hover:not(:disabled),
 .catalog-club-stores-arrow:focus-visible:not(:disabled) {
@@ -1929,10 +1928,10 @@
     height: 34px;
   }
   .catalog-club-stores-arrow--previous {
-    left: -10px;
+    left: -14px;
   }
   .catalog-club-stores-arrow--next {
-    right: -10px;
+    right: -14px;
   }
 }
 
