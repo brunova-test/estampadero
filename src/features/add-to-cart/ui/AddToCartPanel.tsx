@@ -34,14 +34,35 @@ export function AddToCartPanel({
     return variantColors.filter((color) => imageColors.has(color));
   }, [product.images, variantColors]);
 
+  const availableColorsBySize = useMemo(() => {
+    const colorsBySize = new Map<string, string[]>();
+
+    for (const availableSize of sizes) {
+      colorsBySize.set(
+        availableSize,
+        colorsWithImages.filter((availableColor) =>
+          product.variants.some(
+            (variant) =>
+              variant.size === availableSize &&
+              variant.color === availableColor &&
+              (!product.showStock || (variant.stock ?? 0) > 0),
+          ),
+        ),
+      );
+    }
+
+    return colorsBySize;
+  }, [colorsWithImages, product.showStock, product.variants, sizes]);
+
   const [size, setSize] = useState(sizes[0] ?? "");
   const [color, setColor] = useState(
-    colorsWithImages[0] ?? variantColors[0] ?? "",
+    availableColorsBySize.get(sizes[0] ?? "")?.[0] ?? "",
   );
   const [quantityFeedback, setQuantityFeedback] = useState<number | null>(null);
   const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const addLine = useCartStore((state) => state.addLine);
+  const availableColors = availableColorsBySize.get(size) ?? [];
 
   const selectedVariant = product.variants.find(
     (variant) => variant.size === size && variant.color === color,
@@ -98,7 +119,17 @@ export function AddToCartPanel({
             <button
               key={value}
               type="button"
-              onClick={() => setSize(value)}
+              onClick={() => {
+                setSize(value);
+
+                const nextAvailableColors =
+                  availableColorsBySize.get(value) ?? [];
+                if (nextAvailableColors.includes(color)) return;
+
+                const nextColor = nextAvailableColors[0] ?? "";
+                setColor(nextColor);
+                if (nextColor) onColorChange?.(nextColor);
+              }}
               className={`rounded border px-3 py-1.5 text-sm font-semibold transition-colors ${
                 size === value
                   ? "border-deep bg-deep text-white"
@@ -114,11 +145,11 @@ export function AddToCartPanel({
         </div>
       </div>
 
-      {colorsWithImages.length > 0 ? (
+      {availableColors.length > 0 ? (
         <div>
           <h3 className="text-ink mb-1 text-sm font-semibold">Color</h3>
           <div className="flex flex-wrap gap-2">
-            {colorsWithImages.map((value) => (
+            {availableColors.map((value) => (
               <button
                 key={value}
                 type="button"
@@ -189,11 +220,7 @@ export function AddToCartPanel({
         <p className="text-muted text-xs">
           Stock: {selectedVariant.stock ?? "No definido"} unidades
         </p>
-      ) : (
-        <p className="text-xs text-red-600">
-          Esa combinación de talle y color no está disponible.
-        </p>
-      )}
+      ) : null}
     </div>
   );
 }
