@@ -160,7 +160,8 @@ export function ProductQuickViewModal({
                   priority
                 />
               ) : null}
-              {detail.compareAtCents ? (
+              {detail.compareAtCents &&
+              detail.compareAtCents > detail.priceInCents ? (
                 <span className="bg-mint font-display text-deep absolute top-4 left-4 rounded-full px-3 py-1.5 text-base font-black shadow-[0_10px_28px_-14px_rgba(46,4,112,.65)] sm:top-5 sm:left-5">
                   -
                   {Math.round(
@@ -268,7 +269,10 @@ export function ProductQuickViewModal({
                     className="product-quick-view__brand-image"
                   />
                 ) : null}
-                <div className="product-quick-view__brand-overlay" aria-hidden="true" />
+                <div
+                  className="product-quick-view__brand-overlay"
+                  aria-hidden="true"
+                />
                 <span className="product-quick-view__brand-name">
                   {ownerName}
                 </span>
@@ -296,7 +300,8 @@ export function ProductQuickViewModal({
                 <span className="font-display text-deep text-[clamp(26px,2vw,32px)] font-black">
                   {formatCents(detail.priceInCents)}
                 </span>
-                {detail.compareAtCents ? (
+                {detail.compareAtCents &&
+                detail.compareAtCents > detail.priceInCents ? (
                   <span className="text-muted text-lg line-through sm:text-xl">
                     {formatCents(detail.compareAtCents)}
                   </span>

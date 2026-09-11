@@ -99,20 +99,20 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
         className={`catalog-product-card__club ${!product.club ? "is-platform" : ""}`}
         title={`Producto de ${ownerName}`}
       >
-          <span className="catalog-product-card__club-logo">
-            <Image
-              src={
-                clubBranding?.logoUrl ??
-                product.club?.logoUrl ??
-                "/images/icono.jpg"
-              }
-              alt=""
-              fill
-              sizes="28px"
-              className="object-contain"
-            />
-          </span>
-          <span>{ownerName}</span>
+        <span className="catalog-product-card__club-logo">
+          <Image
+            src={
+              clubBranding?.logoUrl ??
+              product.club?.logoUrl ??
+              "/images/icono.jpg"
+            }
+            alt=""
+            fill
+            sizes="28px"
+            className="object-contain"
+          />
+        </span>
+        <span>{ownerName}</span>
       </div>
       <div className="catalog-product-card__media relative aspect-square w-full overflow-hidden rounded-xl bg-white">
         {activeImage ? (
@@ -158,7 +158,8 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
             <path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.4 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />
           </svg>
         </button>
-        {product.compareAtCents ? (
+        {product.compareAtCents &&
+        product.compareAtCents > product.priceInCents ? (
           <span className="catalog-product-card__discount-badge bg-mint font-display text-deep pointer-events-none absolute top-3 left-3 z-20 rounded-full px-3 py-1.5 text-sm font-black shadow-[0_8px_20px_-10px_rgba(46,4,112,.7)]">
             -
             {Math.round(
@@ -194,7 +195,8 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
           <span className="catalog-product-card__price-value font-display text-deep text-[clamp(20px,1.55vw,26px)] font-black">
             {formatCents(product.priceInCents)}
           </span>
-          {product.compareAtCents ? (
+          {product.compareAtCents &&
+          product.compareAtCents > product.priceInCents ? (
             <span className="text-muted text-xs line-through sm:text-sm">
               {formatCents(product.compareAtCents)}
             </span>
@@ -250,7 +252,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
             data-variant="primary"
             disabled={isOutOfStock}
             onClick={handleAddToCart}
-            className="catalog-product-card__cart-button brand-action relative flex min-h-12 w-full items-center justify-center overflow-hidden rounded-lg bg-[#2e0470] px-3 py-3 text-center font-sans text-sm leading-tight font-semibold tracking-[0.01em] text-white normal-case whitespace-nowrap shadow-[0_10px_22px_-16px_rgba(28,10,48,.82)] disabled:cursor-not-allowed disabled:opacity-45 @[150px]:text-sm @[176px]:text-base"
+            className="catalog-product-card__cart-button brand-action relative flex min-h-12 w-full items-center justify-center overflow-hidden rounded-lg bg-[#2e0470] px-3 py-3 text-center font-sans text-sm leading-tight font-semibold tracking-[0.01em] whitespace-nowrap text-white normal-case shadow-[0_10px_22px_-16px_rgba(28,10,48,.82)] disabled:cursor-not-allowed disabled:opacity-45 @[150px]:text-sm @[176px]:text-base"
             title={
               selectedVariant
                 ? `Agregar talle ${selectedVariant.size}, color ${selectedVariant.color}`
@@ -263,7 +265,9 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
               }`}
             >
               <CartIcon className="h-5 w-5 shrink-0 @[176px]:h-6 @[176px]:w-6" />
-              {product.showStock && isOutOfStock ? "Sin stock" : "Agregar al carrito"}
+              {product.showStock && isOutOfStock
+                ? "Sin stock"
+                : "Agregar al carrito"}
             </span>
 
             {quantityFeedback !== null ? (

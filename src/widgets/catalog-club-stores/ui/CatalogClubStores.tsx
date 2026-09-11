@@ -66,18 +66,22 @@ export function CatalogClubStores({
   return (
     <section className="club-store-hero catalog-club-stores-banner relative overflow-hidden text-white">
       <div className="club-store-hero__pattern" aria-hidden="true" />
-      <Container className="relative z-10 py-4 sm:py-5">
-        <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-          <div>
-            <span className="text-mint font-mono text-xs font-medium tracking-[.1em] uppercase sm:text-sm">
+      <Container className="catalog-club-stores-container relative z-10">
+        <span className="catalog-club-stores-watermark" aria-hidden="true">
+          Instituciones
+        </span>
+        <div className="catalog-club-stores-heading">
+          <div className="catalog-club-stores-eyebrow">
+            <span className="text-mint font-mono font-bold uppercase">
               Tiendas oficiales
             </span>
-            <h1 className="font-display mt-1 text-xl leading-none font-black sm:text-2xl lg:text-3xl">
-              Encontrá la tienda de tu club
-            </h1>
+            <i aria-hidden="true" />
           </div>
-          <p className="max-w-md text-xs leading-4 text-white/65 sm:text-right">
-            Elegí una institución para ver toda su indumentaria y productos
+          <h1 className="font-display font-black">
+            Encontrá la tienda de tu institución
+          </h1>
+          <p>
+            Elegí una institución para descubrir su indumentaria y productos
             oficiales.
           </p>
         </div>
@@ -140,8 +144,19 @@ export function CatalogClubStores({
                       {club.productCount === 1 ? "" : "s"}
                     </em>
                   </span>
-                  <span className="catalog-club-store-card__action">
-                    Ver indumentaria
+                  <span
+                    className="catalog-club-store-card__action"
+                    aria-hidden="true"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M5 12h14m-5-5 5 5-5 5"
+                        stroke="currentColor"
+                        strokeWidth="2.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </span>
                 </Link>
               );

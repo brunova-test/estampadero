@@ -30,26 +30,29 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
       <StoreHeader />
       <main className="flex-1">
         <Container className="grid gap-6 py-6 md:gap-10 md:py-10 lg:grid-cols-2">
-          <BackLink fallback="/catalogo" className="product-detail-back-link lg:col-span-2" />
+          <BackLink
+            fallback="/catalogo"
+            className="product-detail-back-link lg:col-span-2"
+          />
           <div className="flex flex-col gap-3">
             <div
               className={`product-detail-club ${!product.club ? "is-platform" : ""}`}
               title={`Producto de ${ownerName}`}
             >
-                <span className="product-detail-club__logo">
-                  <Image
-                    src={
-                      clubBranding?.logoUrl ??
-                      product.club?.logoUrl ??
-                      "/images/icono.jpg"
-                    }
-                    alt=""
-                    fill
-                    sizes="42px"
-                    className="object-contain"
-                  />
-                </span>
-                <span>{ownerName}</span>
+              <span className="product-detail-club__logo">
+                <Image
+                  src={
+                    clubBranding?.logoUrl ??
+                    product.club?.logoUrl ??
+                    "/images/icono.jpg"
+                  }
+                  alt=""
+                  fill
+                  sizes="42px"
+                  className="object-contain"
+                />
+              </span>
+              <span>{ownerName}</span>
             </div>
             <div className="relative aspect-square overflow-hidden bg-white md:rounded-lg">
               {product.images[0] ? (
@@ -94,7 +97,8 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
               <span className="font-display text-deep text-3xl font-bold">
                 {formatCents(product.priceInCents)}
               </span>
-              {product.compareAtCents ? (
+              {product.compareAtCents &&
+              product.compareAtCents > product.priceInCents ? (
                 <span className="text-muted text-lg line-through">
                   {formatCents(product.compareAtCents)}
                 </span>
@@ -114,10 +118,12 @@ export async function ProductDetailView({ slug }: ProductDetailViewProps) {
                   {product.category?.name ?? "—"}
                 </dd>
               </div>
-              {product.showStock ? <div>
-                <dt className="text-muted">Stock total</dt>
-                <dd className="font-semibold">{totalStock} unidades</dd>
-              </div> : null}
+              {product.showStock ? (
+                <div>
+                  <dt className="text-muted">Stock total</dt>
+                  <dd className="font-semibold">{totalStock} unidades</dd>
+                </div>
+              ) : null}
               {product.club ? (
                 <div>
                   <dt className="text-muted">Producto de</dt>

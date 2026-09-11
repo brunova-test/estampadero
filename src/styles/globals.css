@@ -933,9 +933,9 @@
 .admin-design-version-summary {
   display: grid;
   width: 100%;
-  grid-template-columns: 96px minmax(75px, 1fr) auto;
-  align-items: center;
-  gap: 12px;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px 12px;
   border: 0;
   padding: 12px;
   background: transparent;
@@ -948,7 +948,7 @@
   background: #faf7fd;
 }
 .admin-design-version-summary > img {
-  width: 96px;
+  width: 84px;
   height: 64px;
   border-radius: 4px;
   background: #f2f1f3;
@@ -956,6 +956,7 @@
 }
 .admin-design-version-copy {
   display: grid;
+  min-width: 0;
   gap: 4px;
 }
 .admin-design-version-copy strong {
@@ -967,11 +968,13 @@
   font-size: 12px;
 }
 .admin-design-version-status {
+  grid-column: 2;
+  justify-self: start;
+  max-width: 100%;
   border-radius: 4px;
   padding: 6px 8px;
   font-size: 11px;
   font-weight: 700;
-  white-space: nowrap;
 }
 .admin-design-version-status.is-sent_to_club {
   background: #eee7fa;
@@ -1648,12 +1651,13 @@
 /* Selector de tiendas en la cabecera del catálogo general. */
 .catalog-club-stores-shell {
   position: relative;
+  z-index: 2;
 }
 .catalog-club-stores {
   display: grid;
-  grid-auto-columns: minmax(190px, 1fr);
+  grid-auto-columns: minmax(270px, 1fr);
   grid-auto-flow: column;
-  gap: 10px;
+  gap: 14px;
   overflow-x: auto;
   padding: 2px;
   scroll-snap-type: x proximity;
@@ -1693,40 +1697,80 @@
   height: 19px;
 }
 .catalog-club-stores-banner {
-  background: linear-gradient(115deg, #0e0a1a 0%, #281a33 58%, #2e0470 100%);
+  background:
+    radial-gradient(circle at 88% 5%, rgb(105 31 255 / 65%), transparent 33%),
+    linear-gradient(112deg, #09081a 0%, #0e0c26 54%, #24066b 100%);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   font-feature-settings:
     "kern" 1,
     "liga" 1;
 }
+.catalog-club-stores-container {
+  padding-top: clamp(46px, 5vw, 72px);
+  padding-bottom: clamp(42px, 4.7vw, 68px);
+}
 .catalog-club-stores-banner .club-store-hero__pattern {
-  opacity: 0.22;
-  background:
-    radial-gradient(circle at 84% 18%, rgb(128 255 219 / 42%), transparent 22%),
-    linear-gradient(
-      115deg,
-      transparent 0 34%,
-      rgb(128 255 219 / 13%) 34% 50%,
-      transparent 50%
-    ),
-    repeating-linear-gradient(
-      135deg,
-      transparent 0 26px,
-      rgb(255 255 255 / 6%) 26px 27px
-    );
+  opacity: 0.3;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent 0 54px,
+    rgb(139 92 246 / 16%) 54px 56px,
+    transparent 56px 108px
+  );
+}
+.catalog-club-stores-heading {
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
+  margin-bottom: clamp(26px, 3vw, 38px);
+}
+.catalog-club-stores-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+.catalog-club-stores-eyebrow > span {
+  font-size: clamp(12px, 1.1vw, 15px);
+  letter-spacing: 0.34em;
+}
+.catalog-club-stores-eyebrow > i {
+  width: 54px;
+  height: 2px;
+  background: #35ead1;
 }
 .catalog-club-stores-banner h1 {
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1.35rem, 2.4vw, 2rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.12;
+  max-width: 900px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.1rem, 4.2vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
 }
 .catalog-club-stores-banner p {
+  max-width: 780px;
+  margin: 18px 0 0;
+  color: rgb(229 225 247 / 76%);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.86rem;
-  line-height: 1.5;
-  letter-spacing: -0.006em;
+  font-size: clamp(15px, 1.45vw, 20px);
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+}
+.catalog-club-stores-watermark {
+  position: absolute;
+  z-index: 1;
+  top: clamp(118px, 10vw, 154px);
+  right: 8px;
+  color: rgb(111 42 225 / 22%);
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(60px, 8.4vw, 126px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.8;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
 }
 .catalog-club-stores-arrow--previous {
   left: -24px;
@@ -1748,16 +1792,19 @@
 .catalog-club-store-card {
   position: relative;
   display: grid;
-  min-height: 122px;
-  grid-template-columns: 80px minmax(0, 1fr);
-  grid-template-rows: minmax(74px, 1fr) auto;
+  min-height: 126px;
+  grid-template-columns: 92px minmax(0, 1fr) 54px;
   align-items: center;
-  gap: 6px 12px;
+  gap: 14px;
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 12px;
-  padding: 10px;
-  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(199 209 255 / 42%);
+  border-radius: 13px;
+  padding: 14px;
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 5%),
+    rgb(103 50 188 / 9%)
+  );
   color: #ffffff;
   text-decoration: none;
   scroll-snap-align: start;
@@ -1767,46 +1814,30 @@
     color 180ms ease,
     transform 180ms ease;
 }
-.catalog-club-store-card::before {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 3px;
-  background: #80ffdb;
-  content: "";
-  opacity: 0;
-  transform: scaleX(0.35);
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
-}
 .catalog-club-store-card:hover,
 .catalog-club-store-card:focus-visible,
 .catalog-club-store-card.is-active {
   border-color: #80ffdb;
-  background: rgb(128 255 219 / 12%);
+  background: linear-gradient(
+    135deg,
+    rgb(128 255 219 / 10%),
+    rgb(103 50 188 / 16%)
+  );
   color: #ffffff;
   transform: translateY(-2px);
   outline: none;
 }
-.catalog-club-store-card:hover::before,
-.catalog-club-store-card:focus-visible::before,
-.catalog-club-store-card.is-active::before {
-  opacity: 1;
-  transform: scaleX(1);
-}
 .catalog-club-store-card__logo {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 92px;
+  height: 92px;
   overflow: hidden;
   border: 2px solid rgb(255 255 255 / 72%);
-  border-radius: 9px;
+  border-radius: 11px;
   background: #ffffff;
 }
 .catalog-club-store-card__logo-image {
-  transform: scale(1.28);
+  transform: scale(1.12);
 }
 .catalog-club-store-card__copy {
   display: flex;
@@ -1817,17 +1848,17 @@
 .catalog-club-store-card__copy strong {
   overflow: hidden;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: clamp(16px, 1.35vw, 19px);
+  font-weight: 800;
   letter-spacing: -0.018em;
   line-height: 1.1;
   text-overflow: ellipsis;
 }
 .catalog-club-store-card__copy small {
   overflow: hidden;
-  color: rgb(255 255 255 / 62%);
+  color: rgb(226 222 244 / 68%);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: -0.004em;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1835,65 +1866,39 @@
 .catalog-club-store-card__copy em {
   width: fit-content;
   margin-top: 2px;
+  border: 1px solid rgb(48 234 207 / 58%);
   border-radius: 999px;
-  padding: 3px 7px;
-  background: rgb(128 255 219 / 15%);
+  padding: 4px 12px;
+  background: rgb(27 211 187 / 8%);
   color: #80ffdb;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 700;
 }
 .catalog-club-store-card__action {
-  grid-column: 1 / -1;
-  display: flex;
-  position: relative;
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
   align-items: center;
-  border-top: 1px solid rgb(255 255 255 / 12%);
-  margin: 0 -10px -10px;
-  width: calc(100% + 20px);
-  padding: 10px;
-  color: #80ffdb;
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.012em;
-  isolation: isolate;
-  overflow: hidden;
+  border-radius: 12px;
+  background: #35ead1;
+  color: #190746;
   transition:
-    color 180ms ease,
-    border-color 180ms ease;
+    background-color 180ms ease,
+    transform 180ms ease;
 }
-.catalog-club-store-card__action::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgb(128 255 219 / 18%),
-    rgb(128 255 219 / 34%) 50%,
-    rgb(128 255 219 / 18%)
-  );
-  content: "";
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition:
-    opacity 180ms ease,
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+.catalog-club-store-card__action svg {
+  width: 25px;
+  height: 25px;
 }
 .catalog-club-store-card:hover .catalog-club-store-card__action,
 .catalog-club-store-card:focus-visible .catalog-club-store-card__action,
 .catalog-club-store-card.is-active .catalog-club-store-card__action {
-  border-color: rgb(128 255 219 / 45%);
-  color: #c5fff0;
-}
-.catalog-club-store-card:hover .catalog-club-store-card__action::before,
-.catalog-club-store-card:focus-visible .catalog-club-store-card__action::before,
-.catalog-club-store-card.is-active .catalog-club-store-card__action::before {
-  opacity: 1;
-  transform: scaleX(1);
+  background: #80ffdb;
+  color: #190746;
+  transform: translateX(2px);
 }
 
 @media (min-width: 980px) {
@@ -1901,27 +1906,52 @@
     grid-auto-columns: minmax(220px, 1fr);
   }
   .catalog-club-stores.is-carousel {
-    grid-auto-columns: calc((100% - 30px) / 4);
+    grid-auto-columns: calc((100% - 42px) / 4);
   }
 }
 
 @media (max-width: 640px) {
   .catalog-club-stores {
-    grid-auto-columns: minmax(168px, 78vw);
+    grid-auto-columns: minmax(270px, 84vw);
   }
   .catalog-club-store-card {
-    min-height: 116px;
-    grid-template-columns: 72px minmax(0, 1fr);
-    padding: 9px;
+    min-height: 108px;
+    grid-template-columns: 76px minmax(0, 1fr) 44px;
+    gap: 10px;
+    padding: 11px;
   }
   .catalog-club-store-card__logo {
-    width: 72px;
-    height: 72px;
+    width: 76px;
+    height: 76px;
   }
   .catalog-club-store-card__action {
-    margin: 0 -9px -9px;
-    width: calc(100% + 18px);
-    padding: 9px;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+  .catalog-club-store-card__action svg {
+    width: 21px;
+    height: 21px;
+  }
+  .catalog-club-stores-container {
+    padding-top: 34px;
+    padding-bottom: 38px;
+  }
+  .catalog-club-stores-watermark {
+    top: 110px;
+    right: -70px;
+    font-size: 64px;
+  }
+  .catalog-club-stores-heading {
+    margin-bottom: 24px;
+  }
+  .catalog-club-stores-banner h1 {
+    font-size: clamp(2rem, 10vw, 3rem);
+    line-height: 1.02;
+  }
+  .catalog-club-stores-banner p {
+    margin-top: 13px;
+    font-size: 15px;
   }
   .catalog-club-stores-arrow {
     width: 34px;
