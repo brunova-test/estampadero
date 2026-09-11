@@ -78,7 +78,7 @@ export function CatalogClubStores({
             <i aria-hidden="true" />
           </div>
           <h1 className="font-display font-black">
-            Encontrá la tienda de tu institución
+            ENCONTRA LA TIENDA DE TU INSTITUCION
           </h1>
           <p>
             Elegí una institución para descubrir su indumentaria y productos

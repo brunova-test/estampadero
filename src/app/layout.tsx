@@ -1,7 +1,7 @@
 import "elestampadero/styles/globals.css";
 
 import { type Metadata, type Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { connection } from "next/server";
 
@@ -58,6 +58,18 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const vcrOsdMono = localFont({
+  src: "../../public/fonts/VCR_OSD_MONO.ttf",
+  weight: "400",
+  variable: "--font-vcr-osd-mono",
+});
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+});
+
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -68,7 +80,7 @@ export default async function RootLayout({
   return (
     <html
       lang="es"
-      className={`${archivo.variable} ${barlow.variable} ${ibmPlexMono.variable} ${inter.variable}`}
+      className={`${archivo.variable} ${barlow.variable} ${ibmPlexMono.variable} ${inter.variable} ${vcrOsdMono.variable} ${spaceMono.variable}`}
     >
       <body>
         <TRPCReactProvider>
