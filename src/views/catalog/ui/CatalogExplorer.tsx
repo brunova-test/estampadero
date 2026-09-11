@@ -122,12 +122,15 @@ export function CatalogExplorer({
         onNavigate={handleFilterNavigation}
       />
 
-      <section aria-busy={isPending} className="relative min-h-[320px] flex-1">
-        <div className="catalog-products-meta text-muted mb-5 flex flex-wrap items-center justify-between gap-3 text-base">
+      <section
+        aria-busy={isPending}
+        className="relative isolate min-h-[320px] flex-1"
+      >
+        <div className="catalog-products-meta text-muted relative z-[100] mb-5 flex flex-wrap items-center justify-between gap-3 text-base">
           <p className="catalog-products-count">
             {products.length} producto{products.length === 1 ? "" : "s"}
           </p>
-          <div ref={sortMenuRef} className="relative z-20 min-w-44">
+          <div ref={sortMenuRef} className="relative min-w-44">
             <button
               type="button"
               onClick={() => setIsSortOpen((isOpen) => !isOpen)}
@@ -159,7 +162,7 @@ export function CatalogExplorer({
                 id="catalog-sort-menu"
                 role="menu"
                 aria-label="Ordenar productos"
-                className="border-deep/15 text-ink absolute top-[calc(100%+0.4rem)] right-0 z-50 w-full min-w-max overflow-hidden rounded-lg border bg-white py-1 shadow-xl"
+                className="border-deep/15 text-ink absolute top-[calc(100%+0.4rem)] right-0 z-[110] w-full min-w-max overflow-hidden rounded-lg border bg-white py-1 shadow-xl"
               >
                 {SORT_OPTIONS.map((option) => (
                   <button
@@ -183,6 +186,7 @@ export function CatalogExplorer({
           </div>
         </div>
         <m.div
+          className="relative z-0"
           animate={{
             opacity: isPending ? 0.2 : 1,
             scale: isPending ? 0.992 : 1,
