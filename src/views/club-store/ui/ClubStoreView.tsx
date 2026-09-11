@@ -110,55 +110,6 @@ export async function ClubStoreView({
           </Container>
         </section>
 
-        <div className="club-store-nav">
-          <Container className="club-store-nav__inner">
-            <Link
-              className="club-store-nav__link is-active"
-              href={routes.clubStore(slug)}
-            >
-              <svg
-                className="club-store-nav__icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path d="m3 10 9-7 9 7" />
-                <path d="M5 9v11h14V9" />
-                <path d="M9 20v-6h6v6" />
-              </svg>
-              Inicio de la tienda
-            </Link>
-            <a className="club-store-nav__link" href="#productos">
-              <svg
-                className="club-store-nav__icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path d="M6 8h12l1 12H5L6 8Z" />
-                <path d="M9 9V6a3 3 0 0 1 6 0v3" />
-              </svg>
-              Todos los productos
-            </a>
-            <Link
-              className="club-store-nav__link"
-              href={routes.clubProfile(slug)}
-            >
-              <svg
-                className="club-store-nav__icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path d="M4 21V8l8-5 8 5v13" />
-                <path d="M8 21v-8h8v8" />
-                <path d="M9 9h.01M12 9h.01M15 9h.01" />
-              </svg>
-              Sobre el club
-            </Link>
-          </Container>
-        </div>
-
         <Container id="productos" className="scroll-mt-6 py-8 md:py-11">
           <div className="mb-7 flex flex-wrap items-end justify-between gap-3">
             <div>
