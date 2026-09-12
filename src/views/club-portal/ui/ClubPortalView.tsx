@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import { Container } from "elestampadero/shared/ui";
+import { Button, Container } from "elestampadero/shared/ui";
 import { api } from "elestampadero/trpc/react";
 
 import {
@@ -144,6 +144,90 @@ function ClubSidebarActionIcon({ name }: { name: "store" | "logout" }) {
         </>
       )}
     </svg>
+  );
+}
+
+function RequiredPasswordChange({ clubName }: { clubName: string }) {
+  const utils = api.useUtils();
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const changePassword = api.identity.changePassword.useMutation({
+    onSuccess: async () => {
+      await utils.clubs.portalData.invalidate();
+    },
+    onError: (mutationError) => setError(mutationError.message),
+  });
+
+  function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    if (newPassword !== confirmPassword) {
+      setError("Las contraseñas nuevas no coinciden.");
+      return;
+    }
+    changePassword.mutate({
+      newPassword,
+      confirmPassword,
+      forceChange: true,
+    });
+  }
+
+  return (
+    <main className="bg-paper grid min-h-[calc(100vh-130px)] place-items-center p-4 sm:p-8">
+      <section className="grid w-full max-w-4xl gap-8 bg-white p-6 shadow-sm sm:grid-cols-[.8fr_1.2fr] sm:p-10">
+        <div>
+          <span className="text-blue font-mono text-xs tracking-[.16em] uppercase">
+            Seguridad de la cuenta
+          </span>
+          <h1 className="font-display text-ink mt-2 text-3xl font-black">
+            Cambiá tu contraseña
+          </h1>
+          <p className="text-muted mt-3 text-sm leading-relaxed">
+            Para ingresar al portal de {clubName}, primero elegí una contraseña
+            personal de al menos 8 caracteres.
+          </p>
+        </div>
+        <form onSubmit={submit} className="grid gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="grid gap-2">
+              <span className="text-ink text-sm font-semibold">Nueva contraseña</span>
+              <input
+                required
+                minLength={8}
+                maxLength={72}
+                type="password"
+                autoComplete="new-password"
+                value={newPassword}
+                onChange={(event) => setNewPassword(event.target.value)}
+                className="h-12 border border-[#d9d5e2] px-4 outline-none transition-colors focus:border-[#8fe8cf]"
+              />
+            </label>
+            <label className="grid gap-2">
+              <span className="text-ink text-sm font-semibold">Repetir contraseña</span>
+              <input
+                required
+                minLength={8}
+                maxLength={72}
+                type="password"
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                className="h-12 border border-[#d9d5e2] px-4 outline-none transition-colors focus:border-[#8fe8cf]"
+              />
+            </label>
+          </div>
+          {error ? (
+            <p className="border-red-500 bg-red-50 text-red-800 border-l-4 px-4 py-3 text-sm font-semibold">
+              {error}
+            </p>
+          ) : null}
+          <Button type="submit" disabled={changePassword.isPending} loading={changePassword.isPending} loadingLabel="Actualizando contraseña">
+            Guardar nueva contraseña
+          </Button>
+        </form>
+      </section>
+    </main>
   );
 }
 
@@ -333,14 +417,25 @@ export function ClubPortalView() {
           </nav>
 
           <div className="mt-auto hidden border-t border-white/10 pt-3 lg:block">
-            <Link
-              href="/"
-              data-loading-label="Inicio"
-              className="club-portal-nav-item flex items-center gap-3 px-3.5 py-3 text-base font-medium text-white/65"
-            >
-              <ClubSidebarActionIcon name="store" />
-              <span className="club-portal-nav-label">Volver a la tienda</span>
-            </Link>
+            {portalData?.mustChangePassword ? (
+              <div
+                aria-disabled="true"
+                className="club-portal-nav-item flex cursor-not-allowed items-center gap-3 px-3.5 py-3 text-base font-medium text-white/25"
+                title="Cambiá tu contraseña para continuar"
+              >
+                <ClubSidebarActionIcon name="store" />
+                <span className="club-portal-nav-label">Volver a la tienda</span>
+              </div>
+            ) : (
+              <Link
+                href="/"
+                data-loading-label="Inicio"
+                className="club-portal-nav-item flex items-center gap-3 px-3.5 py-3 text-base font-medium text-white/65"
+              >
+                <ClubSidebarActionIcon name="store" />
+                <span className="club-portal-nav-label">Volver a la tienda</span>
+              </Link>
+            )}
             <button
               type="button"
               disabled={signingOut}
@@ -442,7 +537,11 @@ export function ClubPortalView() {
           </div>
         ) : null}
 
-        {portalData ? (
+        {portalData?.mustChangePassword ? (
+          <RequiredPasswordChange clubName={portalData.club.name} />
+        ) : null}
+
+        {portalData && !portalData.mustChangePassword ? (
           <main className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-7">
             <Container className="max-w-[1500px] px-0">
               {activeTab === "inicio" ? (

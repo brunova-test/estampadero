@@ -51,7 +51,7 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
   const [payoutCbu, setPayoutCbu] = useState("");
   const [mobbexEntityId, setMobbexEntityId] = useState("");
   const [activeDetailPanel, setActiveDetailPanel] =
-    useState<ClubDetailPanel>("summary");
+    useState<ClubDetailPanel>("store");
   const [isDetailPanelLoading, setIsDetailPanelLoading] = useState(false);
   const detailPanelTimer = useRef<number | null>(null);
   const [passwordResetOpen, setPasswordResetOpen] = useState(false);
@@ -144,7 +144,7 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
   async function copyAccessValue(value: string, target: "email" | "password") {
     await navigator.clipboard.writeText(value);
     setCopiedAccessValue(target);
-    window.setTimeout(() => setCopiedAccessValue(null), 1800);
+    window.setTimeout(() => setCopiedAccessValue(null), 3000);
   }
 
   async function copyMobbexInvite() {
@@ -630,7 +630,7 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
                 <button
                   type="button"
                   onClick={() => void copyMobbexInvite()}
-                  className="admin-club-mobbex-card__invite border-deep/15 text-deep mt-4 flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-bold hover:bg-[#f5f2f8]"
+                  className="admin-club-mobbex-card__invite border-deep/15 text-deep mt-4 flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-bold transition-colors duration-200 hover:border-[#9b7edb] hover:bg-[#eee8fa]"
                 >
                   <AdminDetailIcon name="copy" />
                   {copiedAccessValue === "mobbexInvite"
@@ -689,7 +689,11 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
                           void copyAccessValue(accessAccount.email!, "email")
                         }
                       >
-                        <AdminDetailIcon name="copy" />
+                        <AdminDetailIcon
+                          name={
+                            copiedAccessValue === "email" ? "check" : "copy"
+                          }
+                        />
                         {copiedAccessValue === "email" ? "Copiado" : "Copiar"}
                       </button>
                     </div>
@@ -869,9 +873,10 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
           password={newAccessPassword}
           isPending={regenerateAccessPassword.isPending}
           error={regenerateAccessPassword.error?.message ?? null}
-          copied={copiedAccessValue === "password"}
+          copiedEmail={copiedAccessValue === "email"}
+          copiedPassword={copiedAccessValue === "password"}
           onConfirm={() => regenerateAccessPassword.mutate({ clubId: club.id })}
-          onCopy={(password) => void copyAccessValue(password, "password")}
+          onCopy={(value, target) => void copyAccessValue(value, target)}
           onClose={closePasswordReset}
         />
       ) : null}
@@ -884,7 +889,8 @@ function ClubPasswordResetModal({
   password,
   isPending,
   error,
-  copied,
+  copiedEmail,
+  copiedPassword,
   onConfirm,
   onCopy,
   onClose,
@@ -893,9 +899,10 @@ function ClubPasswordResetModal({
   password: string | null;
   isPending: boolean;
   error: string | null;
-  copied: boolean;
+  copiedEmail: boolean;
+  copiedPassword: boolean;
   onConfirm: () => void;
-  onCopy: (password: string) => void;
+  onCopy: (value: string, target: "email" | "password") => void;
   onClose: () => void;
 }) {
   return (
@@ -930,13 +937,19 @@ function ClubPasswordResetModal({
             </p>
             <div className="admin-club-password-result">
               <span>Correo de acceso</span>
-              <code>{email}</code>
+              <div>
+                <code>{email}</code>
+                <button type="button" onClick={() => onCopy(email, "email")}>
+                  <AdminDetailIcon name={copiedEmail ? "check" : "copy"} />
+                  {copiedEmail ? "Copiado" : "Copiar"}
+                </button>
+              </div>
               <span>Nueva contraseña</span>
               <div>
                 <code>{password}</code>
-                <button type="button" onClick={() => onCopy(password)}>
-                  <AdminDetailIcon name="copy" />
-                  {copied ? "Copiada" : "Copiar"}
+                <button type="button" onClick={() => onCopy(password, "password")}>
+                  <AdminDetailIcon name={copiedPassword ? "check" : "copy"} />
+                  {copiedPassword ? "Copiada" : "Copiar"}
                 </button>
               </div>
             </div>
@@ -1064,6 +1077,7 @@ type AdminDetailIconName =
   | "handshake"
   | "history"
   | "copy"
+  | "check"
   | "key"
   | "lock"
   | "mail"
@@ -1094,6 +1108,7 @@ function AdminDetailIcon({ name }: { name: AdminDetailIconName }) {
     ),
     history: <path d="M4 12a8 8 0 1 0 2-5m-2-4v5h5m5-1v5l3 2" />,
     copy: <path d="M8 8h11v11H8V8Zm-3 8H4V4h12v1" />,
+    check: <path d="m5 12 4 4L19 6" />,
     key: (
       <>
         <circle cx="7.5" cy="15.5" r="4.5" />

@@ -223,6 +223,7 @@ export const clubsRouter = createTRPCRouter({
             name: input.adminName,
             email,
             passwordHash,
+            mustChangePassword: true,
             role: "CLUB_ADMIN",
             isActive: true,
           },
@@ -291,7 +292,7 @@ export const clubsRouter = createTRPCRouter({
       await ctx.db.$transaction([
         ctx.db.user.update({
           where: { id: membership.user.id },
-          data: { passwordHash },
+          data: { passwordHash, mustChangePassword: true },
         }),
         ctx.db.session.deleteMany({
           where: { userId: membership.user.id },
@@ -542,7 +543,7 @@ export const clubsRouter = createTRPCRouter({
         input.clubId,
       );
 
-      const [club, orders] = await Promise.all([
+      const [club, orders, currentUser] = await Promise.all([
         ctx.db.club.findUnique({
           where: { id: input.clubId },
           select: {
@@ -588,13 +589,14 @@ export const clubsRouter = createTRPCRouter({
             users: {
               orderBy: { user: { name: "asc" } },
               select: {
-                user: {
-                  select: {
+            user: {
+              select: {
                     id: true,
                     name: true,
                     email: true,
                     role: true,
                     isActive: true,
+                    mustChangePassword: true,
                   },
                 },
               },
@@ -632,6 +634,10 @@ export const clubsRouter = createTRPCRouter({
               },
             },
           },
+        }),
+        ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          select: { mustChangePassword: true },
         }),
       ]);
 
@@ -735,7 +741,11 @@ export const clubsRouter = createTRPCRouter({
             orderCount: orderIds.size,
           }))
           .sort((a, b) => b.batchNumber - a.batchNumber),
-        users: club.users.map(({ user }) => user),
+        users: club.users.map(({ user }) => {
+          const { mustChangePassword: _mustChangePassword, ...safeUser } = user;
+          return safeUser;
+        }),
+        mustChangePassword: currentUser?.mustChangePassword ?? false,
         canManageMembers: CLUB_MANAGER_ROLES.has(ctx.session.user.role),
         canReviewDesigns: CLUB_MANAGER_ROLES.has(ctx.session.user.role),
       };

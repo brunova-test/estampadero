@@ -20,6 +20,8 @@ interface ClubStoreManagementPanelProps {
     productCount: number;
     hasActiveAgreement: boolean;
   };
+  /** Oculta las acciones administrativas cuando se muestra en el portal del club. */
+  mode?: "admin" | "portal";
 }
 
 function downloadFile(href: string, filename: string) {
@@ -140,6 +142,7 @@ async function createBrandedQrPng({
 
 export function ClubStoreManagementPanel({
   club,
+  mode = "admin",
 }: ClubStoreManagementPanelProps) {
   const [storeUrl, setStoreUrl] = useState("");
   const [qrDataUrl, setQrDataUrl] = useState("");
@@ -201,8 +204,9 @@ export function ClubStoreManagementPanel({
         <span>TIENDA INDIVIDUAL</span>
         <h2>Tienda y código QR</h2>
         <p>
-          Administrá el acceso directo al catálogo de {club.name}. Todo producto
-          creado desde aquí quedará asociado automáticamente al club.
+          {mode === "portal"
+            ? `Compartí el acceso directo al catálogo de ${club.name} con tu comunidad.`
+            : `Administrá el acceso directo al catálogo de ${club.name}. Todo producto creado desde aquí quedará asociado automáticamente al club.`}
         </p>
       </div>
 
@@ -219,25 +223,27 @@ export function ClubStoreManagementPanel({
             <Link href={routes.clubStore(club.slug)} target="_blank">
               Abrir tienda
             </Link>
-            {club.hasActiveAgreement ? (
-              <button
-                type="button"
-                className="is-primary"
-                onClick={() => setIsProductModalOpen(true)}
-              >
-                + Agregar producto
-              </button>
-            ) : (
-              <button
-                type="button"
-                disabled
-                title="Primero cargá un convenio activo para este club."
-              >
-                + Agregar producto
-              </button>
-            )}
+            {mode === "admin"
+              ? club.hasActiveAgreement ? (
+                  <button
+                    type="button"
+                    className="is-primary"
+                    onClick={() => setIsProductModalOpen(true)}
+                  >
+                    + Agregar producto
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled
+                    title="Primero cargá un convenio activo para este club."
+                  >
+                    + Agregar producto
+                  </button>
+                )
+              : null}
           </div>
-          {!club.hasActiveAgreement ? (
+          {mode === "admin" && !club.hasActiveAgreement ? (
             <small className="admin-club-store-card__notice">
               Para publicar productos, primero cargá un convenio activo.
             </small>

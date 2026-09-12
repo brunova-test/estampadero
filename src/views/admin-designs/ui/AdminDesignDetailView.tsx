@@ -115,6 +115,7 @@ export function AdminDesignDetailView({
   const [newVersionTitle, setNewVersionTitle] = useState("");
   const [newVersionDescription, setNewVersionDescription] = useState("");
   const [showVersionModal, setShowVersionModal] = useState(false);
+  const [showSendConfirm, setShowSendConfirm] = useState(false);
   const [versionToEdit, setVersionToEdit] = useState<{
     id: string;
     versionNumber: number;
@@ -349,16 +350,7 @@ export function AdminDesignDetailView({
                     type="button"
                     className="admin-btn admin-design-action"
                     disabled={sendToClub.isPending}
-                    onClick={() => {
-                      if (
-                        !window.confirm(
-                          "¿Confirmás que querés enviar esta versión al club para su revisión?",
-                        )
-                      ) {
-                        return;
-                      }
-                      sendToClub.mutate({ designId });
-                    }}
+                    onClick={() => setShowSendConfirm(true)}
                   >
                     <DesignActionIcon kind="send" />
                     {sendToClub.isPending ? "Enviando…" : "Enviar al club"}
@@ -489,6 +481,63 @@ export function AdminDesignDetailView({
           ) : null}
         </aside>
       </div>
+      {showSendConfirm
+        ? createPortal(
+            <div
+              className="admin-agreement-confirm-backdrop"
+              role="presentation"
+              onMouseDown={(event) => {
+                if (event.target === event.currentTarget && !sendToClub.isPending) {
+                  setShowSendConfirm(false);
+                }
+              }}
+            >
+              <section
+                className="admin-agreement-modal admin-design-send-confirm-modal"
+                role="alertdialog"
+                aria-modal="true"
+                aria-labelledby="admin-design-send-confirm-title"
+              >
+                <div className="admin-club-password-modal__icon" aria-hidden="true">
+                  <DesignActionIcon kind="send" />
+                </div>
+                <div>
+                  <span>Enviar al club</span>
+                  <h2 id="admin-design-send-confirm-title">
+                    ¿Enviar esta versión para revisión?
+                  </h2>
+                </div>
+                <p>
+                  El club recibirá esta propuesta y podrá revisarla o solicitar
+                  cambios.
+                </p>
+                <footer>
+                  <button
+                    type="button"
+                    className="admin-btn"
+                    disabled={sendToClub.isPending}
+                    onClick={() => setShowSendConfirm(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    className="admin-btn admin-btn--primary"
+                    disabled={sendToClub.isPending}
+                    onClick={() => {
+                      sendToClub.mutate({ designId });
+                      setShowSendConfirm(false);
+                    }}
+                  >
+                    <DesignActionIcon kind="send" />
+                    {sendToClub.isPending ? "Enviando…" : "Enviar al club"}
+                  </button>
+                </footer>
+              </section>
+            </div>,
+            document.body,
+          )
+        : null}
       {showVersionModal
         ? createPortal(
             <div className="admin-agreement-modal-backdrop">

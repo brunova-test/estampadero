@@ -32,6 +32,7 @@ model User {
   emailVerified DateTime?
   image         String?
   passwordHash  String?
+  mustChangePassword Boolean   @default(false)
   role          UserRole  @default(CUSTOMER)
   isActive      Boolean   @default(true)
   createdAt     DateTime  @default(now())

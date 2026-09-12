@@ -10,7 +10,8 @@ export const registerInputSchema = z.object({
 
 export const changePasswordInputSchema = z
   .object({
-    currentPassword: z.string().min(1).max(72),
+    currentPassword: z.string().min(1).max(72).optional(),
+    forceChange: z.boolean().optional(),
     newPassword: z.string().min(8).max(72),
     confirmPassword: z.string().min(8).max(72),
   })
@@ -23,7 +24,7 @@ export const changePasswordInputSchema = z
       });
     }
 
-    if (input.currentPassword === input.newPassword) {
+    if (input.currentPassword && input.currentPassword === input.newPassword) {
       ctx.addIssue({
         code: "custom",
         path: ["newPassword"],

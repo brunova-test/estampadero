@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { PendingDesignsPanel } from "elestampadero/features/review-design";
+import { ClubStoreManagementPanel } from "elestampadero/views/admin-clubs/ui/ClubStoreManagementPanel";
 import { formatCents } from "elestampadero/shared/lib/money";
 import { Button } from "elestampadero/shared/ui";
 import { api, type RouterOutputs } from "elestampadero/trpc/react";
@@ -24,14 +25,13 @@ type Balance = RouterOutputs["commissions"]["balance"];
 type Settlement = RouterOutputs["settlements"]["listByClub"][number];
 type Design = RouterOutputs["designs"]["listByClub"][number];
 type HomePanelId =
-  "resumen" | "disenos" | "ventas" | "liquidaciones" | "accesos";
+  "resumen" | "disenos" | "ventas" | "liquidaciones";
 
 const HOME_PANELS: Array<{ id: HomePanelId; label: string }> = [
   { id: "resumen", label: "Resumen" },
   { id: "disenos", label: "Diseños" },
   { id: "ventas", label: "Ventas" },
   { id: "liquidaciones", label: "Liquidaciones" },
-  { id: "accesos", label: "Accesos" },
 ];
 
 const ORDER_STATUS: Record<string, string> = {
@@ -106,14 +106,6 @@ function HomePanelIcon({ panel }: { panel: HomePanelId }) {
           <path d="M4 7.5h14a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12" />
           <path d="M15 13h5" />
           <circle cx="16" cy="13" r=".7" fill="currentColor" />
-        </>
-      ) : null}
-      {panel === "accesos" ? (
-        <>
-          <circle cx="9" cy="8" r="3" />
-          <path d="M3.5 20a5.5 5.5 0 0 1 11 0" />
-          <path d="M17 8h4M19 6v4" />
-          <path d="M16 15h5" />
         </>
       ) : null}
     </svg>
@@ -513,52 +505,6 @@ export function ClubHomeSection({
   const latestPaidSettlement = settlements.find(
     (settlement) => settlement.status === "PAID",
   );
-  const modules: Array<{
-    title: string;
-    description: string;
-    meta: string;
-    tab: PortalTab;
-  }> = [
-    {
-      title: "Mis productos",
-      description: "Prendas publicadas con precio y stock.",
-      meta: `${data.products.length} vinculados`,
-      tab: "productos",
-    },
-    {
-      title: "Pedidos",
-      description: "Compras del club y estado de entrega.",
-      meta: `${data.orders.length} registrados`,
-      tab: "ventas",
-    },
-    {
-      title: "Tandas de producción",
-      description: "En qué tanda ingresó cada pedido.",
-      meta: data.batches[0]
-        ? `Tanda #${data.batches[0].batchNumber}`
-        : "Sin asignar",
-      tab: "productos",
-    },
-    {
-      title: "Catálogo del club",
-      description: "Enlace propio para compartir.",
-      meta: `/catalogo?club=${data.club.slug}`,
-      tab: "productos",
-    },
-    {
-      title: "Diseños e historial",
-      description: "Versiones, observaciones y arte final.",
-      meta: `${designs.length} propuestas`,
-      tab: "disenos",
-    },
-    {
-      title: "Usuarios con acceso",
-      description: "Quién puede entrar y aprobar diseños.",
-      meta: `${data.users.length} usuarios`,
-      tab: "datos",
-    },
-  ];
-
   return (
     <div className="flex flex-col gap-6">
       <section className="border-deep/8 rounded-2xl border bg-white p-2 shadow-[0_12px_32px_-28px_rgba(46,4,112,.45)]">
@@ -732,46 +678,6 @@ export function ClubHomeSection({
           </article>
         ) : null}
 
-        {activePanel === "accesos" ? (
-          <section>
-            <div className="mb-4">
-              <span className="text-blue font-mono text-xs tracking-[.16em] uppercase">
-                Accesos rápidos
-              </span>
-              <h2 className="font-display text-ink mt-1 text-2xl font-black">
-                Secciones del portal
-              </h2>
-            </div>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {modules.map((module, index) => (
-                <button
-                  key={module.title}
-                  type="button"
-                  onClick={() => onNavigate(module.tab)}
-                  className="brand-card-cut group border-deep/15 hover:border-blue/35 border border-t-4 bg-white p-5 text-left shadow-[0_8px_24px_-20px_rgba(46,4,112,.65)] transition-all hover:-translate-y-1 hover:shadow-[0_14px_28px_-20px_rgba(46,4,112,.75)]"
-                >
-                  <span className="text-blue font-mono text-xs">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="font-display text-ink mt-3 text-xl font-black">
-                    {module.title}
-                  </h3>
-                  <p className="text-muted mt-1 text-sm">
-                    {module.description}
-                  </p>
-                  <div className="mt-6 flex items-end justify-between gap-3">
-                    <span className="text-deep truncate font-mono text-xs font-medium">
-                      {module.meta}
-                    </span>
-                    <span className="text-blue group-hover:text-deep font-semibold">
-                      Abrir →
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-        ) : null}
       </div>
     </div>
   );
@@ -1148,6 +1054,17 @@ export function ClubProductsSection({ data }: { data: PortalData }) {
 
   return (
     <div className="flex flex-col gap-5">
+      <ClubStoreManagementPanel
+        mode="portal"
+        club={{
+          id: data.club.id,
+          slug: data.club.slug,
+          name: data.club.name,
+          logoUrl: data.club.logoUrl,
+          productCount: data.products.length,
+          hasActiveAgreement: false,
+        }}
+      />
       <div className="hidden">
         <span className="text-blue font-mono text-xs tracking-[.16em] uppercase">
           Productos

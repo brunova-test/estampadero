@@ -55,13 +55,20 @@ export const identityRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const user = await db.user.findUnique({
         where: { id: ctx.session.user.id },
-        select: { passwordHash: true, isActive: true },
+        select: {
+          passwordHash: true,
+          isActive: true,
+          mustChangePassword: true,
+        },
       });
 
       if (
         !user?.isActive ||
-        !user.passwordHash ||
-        !(await verifyPasswordHash(user.passwordHash, input.currentPassword))
+        (!user.mustChangePassword &&
+          (!user.passwordHash ||
+            !input.currentPassword ||
+            !(await verifyPasswordHash(user.passwordHash, input.currentPassword)))) ||
+        (user.mustChangePassword && input.forceChange !== true)
       ) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -72,7 +79,7 @@ export const identityRouter = createTRPCRouter({
       const passwordHash = await hashPassword(input.newPassword);
       await db.user.update({
         where: { id: ctx.session.user.id },
-        data: { passwordHash },
+        data: { passwordHash, mustChangePassword: false },
       });
 
       return { success: true };

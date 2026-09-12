@@ -492,6 +492,83 @@
 .admin-design-version-modal {
   width: min(560px, 100%);
 }
+.admin-design-send-confirm-modal {
+  display: grid;
+  width: min(380px, 100%);
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 8px 16px;
+  min-height: 250px;
+  padding: 28px;
+  border: 1px solid #e0d6ea;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #ffffff 0%, #f6f0ff 100%);
+  box-shadow: 0 30px 80px -32px rgb(46 4 112 / 65%);
+}
+.admin-design-send-confirm-modal > .admin-club-password-modal__icon {
+  width: 56px;
+  height: 56px;
+  color: #ffffff;
+  background: #652d9b;
+  border-color: #652d9b;
+}
+.admin-design-send-confirm-modal > div:nth-child(2) {
+  align-self: center;
+}
+.admin-design-send-confirm-modal > div:nth-child(2) > span {
+  color: #652d9b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.admin-design-send-confirm-modal h2 {
+  margin: 4px 0 0;
+  color: #21182a;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 22px;
+  line-height: 1.2;
+}
+.admin-design-send-confirm-modal > p {
+  grid-column: 1 / -1;
+  margin: 10px 0 4px;
+  color: #716779;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.admin-design-send-confirm-modal > footer {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #e2d9eb;
+}
+.admin-design-send-confirm-modal > footer .admin-btn {
+  min-height: 42px;
+  border-radius: 9px;
+  padding-inline: 18px;
+  font-size: 14px;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+.admin-design-send-confirm-modal > footer .admin-btn:hover:not(:disabled),
+.admin-design-send-confirm-modal > footer .admin-btn:focus-visible:not(:disabled) {
+  border-color: #652d9b;
+  background: #f0e5ff;
+  color: #4a147d;
+  transform: translateY(-1px);
+  outline: none;
+}
+.admin-design-send-confirm-modal > footer .admin-btn.admin-btn--primary:hover:not(:disabled),
+.admin-design-send-confirm-modal > footer .admin-btn.admin-btn--primary:focus-visible:not(:disabled) {
+  border-color: #552282;
+  background: #552282;
+  color: #ffffff;
+}
 .admin-design-version-form {
   display: grid;
   gap: 16px;
@@ -6456,6 +6533,7 @@
   text-transform: uppercase;
 }
 .home-clubs-search__field {
+  position: relative;
   display: flex;
   min-height: 56px;
   align-items: center;
@@ -6541,6 +6619,9 @@
   color: white;
 }
 .home-clubs-search__field button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
   width: 28px;
   height: 28px;
   border: 0;
@@ -19896,11 +19977,17 @@ body .admin-editor-actions {
   gap: 7px;
 }
 .admin-club-store-panel__intro > span,
-.admin-club-store-card__eyebrow,
 .admin-club-qr-card__copy > span {
   color: #652d9b;
   font-family: var(--font-ibm-plex-mono), monospace;
   font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.admin-club-store-card__eyebrow {
+  color: #198754;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.08em;
 }
