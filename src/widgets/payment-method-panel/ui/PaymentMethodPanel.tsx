@@ -14,19 +14,16 @@ type PaymentChoice = "card" | "mercado-pago" | "modo";
 
 const PAYMENT_CHOICES: Record<
   PaymentChoice,
-  { paymentMethod: string; buttonLabel: string }
+  { paymentMethod: string }
 > = {
   card: {
     paymentMethod: "card:card_input",
-    buttonLabel: "Continuar con tarjeta",
   },
   "mercado-pago": {
     paymentMethod: "qr:arg_interoperable",
-    buttonLabel: "Pagar con QR desde Mercado Pago",
   },
   modo: {
     paymentMethod: "qr:arg_interoperable",
-    buttonLabel: "Pagar con QR desde MODO",
   },
 };
 
@@ -55,13 +52,16 @@ export function PaymentMethodPanel({
           onClick={() => setOptionsOpen((open) => !open)}
           className="group flex w-full items-center justify-between gap-4 px-4 py-3.5 text-left transition-colors hover:bg-violet-50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-violet-700"
         >
-          <span>
-            <strong className="text-ink block text-base">
-              Elegí cómo querés pagar
-            </strong>
-            <small className="text-muted mt-0.5 block text-xs">
-              Seleccionado: {selectedLabel}
-            </small>
+          <span className="flex min-w-0 items-center gap-3">
+            <SelectedPaymentIcon method={selectedMethod} />
+            <span className="min-w-0">
+              <strong className="text-ink block text-base">
+                Elegí cómo querés pagar
+              </strong>
+              <small className="text-muted mt-0.5 block truncate text-xs">
+                Seleccionado: {selectedLabel}
+              </small>
+            </span>
           </span>
           <ChevronIcon open={optionsOpen} />
         </button>
@@ -141,7 +141,7 @@ export function PaymentMethodPanel({
       <PayWithMobbexButton
         orderId={orderId}
         paymentMethod={selection.paymentMethod}
-        label={selection.buttonLabel}
+        label="Pagar"
       />
       <p className="text-muted text-center text-xs">
         El pago y la distribución entre los participantes se procesan mediante
@@ -218,6 +218,32 @@ function CardIcon() {
       <rect x="3" y="5" width="18" height="14" rx="2" />
       <path d="M3 9h18M7 14h4" />
     </svg>
+  );
+}
+
+function SelectedPaymentIcon({ method }: { method: PaymentChoice }) {
+  return (
+    <span className="bg-mint text-deep grid h-10 w-10 shrink-0 place-items-center rounded-xl">
+      {method === "card" ? (
+        <CardIcon />
+      ) : method === "mercado-pago" ? (
+        <Image
+          src="/images/payments/mercado-pago.svg"
+          alt="Mercado Pago"
+          width={30}
+          height={30}
+          className="h-7 w-7 object-contain"
+        />
+      ) : (
+        <Image
+          src="/images/payments/modo.png"
+          alt="MODO"
+          width={42}
+          height={18}
+          className="h-4 w-9 object-contain"
+        />
+      )}
+    </span>
   );
 }
 

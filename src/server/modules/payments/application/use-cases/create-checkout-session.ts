@@ -49,7 +49,7 @@ export function createCheckoutSession(deps: CreateCheckoutSessionDeps) {
     if (!deps.gateway.isConfigured()) {
       throw new TRPCError({
         code: "PRECONDITION_FAILED",
-        message: "Este medio de pago no está disponible en este momento.",
+        message: "Los pagos aún no están configurados.",
       });
     }
 

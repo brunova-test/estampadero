@@ -11,6 +11,7 @@ import { formatCents } from "elestampadero/shared/lib/money";
 import {
   Button,
   ButtonLink,
+  BackLink,
   Container,
   TrashIcon,
 } from "elestampadero/shared/ui";
@@ -88,9 +89,12 @@ export function CartView() {
       <StoreHeader />
       <main className="flex-1">
         <Container className="py-6 md:py-10">
-          <h1 className="font-display text-ink mb-5 text-[26px] font-black md:mb-6 md:text-3xl">
-            Tu carrito
-          </h1>
+          <div className="mb-5 flex flex-col items-start gap-3 md:mb-6">
+            <BackLink fallback={routes.catalog} className="catalog-back-link" />
+            <h1 className="font-display text-ink text-[26px] font-black md:text-3xl">
+              Tu carrito
+            </h1>
+          </div>
 
           {lines.length === 0 ? (
             <div className="rounded-lg border border-dashed border-black/10 bg-white p-12 text-center">

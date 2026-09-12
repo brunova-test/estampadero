@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { routes } from "elestampadero/shared/config/routes";
 import { formatCents } from "elestampadero/shared/lib/money";
-import { Badge, Container } from "elestampadero/shared/ui";
+import { BackLink, Badge, Container } from "elestampadero/shared/ui";
 import { PaymentMethodPanel } from "elestampadero/widgets/payment-method-panel";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/server";
@@ -82,6 +82,12 @@ export async function OrderConfirmationView({
         <Container className="py-6 md:py-10">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3 md:mb-6">
             <div>
+              {!isPaid ? (
+                <BackLink
+                  fallback={routes.checkout}
+                  className="catalog-back-link mb-3"
+                />
+              ) : null}
               <span className="text-muted font-mono text-xs uppercase">
                 Pedido #{String(order.orderNumber).padStart(6, "0")}
               </span>

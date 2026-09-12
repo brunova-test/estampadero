@@ -1799,7 +1799,7 @@
 }
 .catalog-club-stores {
   display: grid;
-  grid-auto-columns: minmax(250px, 1fr);
+  grid-auto-columns: minmax(180px, 1fr);
   grid-auto-flow: column;
   gap: 10px;
   overflow-x: auto;
@@ -1807,6 +1807,9 @@
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+.catalog-club-stores.is-scrolling {
+  scroll-snap-type: none;
 }
 .catalog-club-stores::-webkit-scrollbar {
   display: none;
@@ -1951,54 +1954,74 @@
 .catalog-club-store-card {
   position: relative;
   display: grid;
-  min-height: 104px;
-  grid-template-columns: 72px minmax(0, 1fr) 42px;
+  min-height: 90px;
+  grid-template-columns: 56px minmax(0, 1fr);
   align-items: center;
-  gap: 11px;
+  gap: 8px;
   overflow: hidden;
-  border: 1px solid rgb(199 209 255 / 42%);
-  border-radius: 11px;
-  padding: 11px;
-  background: linear-gradient(
-    135deg,
-    rgb(255 255 255 / 5%),
-    rgb(103 50 188 / 9%)
-  );
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 7px;
+  padding: 8px 10px;
+  background: #17131f;
   color: #ffffff;
   text-decoration: none;
   scroll-snap-align: start;
   transition:
     border-color 180ms ease,
-    background-color 180ms ease,
-    color 180ms ease,
+    box-shadow 180ms ease,
     transform 180ms ease;
 }
 .catalog-club-store-card:hover,
 .catalog-club-store-card:focus-visible,
 .catalog-club-store-card.is-active {
-  border-color: #80ffdb;
-  background: linear-gradient(
-    135deg,
-    rgb(128 255 219 / 10%),
-    rgb(103 50 188 / 16%)
-  );
+  border-color: #8b5cf6;
   color: #ffffff;
-  transform: translateY(-2px);
   outline: none;
+}
+.catalog-club-store-card.is-active {
+  border-color: #d7ab62;
+  box-shadow: 0 0 0 1px rgb(215 171 98 / 30%);
+}
+.catalog-club-store-card.is-active:hover,
+.catalog-club-store-card.is-active:focus-visible {
+  border-color: #8b5cf6;
+  box-shadow: none;
+}
+.catalog-club-store-card__background,
+.catalog-club-store-card__shade {
+  position: absolute;
+  inset: 0;
+}
+.catalog-club-store-card__background {
+  z-index: 0;
+}
+.catalog-club-store-card__background img {
+  object-position: center 20%;
+  transition: transform 320ms ease;
+}
+.catalog-club-store-card__shade {
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgb(8 7 14 / 92%) 0%, rgb(8 7 14 / 63%) 58%, rgb(8 7 14 / 28%) 100%),
+    linear-gradient(0deg, rgb(8 7 14 / 24%), rgb(8 7 14 / 24%));
 }
 .catalog-club-store-card__logo {
   position: relative;
-  width: 72px;
-  height: 72px;
-  overflow: hidden;
-  border: 2px solid rgb(255 255 255 / 72%);
-  border-radius: 9px;
-  background: #ffffff;
+  z-index: 2;
+  width: 56px;
+  height: 56px;
+  filter: drop-shadow(0 3px 5px rgb(0 0 0 / 55%));
 }
 .catalog-club-store-card__logo-image {
-  transform: scale(1.04);
+  top: 50% !important;
+  left: 50% !important;
+  width: 46px !important;
+  height: 46px !important;
+  transform: translate(-50%, -50%);
 }
 .catalog-club-store-card__copy {
+  position: relative;
+  z-index: 2;
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -2006,10 +2029,10 @@
 }
 .catalog-club-store-card__copy strong {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(14px, 1.15vw, 16px);
+  font-size: clamp(16px, 1.18vw, 18px);
   font-weight: 800;
   letter-spacing: -0.018em;
-  line-height: 1.12;
+  line-height: 1.15;
   text-wrap: balance;
 }
 .catalog-club-store-card__copy small {
@@ -2029,7 +2052,7 @@
   background: rgb(27 211 187 / 8%);
   color: #80ffdb;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 700;
 }
@@ -2060,7 +2083,7 @@
 
 @media (min-width: 980px) {
   .catalog-club-stores {
-    grid-auto-columns: minmax(220px, 1fr);
+    grid-auto-columns: minmax(180px, 1fr);
   }
   .catalog-club-stores.is-carousel {
     grid-auto-columns: calc((100% - 30px) / 4);
@@ -2082,14 +2105,14 @@
     grid-auto-columns: minmax(250px, 84vw);
   }
   .catalog-club-store-card {
-    min-height: 94px;
-    grid-template-columns: 64px minmax(0, 1fr) 38px;
-    gap: 10px;
-    padding: 10px;
+    min-height: 84px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
   }
   .catalog-club-store-card__logo {
-    width: 64px;
-    height: 64px;
+    width: 52px;
+    height: 52px;
   }
   .catalog-club-store-card__action {
     width: 38px;
@@ -6956,6 +6979,12 @@ a[data-nav-loading="true"] {
   .brand-action[data-variant="mint"]:hover {
     background-color: #9affdf;
     box-shadow: none;
+  }
+
+  .brand-action.payment-submit-button:hover:not(:disabled),
+  .brand-action.payment-submit-button:focus-visible:not(:disabled) {
+    background-color: var(--color-deep);
+    color: white;
   }
 
   .brand-action[data-variant="outline"]:hover {

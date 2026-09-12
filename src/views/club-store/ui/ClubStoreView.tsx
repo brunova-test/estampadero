@@ -120,10 +120,6 @@ export async function ClubStoreView({
                 Productos oficiales
               </h2>
             </div>
-            <p className="text-muted max-w-lg text-sm sm:text-right">
-              Comprá directamente desde la tienda de {club.name}. Los productos
-              de esta página pertenecen exclusivamente a la institución.
-            </p>
           </div>
           <CatalogExplorer
             products={products}
@@ -134,6 +130,7 @@ export async function ClubStoreView({
             activeSearch={searchParams.q}
             basePath={routes.clubStore(slug)}
             showProductCount={false}
+            liftSortControl
           />
         </Container>
       </main>

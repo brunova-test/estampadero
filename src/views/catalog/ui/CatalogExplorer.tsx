@@ -30,6 +30,7 @@ interface CatalogExplorerProps {
   basePath?: string;
   showProductCount?: boolean;
   showInstitutionFilter?: boolean;
+  liftSortControl?: boolean;
 }
 
 export function CatalogExplorer({
@@ -43,6 +44,7 @@ export function CatalogExplorer({
   basePath,
   showProductCount = true,
   showInstitutionFilter = false,
+  liftSortControl = false,
 }: CatalogExplorerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -134,8 +136,12 @@ export function CatalogExplorer({
         className="relative isolate min-h-[320px] flex-1"
       >
         <div
-          className={`catalog-products-meta text-muted relative z-[100] mb-5 flex flex-wrap items-center gap-3 text-base ${
-            showProductCount ? "justify-between" : "justify-end"
+          className={`catalog-products-meta text-muted z-[100] flex flex-wrap items-center gap-3 text-base ${
+            showProductCount
+              ? "relative mb-5 justify-between"
+              : liftSortControl
+                ? "relative mb-4 justify-end md:absolute md:-top-[4.65rem] md:right-0 md:mb-0"
+                : "relative mb-5 justify-end"
           }`}
         >
           {showProductCount ? (

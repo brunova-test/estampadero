@@ -24,6 +24,7 @@ export function CatalogClubStores({
   activeClub?: string;
 }) {
   const storesRef = useRef<HTMLDivElement>(null);
+  const scrollAnimationRef = useRef<number | null>(null);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -52,13 +53,61 @@ export function CatalogClubStores({
     };
   }, [clubs, updateScrollControls]);
 
+  useEffect(
+    () => () => {
+      if (scrollAnimationRef.current !== null) {
+        window.cancelAnimationFrame(scrollAnimationRef.current);
+      }
+      storesRef.current?.classList.remove("is-scrolling");
+    },
+    [],
+  );
+
   function scrollStores(direction: -1 | 1) {
     const stores = storesRef.current;
     if (!stores) return;
-    stores.scrollBy({
-      left: direction * Math.max(220, stores.clientWidth * 0.72),
-      behavior: "smooth",
-    });
+
+    if (scrollAnimationRef.current !== null) {
+      window.cancelAnimationFrame(scrollAnimationRef.current);
+    }
+
+    stores.classList.add("is-scrolling");
+
+    const start = stores.scrollLeft;
+    const distance = direction * Math.max(220, stores.clientWidth * 0.72);
+    const target = Math.min(
+      Math.max(0, start + distance),
+      stores.scrollWidth - stores.clientWidth,
+    );
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      stores.scrollLeft = target;
+      stores.classList.remove("is-scrolling");
+      updateScrollControls();
+      return;
+    }
+
+    const duration = 760;
+    const startedAt = performance.now();
+    const easeInOutQuart = (progress: number) =>
+      progress < 0.5
+        ? 8 * progress * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 4) / 2;
+
+    const animate = (now: number) => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      stores.scrollLeft = start + (target - start) * easeInOutQuart(progress);
+
+      if (progress < 1) {
+        scrollAnimationRef.current = window.requestAnimationFrame(animate);
+      } else {
+        scrollAnimationRef.current = null;
+        stores.classList.remove("is-scrolling");
+        updateScrollControls();
+      }
+    };
+
+    scrollAnimationRef.current = window.requestAnimationFrame(animate);
   }
 
   if (!clubs.length) return null;
@@ -121,8 +170,27 @@ export function CatalogClubStores({
                   role="listitem"
                   href={routes.clubStore(club.slug)}
                   aria-current={isActive ? "page" : undefined}
+                  aria-label={`${club.name}, ${club.productCount} producto${club.productCount === 1 ? "" : "s"}`}
                   className={`catalog-club-store-card ${isActive ? "is-active" : ""}`}
                 >
+                  {branding.bannerUrl ? (
+                    <span
+                      className="catalog-club-store-card__background"
+                      aria-hidden="true"
+                    >
+                      <Image
+                        src={branding.bannerUrl}
+                        alt=""
+                        fill
+                        sizes="220px"
+                        className="object-cover"
+                      />
+                    </span>
+                  ) : null}
+                  <span
+                    className="catalog-club-store-card__shade"
+                    aria-hidden="true"
+                  />
                   <span className="catalog-club-store-card__logo">
                     <Image
                       src={
@@ -138,25 +206,10 @@ export function CatalogClubStores({
                   </span>
                   <span className="catalog-club-store-card__copy">
                     <strong>{club.name}</strong>
-                    <small>{club.sport ?? "Institución asociada"}</small>
                     <em>
                       {club.productCount} producto
                       {club.productCount === 1 ? "" : "s"}
                     </em>
-                  </span>
-                  <span
-                    className="catalog-club-store-card__action"
-                    aria-hidden="true"
-                  >
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M5 12h14m-5-5 5 5-5 5"
-                        stroke="currentColor"
-                        strokeWidth="2.25"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
                   </span>
                 </Link>
               );

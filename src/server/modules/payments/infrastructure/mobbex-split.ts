@@ -38,7 +38,7 @@ export async function buildMobbexSplit(
     if (!club?.mobbexEntityId) {
       throw new TRPCError({
         code: "PRECONDITION_FAILED",
-        message: `${club?.name ?? "Un club del pedido"} todavía no tiene configurada su entidad de Mobbex.`,
+        message: "Los pagos aún no están configurados.",
       });
     }
     const rate = await resolveRateForProductUseCase(
@@ -82,8 +82,7 @@ export async function buildMobbexSplit(
     if (!env.MOBBEX_ENTITY_ID) {
       throw new TRPCError({
         code: "PRECONDITION_FAILED",
-        message:
-          "Falta configurar la entidad Mobbex de El Estampadero para productos propios y envío.",
+        message: "Los pagos aún no están configurados.",
       });
     }
     split.push({

@@ -41,7 +41,7 @@ export const prismaPaymentsRepository: PaymentsRepository = {
       // Serialize payment-attempt creation per order without holding the lock
       // during the provider request. Once a row exists, every concurrent
       // caller observes it and cannot create another active charge.
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${input.orderId}))`;
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${input.orderId}))`;
 
       const replay = await tx.payment.findUnique({
         where: { idempotencyKey: input.idempotencyKey },

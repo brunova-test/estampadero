@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import { cartSubtotalCents, useCartStore } from "elestampadero/entities/cart";
 import { routes } from "elestampadero/shared/config/routes";
 import { formatCents } from "elestampadero/shared/lib/money";
-import { Button, Container } from "elestampadero/shared/ui";
+import { BackLink, Button, Container } from "elestampadero/shared/ui";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/react";
 
@@ -184,9 +184,12 @@ export function CheckoutView() {
       <StoreHeader />
       <main className="flex-1">
         <Container className="py-6 md:py-10">
-          <h1 className="font-display text-ink mb-5 text-[26px] font-black md:mb-6 md:text-2xl">
-            Finalizar compra
-          </h1>
+          <div className="mb-5 flex flex-col items-start gap-3 md:mb-6">
+            <BackLink fallback={routes.cart} className="catalog-back-link" />
+            <h1 className="font-display text-ink text-[26px] font-black md:text-2xl">
+              Finalizar compra
+            </h1>
+          </div>
 
           <form
             onSubmit={handleSubmit}

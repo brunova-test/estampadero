@@ -121,7 +121,7 @@ export function PayWithMobbexButton({
       <Button
         type="button"
         variant="mint"
-        className="!min-h-12 !w-full !px-4 !py-3 !text-base !leading-tight"
+        className="payment-submit-button !min-h-12 !w-full !px-4 !py-3 !text-base !leading-tight"
         disabled={createSession.isPending || checkoutOpen}
         loading={createSession.isPending}
         loadingLabel="Abriendo el pago seguro"
