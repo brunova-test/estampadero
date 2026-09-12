@@ -52,7 +52,7 @@ export function StoreHeader() {
 
   return (
     <header className="bg-ink sticky top-0 z-50 text-white md:relative">
-      <Container className="flex h-[70px] max-w-[2000px] items-center justify-between px-5 md:h-[76px] md:px-7 xl:h-[84px] xl:px-9 2xl:h-[104px] 2xl:px-12">
+      <Container className="relative flex h-[70px] max-w-[2000px] items-center justify-between px-5 md:h-[76px] md:px-7 xl:h-[84px] xl:px-9 2xl:h-[104px] 2xl:px-12">
         <button type="button" aria-label="Abrir menú" className="hidden">
           ☰
         </button>

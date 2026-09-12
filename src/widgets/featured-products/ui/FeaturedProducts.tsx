@@ -63,7 +63,7 @@ export function FeaturedProducts({
   }
 
   return (
-    <section className="flex flex-col gap-[18px] border-t border-[#eee] bg-white px-5 py-9 sm:px-8 md:gap-[clamp(24px,1.8vw,36px)] md:border-0 md:px-[clamp(40px,4vw,80px)] md:py-[clamp(36px,2.8vw,56px)]">
+    <section className="featured-products-section flex flex-col gap-[18px] border-t border-[#eee] bg-white px-5 py-9 sm:px-8 md:gap-[clamp(24px,1.8vw,36px)] md:border-0 md:px-[clamp(40px,4vw,80px)] md:py-[clamp(36px,2.8vw,56px)]">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-baseline sm:justify-between">
         <h2 className="font-display text-[28px] leading-none font-black md:text-[clamp(34px,2.8vw,56px)]">
           Destacados de la semana
@@ -71,7 +71,7 @@ export function FeaturedProducts({
         <div
           role="tablist"
           aria-label="Filtrar productos destacados"
-          className="text-muted flex max-w-full flex-nowrap items-center gap-x-[18px] overflow-x-auto font-mono text-[13px] font-bold uppercase md:flex-wrap md:gap-x-[clamp(16px,1.4vw,28px)] md:gap-y-2 md:overflow-visible md:font-sans md:text-[clamp(16px,1.3vw,26px)] md:normal-case"
+          className="featured-products-tabs text-muted flex max-w-full flex-nowrap items-center gap-x-[18px] overflow-x-auto font-mono text-[13px] font-bold uppercase md:flex-wrap md:gap-x-[clamp(16px,1.4vw,28px)] md:gap-y-2 md:overflow-visible md:font-sans md:text-[clamp(16px,1.3vw,26px)] md:normal-case"
         >
           {TABS.map((tab, index) => (
             <button

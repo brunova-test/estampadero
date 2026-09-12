@@ -7271,6 +7271,98 @@ a[data-nav-loading="true"] {
   font-size: clamp(23px, 1.7vw, 29px);
 }
 
+@media (max-width: 767px) {
+  .featured-products-section {
+    gap: 16px;
+    padding: 28px 16px 32px;
+    overflow: hidden;
+  }
+
+  .featured-products-section h2 {
+    font-size: clamp(25px, 7.4vw, 30px);
+    line-height: 1.02;
+  }
+
+  .featured-products-tabs {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    overflow: visible;
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+
+  .featured-products-tabs .featured-products-tab {
+    min-width: 0;
+    padding: 8px 4px;
+    border-radius: 8px;
+    line-height: 1.15;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .featured-products-tabs .featured-products-tab[aria-selected="true"] {
+    background: rgb(67 97 238 / 9%);
+  }
+
+  .featured-products-grid {
+    width: max-content;
+    min-width: 100%;
+    gap: 8px;
+  }
+
+  .featured-products-grid .catalog-product-card {
+    flex: 0 0 calc((100vw - 40px) / 2);
+    width: calc((100vw - 40px) / 2);
+    height: auto;
+    min-height: 0;
+  }
+
+  .featured-products-grid .catalog-product-card__media {
+    aspect-ratio: 1 / 1.08;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .featured-products-grid .catalog-product-card__media > img {
+    scale: 1.12;
+  }
+
+  .featured-products-grid .catalog-product-card__body {
+    min-height: 0;
+    overflow: visible;
+    padding: 9px 8px 8px;
+  }
+
+  .featured-products-grid .catalog-product-card__title h3 {
+    font-size: clamp(13px, 3.7vw, 15px);
+    line-height: 1.12;
+  }
+
+  .featured-products-grid .catalog-product-card__price-value {
+    font-size: clamp(18px, 5.2vw, 21px);
+  }
+
+  .featured-products-grid .catalog-product-card__cart-button {
+    min-height: 42px;
+    padding: 7px 4px;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+
+  .featured-products-arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .featured-products-arrow--previous {
+    left: -10px;
+  }
+
+  .featured-products-arrow--next {
+    right: -10px;
+  }
+}
+
 @media (max-width: 639px) {
   .store-footer-about .brand-footer-cut {
     clip-path: polygon(38% 0, 100% 0, 100% 100%, 0 100%);
