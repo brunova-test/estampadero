@@ -133,7 +133,7 @@ export function CatalogExplorer({
 
       <section
         aria-busy={isPending}
-        className="relative isolate min-h-[320px] flex-1"
+        className="catalog-products relative isolate min-h-[320px] min-w-0 flex-1"
       >
         <div
           className={`catalog-products-meta text-muted z-[100] flex flex-wrap items-center gap-3 text-base ${
@@ -149,7 +149,10 @@ export function CatalogExplorer({
               {products.length} producto{products.length === 1 ? "" : "s"}
             </p>
           ) : null}
-          <div ref={sortMenuRef} className="relative min-w-44">
+          <div
+            ref={sortMenuRef}
+            className="catalog-sort-control relative min-w-44"
+          >
             <button
               type="button"
               onClick={() => setIsSortOpen((isOpen) => !isOpen)}

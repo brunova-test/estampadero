@@ -2102,17 +2102,36 @@
     margin-inline: 18px;
   }
   .catalog-club-stores {
-    grid-auto-columns: minmax(250px, 84vw);
+    grid-auto-columns: calc((100% - 8px) / 2);
+    gap: 8px;
   }
   .catalog-club-store-card {
-    min-height: 84px;
-    grid-template-columns: 52px minmax(0, 1fr);
-    gap: 8px;
-    padding: 8px;
+    min-height: 74px;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 6px;
+    padding: 6px;
   }
   .catalog-club-store-card__logo {
-    width: 52px;
-    height: 52px;
+    width: 38px;
+    height: 38px;
+  }
+  .catalog-club-store-card__logo-image {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .catalog-club-store-card__copy {
+    gap: 2px;
+  }
+  .catalog-club-store-card__copy strong {
+    font-size: clamp(11px, 3.45vw, 13px);
+    line-height: 1.1;
+  }
+  .catalog-club-store-card__copy em {
+    max-width: 100%;
+    padding: 2px 6px;
+    font-size: 9px;
+    line-height: 1.1;
+    white-space: nowrap;
   }
   .catalog-club-store-card__action {
     width: 38px;
@@ -2124,8 +2143,8 @@
     height: 18px;
   }
   .catalog-club-stores-container {
-    padding-top: 26px;
-    padding-bottom: 28px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
   .catalog-club-stores-watermark {
     top: 76px;
@@ -2133,7 +2152,7 @@
     font-size: 26px;
   }
   .catalog-club-stores-heading {
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
   .catalog-club-stores-banner h1 {
     font-size: clamp(1.65rem, 8vw, 2.2rem);
@@ -7136,11 +7155,11 @@ a[data-nav-loading="true"] {
   }
 
   .catalog-explorer > section {
-    padding-top: 16px;
+    padding-top: 10px;
   }
 
   .catalog-quick-filters {
-    scrollbar-width: none;
+    display: none;
   }
 
   .catalog-quick-filters::-webkit-scrollbar {
@@ -7148,7 +7167,7 @@ a[data-nav-loading="true"] {
   }
 
   .catalog-product-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -7227,12 +7246,6 @@ a[data-nav-loading="true"] {
 
   .featured-products-grid .catalog-product-card__price-value {
     font-size: 20px;
-  }
-}
-
-@media (min-width: 640px) and (max-width: 767px) {
-  .catalog-product-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -20822,10 +20835,106 @@ body .admin-editor-actions {
   outline-offset: 3px;
 }
 
-/* Escala de lectura del catálogo y de las tiendas filtradas por club. */
+/* Escala de lectura del catálogo y de las tiendas filtradas por club.
+   La ampliación se limita a escritorio: `zoom` sobre mobile hacía que filtros
+   y tarjetas fueran más anchos que el viewport. */
 .catalog-explorer--scaled {
-  width: calc(100% / 1.1);
-  zoom: 1.1;
+  width: 100%;
+  min-width: 0;
+}
+@media (min-width: 1024px) {
+  .catalog-explorer--scaled {
+    width: calc(100% / 1.1);
+    zoom: 1.1;
+  }
+}
+@media (max-width: 1023px) {
+  .catalog-container,
+  .catalog-products,
+  .catalog-filters {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .catalog-filters {
+    width: 100%;
+  }
+
+  .catalog-filters-panel ul,
+  .catalog-filters-panel li,
+  .catalog-filters-panel a,
+  .catalog-filters-panel a > span {
+    min-width: 0;
+  }
+
+  .catalog-filters-panel a > span:last-child {
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 767px) {
+  .catalog-container {
+    padding-top: 0;
+  }
+
+  .catalog-filters-mobile-toolbar {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    border-radius: 0 0 12px 12px;
+    padding: 12px;
+    overflow: visible;
+  }
+
+  .catalog-filters-mobile-actions,
+  .catalog-filters-mobile-actions form,
+  .catalog-filters-mobile-actions input {
+    min-width: 0;
+  }
+
+  .catalog-filters-mobile-actions {
+    width: 100%;
+  }
+
+  .catalog-filters-panel {
+    width: 100%;
+    margin-top: 8px;
+    padding: 14px;
+  }
+
+  .catalog-products-meta {
+    width: 100%;
+    align-items: stretch;
+    margin-bottom: 14px;
+  }
+
+  .catalog-products-count {
+    width: 100%;
+    margin: 0;
+  }
+
+  .catalog-sort-control {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-sort-control > button {
+    width: 100%;
+  }
+
+}
+@media (max-width: 420px) {
+  .catalog-filters-mobile-actions {
+    flex-direction: column;
+  }
+
+  .catalog-filters-mobile-actions > button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .catalog-filters-panel ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .catalog-product-card__club,
 .product-detail-club {

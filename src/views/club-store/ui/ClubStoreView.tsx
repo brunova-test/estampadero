@@ -64,7 +64,11 @@ export async function ClubStoreView({
             <div className="club-store-hero__pattern" aria-hidden="true" />
           )}
           <Container className="relative z-10 py-7 sm:py-10 lg:py-12">
-            <BackLink fallback={routes.catalog} className="club-store-back-link" />
+            <BackLink
+              fallback={routes.catalog}
+              alwaysUseFallback
+              className="club-store-back-link"
+            />
             <nav className="mb-5 flex items-center gap-2 text-sm text-white/70">
               <Link href={routes.home} className="hover:text-mint">
                 Inicio

@@ -124,9 +124,9 @@ export function ProductFilters({
   }
 
   return (
-    <aside className="catalog-filters shrink-0 lg:w-64">
-      <div className="bg-ink -mx-4 px-4 pt-5 pb-5 text-white sm:-mx-6 sm:px-6 lg:hidden">
-        <div className="flex gap-2.5">
+    <aside className="catalog-filters min-w-0 shrink-0 lg:w-64">
+      <div className="catalog-filters-mobile-toolbar bg-ink -mx-4 px-4 pt-5 pb-5 text-white sm:-mx-6 sm:px-6 lg:hidden">
+        <div className="catalog-filters-mobile-actions flex gap-2.5">
           <form onSubmit={handleSearch} className="relative min-w-0 flex-1">
             <svg
               aria-hidden="true"
@@ -228,7 +228,7 @@ export function ProductFilters({
       </div>
 
       <div
-        className={`${mobileOpen ? "block" : "hidden"} border-deep/10 mt-3 rounded-2xl border bg-white p-4 shadow-[0_16px_40px_-30px_rgba(46,4,112,.5)] sm:p-5 lg:mt-0 lg:block`}
+        className={`catalog-filters-panel ${mobileOpen ? "block" : "hidden"} border-deep/10 mt-3 rounded-2xl border bg-white p-4 shadow-[0_16px_40px_-30px_rgba(46,4,112,.5)] sm:p-5 lg:mt-0 lg:block`}
       >
         <div className="border-deep/10 mb-5 flex items-center justify-between gap-3 border-b pb-4">
           <h2 className="font-display text-ink text-xl font-black tracking-tight sm:text-2xl">
