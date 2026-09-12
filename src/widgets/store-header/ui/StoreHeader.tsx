@@ -14,7 +14,6 @@ import { StoreNav } from "./StoreNav";
 
 const NAV_LINKS = [
   { label: "Catálogo", href: routes.catalog },
-  { label: "Estampados", href: routes.specialRequest },
   { label: "Egresados", href: routes.graduates },
   { label: "Clubes", href: routes.clubs },
   { label: "Promociones", href: routes.promotions },

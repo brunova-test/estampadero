@@ -67,7 +67,7 @@ export function CategoryShowcase() {
             <Link
               key={line.slug}
               href={`${routes.catalog}?linea=${line.slug}`}
-              className="group hover:border-mint focus-visible:border-mint relative isolate flex min-h-[130px] flex-col items-center justify-center gap-2 overflow-hidden border-2 border-[#e3e0ea] bg-white p-3 text-center transition-[transform,border-color,background-color,box-shadow] duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-1.5 hover:bg-[#fbfffe] hover:shadow-[0_18px_38px_-22px_rgba(54,18,126,.55)] motion-reduce:transform-none motion-reduce:transition-none md:min-h-[165px]"
+              className="category-line-card group hover:border-mint focus-visible:border-mint relative isolate flex min-h-[130px] flex-col items-center justify-center gap-2 overflow-hidden border-2 border-[#e3e0ea] bg-white p-3 text-center transition-[border-color,background-color,color] duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:bg-[#9affdf] focus-visible:bg-[#9affdf] motion-reduce:transition-none md:min-h-[165px]"
             >
               <span
                 aria-hidden="true"
@@ -77,7 +77,7 @@ export function CategoryShowcase() {
                 aria-hidden="true"
                 className="bg-mint pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none"
               />
-              <div className="relative z-10 h-[60px] w-full transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:-translate-y-1 group-hover:scale-[1.06] group-focus-visible:-translate-y-1 group-focus-visible:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none md:h-[clamp(82px,5.9vw,118px)]">
+              <div className="relative z-10 h-[60px] w-full transition-[filter] duration-500 md:h-[clamp(82px,5.9vw,118px)]">
                 <Image
                   src={line.image}
                   alt=""
@@ -85,7 +85,7 @@ export function CategoryShowcase() {
                   className="object-contain transition-[filter] duration-500 group-hover:drop-shadow-[0_8px_10px_rgba(62,6,142,.18)] group-focus-visible:drop-shadow-[0_8px_10px_rgba(62,6,142,.18)] motion-reduce:transition-none"
                 />
               </div>
-              <span className="font-display text-mid group-hover:text-deep group-focus-visible:text-deep relative z-10 text-base font-bold transition-[color,transform] duration-300 group-hover:translate-y-[-2px] group-focus-visible:translate-y-[-2px] motion-reduce:transform-none motion-reduce:transition-none md:text-[clamp(18px,1.5vw,30px)]">
+              <span className="font-display text-mid group-hover:text-deep group-focus-visible:text-deep relative z-10 text-base font-bold transition-colors duration-500 md:text-[clamp(18px,1.5vw,30px)]">
                 {line.label}
               </span>
             </Link>
