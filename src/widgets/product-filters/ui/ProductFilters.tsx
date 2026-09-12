@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { FormEvent, MouseEvent, ReactNode } from "react";
 import { useState } from "react";
 
 import { routes } from "elestampadero/shared/config/routes";
+import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
 
 const LINES = [
   { label: "Club", value: "CLUB" },
@@ -16,12 +18,14 @@ const LINES = [
 
 interface ProductFiltersProps {
   categories: { slug: string; name: string }[];
+  clubs: { slug: string; name: string; logoUrl: string | null }[];
   activeCategory?: string;
   activeLine?: string;
   activeClub?: string;
   activeSearch?: string;
   pendingHref?: string | null;
   basePath?: string;
+  showInstitutionFilter?: boolean;
   onNavigate: (href: string) => void;
 }
 
@@ -89,12 +93,14 @@ function PendingFilterLink({
 
 export function ProductFilters({
   categories,
+  clubs = [],
   activeCategory,
   activeLine,
   activeClub,
   activeSearch,
   pendingHref = null,
   basePath = routes.catalog,
+  showInstitutionFilter = false,
   onNavigate,
 }: ProductFiltersProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -229,10 +235,8 @@ export function ProductFilters({
             Filtrar
           </h2>
           <PendingFilterLink
-            href={buildHref({ club: activeClub }, basePath)}
-            isPending={
-              pendingHref === buildHref({ club: activeClub }, basePath)
-            }
+            href={buildHref({}, basePath)}
+            isPending={pendingHref === buildHref({}, basePath)}
             onNavigate={onNavigate}
             className="border-deep/15 text-deep hover:border-mint hover:bg-mint hover:text-deep rounded-full border px-3 py-1.5 text-xs font-bold transition-[color,background-color,border-color,transform] duration-300 hover:-translate-y-0.5"
           >
@@ -315,6 +319,91 @@ export function ProductFilters({
                     }`}
                   >
                     {line.label}
+                  </PendingFilterLink>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+
+        {showInstitutionFilter && clubs.length ? (
+          <>
+            <h3 className="text-muted mt-6 mb-2 text-xs font-bold tracking-[.12em] uppercase">
+              Instituciones
+            </h3>
+            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
+              <li>
+                <PendingFilterLink
+                  href={buildHref(
+                    {
+                      categoria: activeCategory,
+                      linea: activeLine,
+                    },
+                    basePath,
+                  )}
+                  isPending={
+                    pendingHref ===
+                    buildHref(
+                      {
+                        categoria: activeCategory,
+                        linea: activeLine,
+                      },
+                      basePath,
+                    )
+                  }
+                  onNavigate={onNavigate}
+                  className={`group flex min-h-11 items-center rounded-xl border px-3 py-2.5 text-sm font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 ${
+                    !activeClub
+                      ? "border-deep bg-deep text-white shadow-[0_9px_20px_-13px_rgba(46,4,112,.85)]"
+                      : "border-deep/10 bg-paper/55 text-ink hover:border-mint hover:bg-mint/20 hover:shadow-[0_9px_20px_-15px_rgba(46,4,112,.55)]"
+                  }`}
+                >
+                  Todas
+                </PendingFilterLink>
+              </li>
+              {clubs.map((club) => (
+                <li key={club.slug}>
+                  <PendingFilterLink
+                    href={buildHref(
+                      {
+                        categoria: activeCategory,
+                        linea: activeLine,
+                        club: club.slug,
+                      },
+                      basePath,
+                    )}
+                    isPending={
+                      pendingHref ===
+                      buildHref(
+                        {
+                          categoria: activeCategory,
+                          linea: activeLine,
+                          club: club.slug,
+                        },
+                        basePath,
+                      )
+                    }
+                    onNavigate={onNavigate}
+                    className={`group flex min-h-11 items-center rounded-xl border px-3 py-2.5 text-sm font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 ${
+                      activeClub === club.slug
+                        ? "border-deep bg-deep text-white shadow-[0_9px_20px_-13px_rgba(46,4,112,.85)]"
+                        : "border-deep/10 bg-paper/55 text-ink hover:border-mint hover:bg-mint/20 hover:shadow-[0_9px_20px_-15px_rgba(46,4,112,.55)]"
+                    }`}
+                  >
+                    <span className="relative size-7 shrink-0 overflow-hidden rounded-md border border-white/70 bg-white">
+                      <Image
+                        src={
+                          getClubStoreBranding(club.slug).logoUrl ??
+                          club.logoUrl ??
+                          "/images/linea-club.png"
+                        }
+                        alt=""
+                        fill
+                        sizes="28px"
+                        className="object-contain"
+                      />
+                    </span>
+                    <span>{club.name}</span>
                   </PendingFilterLink>
                 </li>
               ))}

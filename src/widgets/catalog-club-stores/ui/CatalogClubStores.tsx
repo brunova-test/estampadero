@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { getClubStoreBranding } from "elestampadero/shared/config/club-store-branding";
 import { routes } from "elestampadero/shared/config/routes";
-import { Container } from "elestampadero/shared/ui";
+import { BackLink, Container } from "elestampadero/shared/ui";
 
 interface CatalogClubStore {
   slug: string;
@@ -67,6 +67,7 @@ export function CatalogClubStores({
     <section className="club-store-hero catalog-club-stores-banner relative overflow-hidden text-white">
       <div className="club-store-hero__pattern" aria-hidden="true" />
       <Container className="catalog-club-stores-container relative z-10">
+        <BackLink fallback="/" className="catalog-banner-back-link" />
         <span className="catalog-club-stores-watermark" aria-hidden="true">
           Instituciones
         </span>

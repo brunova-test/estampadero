@@ -1,4 +1,4 @@
-import { BackLink, Container } from "elestampadero/shared/ui";
+import { Container } from "elestampadero/shared/ui";
 import { CatalogClubStores } from "elestampadero/widgets/catalog-club-stores";
 import { StoreHeader } from "elestampadero/widgets/store-header";
 import { api } from "elestampadero/trpc/server";
@@ -42,27 +42,22 @@ export async function CatalogView({ searchParams }: CatalogViewProps) {
     api.catalog.categories(),
     api.clubs.publicList(),
   ]);
-  const clubName = searchParams.club ? products[0]?.club?.name : null;
-
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <StoreHeader />
       <main className="flex-1">
         <CatalogClubStores clubs={clubs} activeClub={searchParams.club} />
-        <Container className="catalog-container pt-0 pb-6 md:py-10">
-          <BackLink fallback="/" className="catalog-back-link" />
-          <h1 className="catalog-title font-display text-ink mb-6 hidden text-2xl font-black lg:block">
-            {searchParams.club
-              ? `Productos de ${clubName ?? searchParams.club}`
-              : "Indumentaria"}
-          </h1>
+        <Container className="catalog-container pt-4 pb-6 md:pb-10">
           <CatalogExplorer
             products={products}
             categories={categories}
+            clubs={clubs}
             activeCategory={searchParams.categoria}
             activeLine={line}
             activeClub={searchParams.club}
             activeSearch={searchParams.q}
+            showProductCount={false}
+            showInstitutionFilter
           />
         </Container>
       </main>

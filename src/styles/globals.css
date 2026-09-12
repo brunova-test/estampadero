@@ -1709,6 +1709,16 @@
   padding-top: clamp(28px, 3vw, 42px);
   padding-bottom: clamp(28px, 3vw, 42px);
 }
+.catalog-banner-back-link {
+  position: absolute;
+  z-index: 4;
+  top: 14px;
+  right: 24px;
+  min-height: 32px;
+  padding: 5px 12px 5px 9px;
+  color: #ffffff;
+  font-size: 12px;
+}
 .catalog-club-stores-banner .club-store-hero__pattern {
   opacity: 0.3;
   background: repeating-linear-gradient(
@@ -1914,6 +1924,13 @@
 }
 
 @media (max-width: 640px) {
+  .catalog-banner-back-link {
+    top: 10px;
+    right: 16px;
+    min-height: 30px;
+    padding: 4px 10px 4px 8px;
+    font-size: 11px;
+  }
   .catalog-club-stores-shell {
     margin-inline: 18px;
   }
@@ -7308,7 +7325,7 @@ a[data-nav-loading="true"] {
 
 @media (min-width: 1024px) and (max-height: 800px) {
   .catalog-container {
-    padding-top: 24px;
+    padding-top: 16px;
     padding-bottom: 32px;
   }
 

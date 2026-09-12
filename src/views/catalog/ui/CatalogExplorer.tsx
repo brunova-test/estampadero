@@ -1,13 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AnimatePresence, m } from "motion/react";
+import { m } from "motion/react";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
 import type { ProductSummary } from "elestampadero/entities/product";
 import { ProductFilters } from "elestampadero/widgets/product-filters";
 import { ProductGrid } from "elestampadero/widgets/product-grid";
-import { SkeletonGrid } from "elestampadero/shared/ui/motion";
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -23,23 +22,27 @@ const SORT_OPTIONS: { value: CatalogSort; label: string }[] = [
 interface CatalogExplorerProps {
   products: ProductSummary[];
   categories: { slug: string; name: string }[];
+  clubs?: { slug: string; name: string; logoUrl: string | null }[];
   activeCategory?: string;
   activeLine?: string;
   activeClub?: string;
   activeSearch?: string;
   basePath?: string;
   showProductCount?: boolean;
+  showInstitutionFilter?: boolean;
 }
 
 export function CatalogExplorer({
   products,
   categories,
+  clubs = [],
   activeCategory,
   activeLine,
   activeClub,
   activeSearch,
   basePath,
   showProductCount = true,
+  showInstitutionFilter = false,
 }: CatalogExplorerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -115,12 +118,14 @@ export function CatalogExplorer({
     <div className="catalog-explorer catalog-explorer--scaled flex flex-col gap-8 lg:flex-row">
       <ProductFilters
         categories={categories}
+        clubs={clubs}
         activeCategory={displayedCategory}
         activeLine={displayedLine}
         activeClub={activeClub}
         activeSearch={activeSearch}
         pendingHref={isPending ? pendingHref : null}
         basePath={basePath}
+        showInstitutionFilter={showInstitutionFilter}
         onNavigate={handleFilterNavigation}
       />
 
@@ -195,11 +200,6 @@ export function CatalogExplorer({
         </div>
         <m.div
           className="relative z-0"
-          animate={{
-            opacity: isPending ? 0.2 : 1,
-            scale: isPending ? 0.992 : 1,
-          }}
-          transition={{ duration: 0.2 }}
         >
           <ProductGrid products={visibleProducts} />
           {pageCount > 1 ? (
@@ -245,13 +245,6 @@ export function CatalogExplorer({
             </nav>
           ) : null}
         </m.div>
-        <AnimatePresence>
-          {isPending ? (
-            <div className="absolute inset-x-0 top-8 z-10">
-              <SkeletonGrid count={8} />
-            </div>
-          ) : null}
-        </AnimatePresence>
       </section>
     </div>
   );
