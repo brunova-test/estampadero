@@ -6249,6 +6249,18 @@
     box-shadow: 0 24px 48px -24px rgb(46 4 112 / 58%);
   }
 
+  .promo-cta {
+    transition:
+      background-color 240ms ease,
+      color 240ms ease;
+  }
+
+  .promo-block:hover .promo-cta,
+  .promo-block:focus-visible .promo-cta {
+    background-color: #7c3aed;
+    color: #ffffff;
+  }
+
   .brand-action[data-variant="mint"].category-catalog-button:hover,
   .brand-action[data-variant="mint"].category-catalog-button:focus-visible {
     background-color: var(--color-mid);

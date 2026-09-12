@@ -57,7 +57,7 @@ export function InfoBlocks() {
             </p>
           ) : null}
         </div>
-        <span className="brand-cut bg-mint text-deep relative hidden px-[clamp(24px,2.2vw,44px)] py-[clamp(14px,1.1vw,22px)] text-[clamp(17px,1.4vw,28px)] font-bold whitespace-nowrap sm:block">
+        <span className="promo-cta brand-cut bg-mint text-deep relative hidden px-[clamp(24px,2.2vw,44px)] py-[clamp(14px,1.1vw,22px)] text-[clamp(17px,1.4vw,28px)] font-bold whitespace-nowrap sm:block">
           {promotion?.ctaLabel ?? "Ver promoción"}
         </span>
       </Link>
