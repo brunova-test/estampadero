@@ -195,11 +195,13 @@ export function ClubStoreManagementPanel({
   async function copyStoreUrl() {
     await navigator.clipboard.writeText(storeUrl);
     setCopied(true);
-    window.setTimeout(() => setCopied(false), 1_800);
+    window.setTimeout(() => setCopied(false), 3_000);
   }
 
   return (
-    <section className="admin-club-store-panel">
+    <section
+      className={`admin-club-store-panel ${mode === "portal" ? "admin-club-store-panel--portal" : ""}`}
+    >
       <div className="admin-club-store-panel__intro">
         <span>TIENDA INDIVIDUAL</span>
         <h2>Tienda y código QR</h2>
@@ -218,7 +220,27 @@ export function ClubStoreManagementPanel({
             {club.productCount} producto{club.productCount === 1 ? "" : "s"}{" "}
             asociados
           </p>
-          <code>{storeUrl || routes.clubStore(club.slug)}</code>
+          <div className="admin-club-store-card__url">
+            <code>{storeUrl || routes.clubStore(club.slug)}</code>
+            <button
+              type="button"
+              onClick={copyStoreUrl}
+              disabled={!storeUrl}
+              aria-label="Copiar enlace de la tienda"
+            >
+              {copied ? (
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="m5 12 4 4L19 6" />
+                </svg>
+              ) : (
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <rect x="8" y="8" width="11" height="11" rx="2" />
+                  <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+                </svg>
+              )}
+              {copied ? "Copiado" : "Copiar"}
+            </button>
+          </div>
           <div className="admin-club-store-card__actions">
             <Link href={routes.clubStore(club.slug)} target="_blank">
               Abrir tienda

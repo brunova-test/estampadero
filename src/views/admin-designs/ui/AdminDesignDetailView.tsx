@@ -387,16 +387,12 @@ export function AdminDesignDetailView({
                         setExpandedVersionId(isOpen ? "" : version.id);
                       }}
                     >
-                      {isPendingSend || selectedStatus === "SENT_TO_CLUB" ? (
-                        <Image
-                          src={version.imageUrl}
-                          alt=""
-                          width={96}
-                          height={64}
-                        />
-                      ) : (
-                        <span aria-hidden="true" className="admin-design-version-placeholder" />
-                      )}
+                      <Image
+                        src={version.imageUrl}
+                        alt={`Vista previa de la versión ${version.versionNumber}`}
+                        width={96}
+                        height={64}
+                      />
                       <span className="admin-design-version-copy">
                         <strong>v{version.versionNumber}</strong>
                         <span>{design.clubName}</span>

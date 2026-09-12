@@ -524,9 +524,13 @@
 .admin-design-send-confirm-modal h2 {
   margin: 4px 0 0;
   color: #21182a;
-  font-family: var(--font-archivo), sans-serif;
-  font-size: 22px;
-  line-height: 1.2;
+  font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  padding-bottom: 3px;
+  overflow: visible;
 }
 .admin-design-send-confirm-modal > p {
   grid-column: 1 / -1;
@@ -567,6 +571,69 @@
 .admin-design-send-confirm-modal > footer .admin-btn.admin-btn--primary:focus-visible:not(:disabled) {
   border-color: #552282;
   background: #552282;
+  color: #ffffff;
+}
+
+/* El portal de socios comparte la misma cabecera y navegación visual del admin. */
+.club-portal-page-header {
+  position: relative;
+  z-index: 1;
+  border-color: rgb(255 255 255 / 10%);
+}
+.club-portal-page-header--with-tabs {
+  margin-bottom: -98px;
+  padding-bottom: 114px !important;
+}
+.club-portal-page-header--standalone {
+  margin-bottom: 0 !important;
+  padding-bottom: 24px !important;
+}
+.club-portal-page-header--standalone + .club-portal-main {
+  padding-top: 40px !important;
+}
+.club-portal-home-tabs,
+.club-portal-section-tabs {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.club-portal-main .club-portal-section-tabs,
+.club-portal-main .club-portal-home-tabs {
+  position: relative;
+  z-index: 2;
+  margin-top: -28px;
+  margin-bottom: 40px;
+}
+.club-portal-main {
+  position: relative;
+  z-index: 2;
+}
+.club-portal-home-tabs .club-home-tab,
+.club-portal-section-tabs > button {
+  min-height: 58px;
+  border: 1px solid #bda7d2;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #552282;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+.club-portal-home-tabs .club-home-tab:hover,
+.club-portal-section-tabs > button:hover {
+  border-color: #652d9b;
+  background: #652d9b;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.club-portal-home-tabs .club-home-tab.bg-deep,
+.club-portal-section-tabs > button.bg-deep {
+  border-color: #3d008c;
+  background: #3d008c;
   color: #ffffff;
 }
 .admin-design-version-form {
@@ -7712,6 +7779,18 @@ a[data-nav-loading="true"] {
   font-feature-settings:
     "kern" 1,
     "liga" 1;
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: width;
+}
+
+.club-portal-sidebar > div {
+  transition: padding 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.club-portal-brand {
+  transition:
+    gap 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .club-portal-sidebar :where(*) {
@@ -7780,8 +7859,26 @@ a[data-nav-loading="true"] {
 .club-portal-nav-label {
   display: block;
   transition:
-    opacity 140ms ease,
-    max-width 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 240ms ease,
+    max-width 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.club-portal-nav-item {
+  transition:
+    gap 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 260ms ease,
+    background-color 260ms ease,
+    box-shadow 320ms ease;
+}
+
+.club-portal-nav-item:hover {
+  transform: none;
+}
+
+.club-portal-shell .club-portal-nav-item:hover,
+.club-portal-shell.club-portal-shell--collapsed .club-portal-nav-item:hover {
+  transform: none;
 }
 
 .club-portal-sidebar::-webkit-scrollbar {
@@ -7832,7 +7929,7 @@ a[data-nav-loading="true"] {
   .club-portal-sidebar-toggle svg {
     width: 15px;
     height: 15px;
-    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .club-portal-sidebar-toggle:hover {
@@ -7886,7 +7983,7 @@ a[data-nav-loading="true"] {
   }
 
   .club-portal-shell--collapsed .club-portal-nav-item:hover {
-    transform: translateY(-2px);
+    transform: none;
   }
 
   .club-portal-shell--collapsed .club-portal-sidebar-toggle svg {
@@ -7899,6 +7996,11 @@ a[data-nav-loading="true"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .club-portal-sidebar,
+  .club-portal-sidebar > div,
+  .club-portal-brand,
+  .club-portal-brand-copy,
+  .club-portal-nav-label,
   .club-portal-nav-item,
   .club-portal-nav-item::before {
     transition: none;
@@ -20012,6 +20114,7 @@ body .admin-editor-actions {
 .admin-club-store-panel__grid {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: start;
   gap: 16px;
 }
 .admin-club-store-card,
@@ -20025,7 +20128,8 @@ body .admin-editor-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 24px;
+  align-self: start;
+  padding: 22px 24px;
 }
 .admin-club-store-card h3,
 .admin-club-qr-card h3 {
@@ -20035,10 +20139,18 @@ body .admin-editor-actions {
 .admin-club-store-card p {
   margin-top: 7px;
 }
+.admin-club-store-card__url {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 18px;
+}
 .admin-club-store-card code {
   width: 100%;
   overflow: hidden;
-  margin-top: 22px;
+  margin: 0;
   border: 1px solid #e1d9e7;
   border-radius: 7px;
   padding: 12px;
@@ -20049,6 +20161,42 @@ body .admin-editor-actions {
     monospace;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.admin-club-store-card__url button {
+  display: inline-flex;
+  min-height: 43px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #652d9b;
+  border-radius: 7px;
+  padding: 9px 14px;
+  background: #f4ecfb;
+  color: #552282;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+.admin-club-store-card__url button:hover:not(:disabled),
+.admin-club-store-card__url button:focus-visible:not(:disabled) {
+  background: #552282;
+  color: #ffffff;
+  transform: translateY(-1px);
+  outline: none;
+}
+.admin-club-store-card__url button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.admin-club-store-card__url button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .admin-club-store-card__actions,
 .admin-club-qr-card__actions {
@@ -20376,6 +20524,12 @@ body .admin-editor-actions {
 }
 
 @media (max-width: 760px) {
+  .admin-club-store-card__url {
+    grid-template-columns: 1fr;
+  }
+  .admin-club-store-card__url button {
+    width: 100%;
+  }
   .club-store-hero__banner {
     object-position: 68% center;
   }
@@ -20835,5 +20989,286 @@ body .admin-editor-actions {
   .admin-clubs-list > a > span {
     width: 64px;
     height: 64px;
+  }
+}
+
+/* Cabecera administrativa de ancho completo, alineada con el portal de clubes. */
+.admin-shell {
+  --admin-sidebar-width: 240px;
+}
+.admin-shell--collapsed {
+  --admin-sidebar-width: 82px;
+}
+.admin-page {
+  padding-top: 0;
+}
+.admin-page-frame {
+  overflow: visible;
+  border-radius: 0 0 14px 14px;
+}
+.admin-page-header {
+  position: relative;
+  isolation: isolate;
+  background: #281a33;
+  color: #ffffff;
+}
+.admin-page-header::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: calc(100vw - var(--admin-sidebar-width));
+  background: #281a33;
+  content: "";
+  transform: translateX(-50%);
+}
+.admin-page .admin-page-header .admin-eyebrow {
+  color: #80ffdb;
+}
+.admin-page .admin-page-header .admin-page-title {
+  color: #ffffff;
+}
+.admin-page .admin-page-header .admin-page-description {
+  color: rgb(255 255 255 / 70%);
+}
+.admin-page:not(.admin-orders-page) .admin-page-header {
+  min-height: 150px;
+  padding: 32px 30px 30px;
+}
+.admin-products-page .admin-product-section-tabs {
+  position: relative;
+  isolation: isolate;
+}
+.admin-products-page .admin-product-section-tabs::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: calc(100vw - var(--admin-sidebar-width));
+  background: #281a33;
+  content: "";
+  transform: translateX(-50%);
+}
+@media (max-width: 1040px) {
+  .admin-shell,
+  .admin-shell--collapsed {
+    --admin-sidebar-width: 0px;
+  }
+  .admin-page {
+    padding-top: 0;
+  }
+  .admin-page:not(.admin-orders-page) .admin-page-header {
+    min-height: 132px;
+    padding: 28px 22px 26px;
+  }
+}
+
+/* Los tabs principales del administrador continúan el banner de lado a lado. */
+:is(
+  .admin-content-tabs,
+  .admin-orders-tabs,
+  .admin-production-flow,
+  .admin-club-detail-tabs,
+  .admin-design-steps
+) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  background: #281a33;
+}
+:is(
+  .admin-content-tabs,
+  .admin-orders-tabs,
+  .admin-production-flow,
+  .admin-club-detail-tabs,
+  .admin-design-steps
+)::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: calc(100vw - var(--admin-sidebar-width));
+  background: #281a33;
+  content: "";
+  transform: translateX(-50%);
+}
+:is(
+  .admin-content-tabs,
+  .admin-orders-tabs,
+  .admin-club-detail-tabs,
+  .admin-design-steps
+) > button {
+  min-height: 58px;
+  border: 1px solid #bda7d2;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #552282;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+:is(
+  .admin-content-tabs,
+  .admin-orders-tabs,
+  .admin-club-detail-tabs,
+  .admin-design-steps
+) > button:hover:not(:disabled),
+:is(
+  .admin-content-tabs,
+  .admin-orders-tabs,
+  .admin-club-detail-tabs,
+  .admin-design-steps
+) > button:focus-visible:not(:disabled) {
+  border-color: #652d9b;
+  background: #652d9b;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgb(71 28 106 / 20%);
+  transform: translateY(-1px);
+  outline: none;
+}
+:is(
+  .admin-content-tabs,
+  .admin-orders-tabs,
+  .admin-club-detail-tabs,
+  .admin-design-steps
+) > button:is(.active, .is-active, [aria-selected="true"]) {
+  border-color: #3d008c;
+  background: #3d008c;
+  color: #ffffff;
+}
+.admin-production-flow {
+  padding: 16px 0;
+}
+.admin-production-flow > button.is-active {
+  border-color: #80ffdb;
+  background: #3d008c;
+  color: #ffffff;
+  box-shadow: inset 4px 0 0 #80ffdb;
+}
+.admin-production-flow > button.is-active :is(strong, small) {
+  color: #ffffff;
+}
+
+/* El lienzo administrativo completo continúa debajo del banner, sin marco exterior. */
+.admin-page,
+.admin-shell--collapsed .admin-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+.admin-page-frame {
+  min-height: 100vh;
+  border: 0;
+  border-radius: 0;
+  background: #f8f7fa;
+  box-shadow: none;
+}
+.admin-page-frame > .admin-panel {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Pedidos: encabezado y tabs forman una sola pieza, sin franja ni esquinas. */
+body .admin-orders-page .admin-orders-panel {
+  overflow: visible;
+  border-radius: 0;
+}
+body .admin-orders-page .admin-orders-toolbar {
+  margin: -28px -28px 0;
+  border-radius: 0;
+  padding-bottom: 20px;
+}
+body .admin-orders-page .admin-orders-tabs {
+  gap: 14px;
+  margin: 0 -28px 24px;
+  padding: 0 28px 18px;
+  background: #281a33;
+}
+
+/* Liquidaciones: banner recto y filtros internos fuera del patrón de tabs. */
+body .admin-settlements-page .admin-settlements-panel {
+  overflow: visible;
+  border-radius: 0;
+}
+body .admin-settlements-page .admin-settlement-module-heading {
+  border-radius: 0;
+}
+
+/* Producción: encabezado y flujo unidos, con contraste correcto en cada paso. */
+body .admin-production-page .admin-production-workspace {
+  overflow: visible;
+  border-radius: 0;
+  padding: 28px;
+}
+body .admin-production-page .admin-production-heading {
+  min-height: 122px;
+  margin: -28px -28px 0;
+  border-radius: 0;
+  padding: 34px 28px 28px;
+}
+body .admin-production-page .admin-production-flow {
+  gap: 14px;
+  margin: 0 -28px 24px;
+  border: 0;
+  border-radius: 0;
+  padding: 4px 28px 24px;
+  background: #281a33;
+  box-shadow: none;
+}
+body .admin-production-page .admin-production-flow > button {
+  min-height: 82px;
+  border: 1px solid #bda7d2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #552282;
+}
+body .admin-production-page .admin-production-flow > button:hover,
+body .admin-production-page .admin-production-flow > button:focus-visible {
+  border: 1px solid #652d9b;
+  background: #652d9b;
+  color: #ffffff;
+  transform: translateY(-1px);
+  outline: none;
+}
+body .admin-production-page .admin-production-flow > button.is-active {
+  border: 1px solid #80ffdb;
+  background: #3d008c;
+  color: #ffffff;
+  box-shadow: inset 4px 0 0 #80ffdb;
+}
+body
+  .admin-production-page
+  .admin-production-flow
+  > button:is(:hover, :focus-visible, .is-active)
+  :is(strong, small) {
+  color: #ffffff;
+}
+body
+  .admin-production-page
+  .admin-production-flow
+  > button
+  + button::before {
+  display: none;
+}
+body .admin-production-page .admin-production-products-section {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* El panel del portal conserva la distribución del QR al animar el menú. */
+@media (min-width: 900px) {
+  .admin-club-store-panel--portal .admin-club-store-panel__grid {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+  .admin-club-store-panel--portal .admin-club-qr-card {
+    grid-template-columns: minmax(190px, 0.75fr) minmax(0, 1.25fr);
   }
 }

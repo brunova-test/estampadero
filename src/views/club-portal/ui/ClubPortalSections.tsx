@@ -1,10 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 import { PendingDesignsPanel } from "elestampadero/features/review-design";
-import { ClubStoreManagementPanel } from "elestampadero/views/admin-clubs/ui/ClubStoreManagementPanel";
 import { formatCents } from "elestampadero/shared/lib/money";
 import { Button } from "elestampadero/shared/ui";
 import { api, type RouterOutputs } from "elestampadero/trpc/react";
@@ -13,6 +12,7 @@ export type PortalTab =
   | "inicio"
   | "disenos"
   | "productos"
+  | "tienda"
   | "ventas"
   | "liquidaciones"
   | "cobros"
@@ -167,7 +167,7 @@ function SectionTabs({
   return (
     <div
       role="tablist"
-      className="border-deep/10 flex gap-2 overflow-x-auto rounded-2xl border bg-white p-2"
+      className="club-portal-section-tabs border-deep/10 flex gap-2 overflow-x-auto rounded-2xl border bg-white p-2"
     >
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
@@ -478,6 +478,7 @@ export function ClubHomeSection({
   settlements,
   designs,
   onNavigate,
+  paymentsNotice,
 }: {
   data: PortalData;
   activeAgreement?: Agreement;
@@ -486,6 +487,7 @@ export function ClubHomeSection({
   settlements: Settlement[];
   designs: Design[];
   onNavigate: (tab: PortalTab) => void;
+  paymentsNotice?: ReactNode;
 }) {
   const [activePanel, setActivePanel] = useState<HomePanelId>("resumen");
   const currentMonth = new Date().getMonth();
@@ -507,7 +509,7 @@ export function ClubHomeSection({
   );
   return (
     <div className="flex flex-col gap-6">
-      <section className="border-deep/8 rounded-2xl border bg-white p-2 shadow-[0_12px_32px_-28px_rgba(46,4,112,.45)]">
+      <section className="club-portal-home-tabs border-deep/8 rounded-2xl border bg-white p-2 shadow-[0_12px_32px_-28px_rgba(46,4,112,.45)]">
         <div
           role="tablist"
           aria-label="Resumen del portal"
@@ -541,6 +543,8 @@ export function ClubHomeSection({
           })}
         </div>
       </section>
+
+      {paymentsNotice}
 
       <div role="tabpanel" className="min-h-[320px]">
         {activePanel === "resumen" ? (
@@ -737,62 +741,32 @@ export function ClubDesignsSection({
         </p>
       </div>
 
-      <div
-        role="tablist"
-        aria-label="Filtros de diseños"
-        className="border-deep/10 grid gap-2 rounded-2xl border bg-white p-2 sm:flex"
-      >
-        {[
+      <SectionTabs
+        activeTab={designTab}
+        onChange={(id) => {
+          setDesignTab(id as typeof designTab);
+          setSelectedId(null);
+        }}
+        tabs={[
           {
-            id: "revision" as const,
+            id: "revision",
             label: "Para revisar",
             count: designs.filter((design) => design.status !== "APPROVED")
               .length,
           },
           {
-            id: "aprobados" as const,
+            id: "aprobados",
             label: "Aprobados",
             count: designs.filter((design) => design.status === "APPROVED")
               .length,
           },
           {
-            id: "historial" as const,
+            id: "historial",
             label: "Historial completo",
             count: designs.length,
           },
-        ].map((tab) => {
-          const isActive = designTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              onClick={() => {
-                setDesignTab(tab.id);
-                setSelectedId(null);
-              }}
-              className={`flex min-h-12 flex-1 items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-left text-base font-bold transition-colors ${
-                isActive
-                  ? "bg-deep text-white shadow-[0_10px_22px_-16px_rgba(46,4,112,.8)]"
-                  : "text-muted hover:bg-paper hover:text-deep"
-              }`}
-            >
-              <span className="flex items-center gap-2.5">
-                <SectionTabIcon tab={tab.id} />
-                {tab.label}
-              </span>
-              <span
-                className={`rounded-full px-2 py-0.5 text-xs ${
-                  isActive ? "bg-mint text-deep" : "bg-paper text-blue"
-                }`}
-              >
-                {tab.count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+        ]}
+      />
 
       {designTab === "revision" ? (
         <PendingDesignsPanel clubId={clubId} canReview={canReview} />
@@ -1054,17 +1028,6 @@ export function ClubProductsSection({ data }: { data: PortalData }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <ClubStoreManagementPanel
-        mode="portal"
-        club={{
-          id: data.club.id,
-          slug: data.club.slug,
-          name: data.club.name,
-          logoUrl: data.club.logoUrl,
-          productCount: data.products.length,
-          hasActiveAgreement: false,
-        }}
-      />
       <div className="hidden">
         <span className="text-blue font-mono text-xs tracking-[.16em] uppercase">
           Productos
@@ -1113,7 +1076,7 @@ export function ClubProductsSection({ data }: { data: PortalData }) {
               <button
                 type="button"
                 onClick={() => void copyCatalogLink()}
-                className="brand-cut bg-mint text-deep px-6 py-3 font-bold"
+                className="brand-cut bg-mint text-deep px-6 py-3 font-bold shadow-[0_8px_20px_-14px_rgba(0,0,0,.8)] transition-all duration-200 ease-out hover:-translate-y-1 hover:bg-white hover:shadow-[0_14px_24px_-13px_rgba(0,0,0,.85)] active:translate-y-0 active:scale-[.98]"
               >
                 {copied ? "Enlace copiado" : "Copiar enlace"}
               </button>
@@ -1128,7 +1091,7 @@ export function ClubProductsSection({ data }: { data: PortalData }) {
                     "noopener,noreferrer",
                   );
                 }}
-                className="border-2 border-white/60 px-5 py-3 font-bold text-white hover:bg-white/10"
+                className="border-2 border-white/60 px-5 py-3 font-bold text-white transition-all duration-200 ease-out hover:-translate-y-1 hover:border-mint hover:bg-mint hover:text-deep hover:shadow-[0_14px_24px_-13px_rgba(0,0,0,.85)] active:translate-y-0 active:scale-[.98]"
               >
                 Compartir
               </button>

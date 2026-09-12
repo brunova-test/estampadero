@@ -21,6 +21,7 @@ function credentials(): Record<string, string> {
   }
   return {
     "content-type": "application/json",
+    "x-lang": "es",
     "x-api-key": env.MOBBEX_API_KEY,
     "x-access-token": env.MOBBEX_ACCESS_TOKEN,
   };
@@ -168,7 +169,7 @@ export const mobbexGateway: PaymentGateway = {
       options: {
         embed: true,
         domain: new URL(env.APP_URL).hostname,
-        embedVersion: "1.2.0",
+        embedversion: "1.2.0",
       },
       customer: {
         name: input.payerName,

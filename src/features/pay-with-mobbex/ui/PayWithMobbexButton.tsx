@@ -12,7 +12,11 @@ import { api } from "elestampadero/trpc/react";
 const MOBBEX_EMBED_SDK = "https://api.mobbex.com/p/embed/1.2.0/lib.js";
 
 interface MobbexEmbedInstance {
-  open(input: { type: "checkout"; id: string }): void;
+  open(input: {
+    type: "checkout";
+    id: string;
+    paymentMethod?: string;
+  }): void;
 }
 
 interface MobbexWindow extends Window {
@@ -64,7 +68,17 @@ function loadMobbexSdk(): Promise<void> {
   return pending;
 }
 
-export function PayWithMobbexButton({ orderId }: { orderId: string }) {
+interface PayWithMobbexButtonProps {
+  orderId: string;
+  paymentMethod?: string;
+  label?: string;
+}
+
+export function PayWithMobbexButton({
+  orderId,
+  paymentMethod,
+  label = "Ir al pago seguro",
+}: PayWithMobbexButtonProps) {
   const [error, setError] = useState<string | null>(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const createSession = api.payments.createCheckoutSession.useMutation({
@@ -87,7 +101,11 @@ export function PayWithMobbexButton({ orderId }: { orderId: string }) {
             window.location.assign(checkoutUrl);
           },
         });
-        embed.open({ type: "checkout", id: checkoutId });
+        embed.open({
+          type: "checkout",
+          id: checkoutId,
+          ...(paymentMethod ? { paymentMethod } : {}),
+        });
       } catch {
         window.location.assign(checkoutUrl);
       }
@@ -118,7 +136,7 @@ export function PayWithMobbexButton({ orderId }: { orderId: string }) {
           });
         }}
       >
-        {checkoutOpen ? "Checkout abierto" : "Ir al pago seguro"}
+        {checkoutOpen ? "Checkout abierto" : label}
       </Button>
       <div id="mbbx-container" />
       {error ? (

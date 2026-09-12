@@ -80,7 +80,7 @@ describe("mobbexGateway", () => {
       options: {
         embed: true,
         domain: "tienda.example.com",
-        embedVersion: "1.2.0",
+        embedversion: "1.2.0",
       },
       split: [
         {

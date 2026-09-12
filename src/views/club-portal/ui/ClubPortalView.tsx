@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import { Button, Container } from "elestampadero/shared/ui";
 import { api } from "elestampadero/trpc/react";
+import { ClubStoreManagementPanel } from "elestampadero/views/admin-clubs/ui/ClubStoreManagementPanel";
 
 import {
   ClubDesignsSection,
@@ -34,6 +35,11 @@ const TABS: Array<{ id: PortalTab; label: string; description: string }> = [
     id: "productos",
     label: "Productos",
     description: "Consultá el catálogo vinculado, precios y disponibilidad.",
+  },
+  {
+    id: "tienda",
+    label: "Tienda y QR",
+    description: "Compartí el acceso directo a la tienda de tu institución.",
   },
   {
     id: "ventas",
@@ -89,6 +95,12 @@ function PortalTabIcon({ tab }: { tab: PortalTab }) {
           <path d="m4 8 8-4 8 4-8 4-8-4Z" />
           <path d="M4 12c0 2.2 3.6 4 8 4s8-1.8 8-4" />
           <path d="M4 16c0 2.2 3.6 4 8 4s8-1.8 8-4" />
+        </>
+      ) : null}
+      {tab === "tienda" ? (
+        <>
+          <path d="M3 10h18l-1.5-6h-15Z" />
+          <path d="M5 10v9h14v-9M9 19v-5h6v5M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" />
         </>
       ) : null}
       {tab === "ventas" ? (
@@ -312,6 +324,13 @@ export function ClubPortalView() {
 
   const headerClub = portalData?.club ?? selectedMembership;
   const activeSection = TABS.find((tab) => tab.id === activeTab) ?? TABS[0]!;
+  const headerHasEmbeddedTabs = [
+    "inicio",
+    "disenos",
+    "productos",
+    "ventas",
+    "liquidaciones",
+  ].includes(activeTab);
 
   return (
     <div
@@ -456,14 +475,14 @@ export function ClubPortalView() {
 
       <div className="min-w-0 flex-1">
         <header
-          className={`border-deep/8 border-b bg-white px-4 py-4 sm:px-6 lg:px-8 lg:py-5 ${
+          className={`${portalData?.mustChangePassword ? "" : "club-portal-page-header"} ${!portalData?.mustChangePassword && headerHasEmbeddedTabs ? "club-portal-page-header--with-tabs" : "club-portal-page-header--standalone"} border-deep/8 border-b bg-[#281a33] px-4 py-4 text-white sm:px-6 lg:px-8 lg:py-5 ${
             activeTab === "cobros" ? "club-payments-admin-type" : ""
           }`}
         >
           <div className="mx-auto flex max-w-[1500px] flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
               <span
-                className={`text-blue font-mono font-semibold tracking-[.18em] uppercase ${
+                className={`text-mint font-mono font-semibold tracking-[.18em] uppercase ${
                   activeTab === "cobros"
                     ? "text-[11px] sm:text-[13px]"
                     : "text-[11px] sm:text-[13px]"
@@ -472,7 +491,7 @@ export function ClubPortalView() {
                 Portal privado · {portalData?.club.slug ?? headerClub.slug}
               </span>
               <h1
-                className={`font-display text-ink mt-2 leading-none font-black ${
+                className={`font-display mt-2 leading-none font-black text-white ${
                   activeTab === "cobros"
                     ? "text-[clamp(32px,3.35vw,50px)]"
                     : "text-[clamp(32px,3.36vw,50px)]"
@@ -481,7 +500,7 @@ export function ClubPortalView() {
                 {activeSection.label}
               </h1>
               <p
-                className={`text-muted mt-1 max-w-2xl ${
+                className={`mt-1 max-w-2xl text-white/70 ${
                   activeTab === "cobros"
                     ? "text-[15px] sm:text-[17px]"
                     : "text-[15px] sm:text-[17px]"
@@ -492,10 +511,14 @@ export function ClubPortalView() {
             </div>
             <div className="flex items-center gap-3">
               <span
-                className={`bg-mint/30 text-deep rounded-full px-4 py-2 font-bold ${
+                className={`inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 font-bold text-emerald-800 shadow-sm ${
                   activeTab === "cobros" ? "text-[16px]" : "text-[15px]"
                 }`}
               >
+                <span
+                  aria-hidden="true"
+                  className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,.16)]"
+                />
                 Club activo
               </span>
               <button
@@ -542,24 +565,24 @@ export function ClubPortalView() {
         ) : null}
 
         {portalData && !portalData.mustChangePassword ? (
-          <main className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-7">
+          <main className="club-portal-main px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-7">
             <Container className="max-w-[1500px] px-0">
               {activeTab === "inicio" ? (
-                <>
-                  <ClubPaymentsNotice
-                    data={portalData}
-                    onOpen={() => navigate("cobros")}
-                  />
-                  <ClubHomeSection
-                    data={portalData}
-                    activeAgreement={activeAgreement}
-                    balance={balanceQuery.data}
-                    commissions={commissions}
-                    settlements={settlements}
-                    designs={designs}
-                    onNavigate={navigate}
-                  />
-                </>
+                <ClubHomeSection
+                  data={portalData}
+                  activeAgreement={activeAgreement}
+                  balance={balanceQuery.data}
+                  commissions={commissions}
+                  settlements={settlements}
+                  designs={designs}
+                  onNavigate={navigate}
+                  paymentsNotice={
+                    <ClubPaymentsNotice
+                      data={portalData}
+                      onOpen={() => navigate("cobros")}
+                    />
+                  }
+                />
               ) : null}
               {activeTab === "disenos" ? (
                 <ClubDesignsSection
@@ -570,6 +593,19 @@ export function ClubPortalView() {
               ) : null}
               {activeTab === "productos" ? (
                 <ClubProductsSection data={portalData} />
+              ) : null}
+              {activeTab === "tienda" ? (
+                <ClubStoreManagementPanel
+                  mode="portal"
+                  club={{
+                    id: portalData.club.id,
+                    slug: portalData.club.slug,
+                    name: portalData.club.name,
+                    logoUrl: portalData.club.logoUrl,
+                    productCount: portalData.products.length,
+                    hasActiveAgreement: false,
+                  }}
+                />
               ) : null}
               {activeTab === "ventas" ? (
                 <ClubSalesSection data={portalData} commissions={commissions} />
