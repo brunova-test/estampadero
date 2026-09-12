@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, m } from "motion/react";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { ProductSummary } from "elestampadero/entities/product";
 import { ProductGrid } from "elestampadero/widgets/product-grid";
@@ -24,6 +24,8 @@ export function FeaturedProducts({
   printableProducts,
 }: FeaturedProductsProps) {
   const [activeTab, setActiveTab] = useState(0);
+  const productsViewportRef = useRef<HTMLDivElement>(null);
+  const [hasOverflow, setHasOverflow] = useState(false);
   const productCollections = {
     bestSellers,
     newArrivals,
@@ -31,6 +33,34 @@ export function FeaturedProducts({
   };
   const activeTabConfig = TABS[activeTab] ?? TABS[0];
   const activeProducts = productCollections[activeTabConfig.key];
+
+  const updateOverflow = useCallback(() => {
+    const viewport = productsViewportRef.current;
+    if (!viewport) return;
+    setHasOverflow(viewport.scrollWidth > viewport.clientWidth + 2);
+  }, []);
+
+  useEffect(() => {
+    updateOverflow();
+    const viewport = productsViewportRef.current;
+    if (!viewport) return;
+    const observer = new ResizeObserver(updateOverflow);
+    observer.observe(viewport);
+    window.addEventListener("resize", updateOverflow);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateOverflow);
+    };
+  }, [activeProducts, updateOverflow]);
+
+  function scrollProducts(direction: -1 | 1) {
+    productsViewportRef.current?.scrollBy({
+      left:
+        direction *
+        Math.max(260, productsViewportRef.current.clientWidth * 0.8),
+      behavior: "smooth",
+    });
+  }
 
   return (
     <section className="flex flex-col gap-[18px] border-t border-[#eee] bg-white px-5 py-9 sm:px-8 md:gap-[clamp(24px,1.8vw,36px)] md:border-0 md:px-[clamp(40px,4vw,80px)] md:py-[clamp(36px,2.8vw,56px)]">
@@ -72,10 +102,53 @@ export function FeaturedProducts({
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.34 }}
         >
-          <ProductGrid
-            products={activeProducts}
-            className="featured-products-grid"
-          />
+          <div
+            className={`featured-products-carousel ${hasOverflow ? "has-overflow" : ""}`}
+          >
+            <button
+              type="button"
+              className="featured-products-arrow featured-products-arrow--previous"
+              aria-label="Ver productos anteriores"
+              disabled={!hasOverflow}
+              onClick={() => scrollProducts(-1)}
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="m15 18-6-6 6-6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <div
+              ref={productsViewportRef}
+              className="featured-products-viewport"
+            >
+              <ProductGrid
+                products={activeProducts}
+                className="featured-products-grid"
+              />
+            </div>
+            <button
+              type="button"
+              className="featured-products-arrow featured-products-arrow--next"
+              aria-label="Ver más productos"
+              disabled={!hasOverflow}
+              onClick={() => scrollProducts(1)}
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="m9 6 6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </m.div>
       </AnimatePresence>
     </section>
