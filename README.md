@@ -1,7 +1,8 @@
 # El Estampadero
 
 El desarrollo del proyecto comenzó aproximadamente el **17 de agosto**.
-
+Estará disponible un tiempo determinado a publico este respositorio, lo mismo que railway, recomiendo descargarlo y trabajar de manera local o subirlo donde quiera.
+Pronto volverá a ser privado. Cuando suceda pedir autorización para acceder.
 ## Probar el sistema integrado
 
 Acceder a la [versión de prueba de El Estampadero](https://elestampadero-version3.up.railway.app/) para recorrer el sistema integrado.
