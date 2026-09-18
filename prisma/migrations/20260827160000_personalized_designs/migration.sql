@@ -1,2 +1,0 @@
-ALTER TABLE "Design" ALTER COLUMN "clubId" DROP NOT NULL;
-ALTER TABLE "Design" ADD COLUMN "customerName" TEXT;

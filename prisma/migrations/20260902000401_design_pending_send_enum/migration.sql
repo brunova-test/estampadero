@@ -1,1 +1,0 @@
-ALTER TYPE "DesignStatus" ADD VALUE 'PENDING_SEND';
