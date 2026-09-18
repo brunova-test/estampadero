@@ -423,7 +423,7 @@ SEED_PRODUCTION_CONFIRMATION=""
 # HOSTNAME="0.0.0.0"
 # RAILWAY_PUBLIC_DOMAIN="tu-servicio.up.railway.app"
 ```
-
+MODIFICAR ESTO A GUSTO, NO NCESARIAMENTE TIENE QUE UTILIZARSE ESTAS HERRAMIENTAS
 Para Railway con Supabase, reemplazar las conexiones locales por Transaction pooler en `DATABASE_URL` y Session pooler en `DIRECT_URL`. Para ejecutar el seed, seguir el cambio temporal de conexión explicado en la sección 6. No dejar `DIRECT_URL` o `DATABASE_UNPOOLED_URL` como cadenas vacías: configurarlas con una conexión válida o no definirlas.
 
 Las contraseñas de club y cliente vacías deben completarse con al menos 16 caracteres antes de ejecutar el seed. La contraseña de administrador del bloque es la demo pública solicitada para pruebas. Para permitir una carga intencional con `NODE_ENV=production`, configurar temporalmente `SEED_PRODUCTION_CONFIRMATION=I_UNDERSTAND_THIS_SEEDS_PRODUCTION`, como se explica en el procedimiento de seed.
