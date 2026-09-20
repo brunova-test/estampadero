@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { routes } from "elestampadero/shared/config/routes";
-import { RevealGroup } from "elestampadero/shared/ui/motion";
 
 interface ClubShowcaseItem {
   slug: string;
@@ -50,9 +49,24 @@ export function ClubsShowcase({ clubs }: { clubs: ClubShowcaseItem[] }) {
   }, [filteredClubs, updateOverflow]);
 
   function scrollClubs(direction: -1 | 1) {
-    clubsViewportRef.current?.scrollBy({
-      left:
-        direction * Math.max(280, clubsViewportRef.current.clientWidth * 0.8),
+    const viewport = clubsViewportRef.current;
+    if (!viewport) return;
+
+    const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
+    const atEnd = direction === 1 && viewport.scrollLeft >= maxScrollLeft - 4;
+    const atStart = direction === -1 && viewport.scrollLeft <= 4;
+
+    if (atEnd) {
+      viewport.scrollTo({ left: 0, behavior: "smooth" });
+      return;
+    }
+    if (atStart) {
+      viewport.scrollTo({ left: maxScrollLeft, behavior: "smooth" });
+      return;
+    }
+
+    viewport.scrollBy({
+      left: direction * Math.max(280, viewport.clientWidth * 0.8),
       behavior: "smooth",
     });
   }
@@ -135,27 +149,29 @@ export function ClubsShowcase({ clubs }: { clubs: ClubShowcaseItem[] }) {
             </svg>
           </button>
           <div ref={clubsViewportRef} className="home-clubs-viewport">
-            <RevealGroup className="home-clubs-list">
+            <div className="home-clubs-list">
               {filteredClubs.map((club) => (
                 <article
                   key={club.slug}
-                  className="home-club-showcase-card brand-card-cut group flex min-h-0 flex-row items-center justify-start gap-4 bg-white/[.07] p-5 text-left transition-colors hover:bg-white/[.11] md:flex-col md:justify-center md:gap-[clamp(12px,1vw,20px)] md:p-[clamp(18px,1.4vw,28px)] md:text-center"
+                  className="home-club-showcase-card brand-card-cut group flex min-h-0 flex-col gap-4 bg-white/[.07] p-4 text-left transition-colors hover:bg-white/[.11] sm:p-5 md:justify-center md:gap-[clamp(12px,1vw,20px)] md:p-[clamp(18px,1.4vw,28px)] md:text-center"
                 >
-                  <div className="relative h-16 w-16 shrink-0 md:h-[clamp(150px,10.5vw,210px)] md:w-[clamp(150px,10.5vw,210px)]">
-                    <Image
-                      src={club.logoUrl ?? "/images/linea-club.png"}
-                      alt=""
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <div className="flex min-w-0 flex-1 flex-col items-start gap-1 md:flex-none md:items-center md:gap-2">
-                    <h3 className="font-display text-lg font-extrabold md:text-[clamp(27px,2vw,40px)]">
-                      {club.name}
-                    </h3>
-                    <p className="text-[13px] text-[#a99fc4] md:text-[clamp(17px,1.3vw,26px)]">
-                      {club.sport ?? "Institución asociada"}
-                    </p>
+                  <div className="flex flex-row items-center gap-4 md:flex-col md:gap-[clamp(12px,1vw,20px)]">
+                    <div className="relative h-14 w-14 shrink-0 md:h-[clamp(150px,10.5vw,210px)] md:w-[clamp(150px,10.5vw,210px)]">
+                      <Image
+                        src={club.logoUrl ?? "/images/linea-club.png"}
+                        alt=""
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <div className="flex min-w-0 flex-1 flex-col items-start gap-1 md:flex-none md:items-center md:gap-2">
+                      <h3 className="font-display text-base leading-tight font-extrabold md:text-[clamp(27px,2vw,40px)]">
+                        {club.name}
+                      </h3>
+                      <p className="truncate text-[13px] text-[#a99fc4] md:text-[clamp(17px,1.3vw,26px)]">
+                        {club.sport ?? "Institución asociada"}
+                      </p>
+                    </div>
                   </div>
                   <div className="hidden flex-wrap justify-center gap-2.5 md:flex">
                     <span className="bg-mint/15 text-mint px-[clamp(10px,.9vw,18px)] py-[clamp(6px,.4vw,8px)] text-[clamp(14px,1.2vw,24px)] font-semibold">
@@ -166,7 +182,7 @@ export function ClubsShowcase({ clubs }: { clubs: ClubShowcaseItem[] }) {
                       Tienda oficial
                     </span>
                   </div>
-                  <div className="ml-auto flex shrink-0 items-center gap-2 md:ml-0 md:flex-col">
+                  <div className="flex items-center gap-2 md:flex-col">
                     <Link
                       href={routes.clubProfile(club.slug)}
                       className="hidden text-sm font-semibold text-white/75 hover:text-white hover:underline md:block"
@@ -175,14 +191,14 @@ export function ClubsShowcase({ clubs }: { clubs: ClubShowcaseItem[] }) {
                     </Link>
                     <Link
                       href={routes.clubStore(club.slug)}
-                      className="bg-mint text-deep inline-flex min-h-10 items-center justify-center px-4 text-sm font-extrabold transition-transform hover:-translate-y-0.5 md:min-h-12 md:px-6 md:text-base"
+                      className="bg-mint text-deep flex min-h-10 w-full items-center justify-center px-4 text-sm font-extrabold transition-transform hover:-translate-y-0.5 md:min-h-12 md:w-auto md:px-6 md:text-base"
                     >
                       Ir a la tienda
                     </Link>
                   </div>
                 </article>
               ))}
-            </RevealGroup>
+            </div>
           </div>
           <button
             type="button"

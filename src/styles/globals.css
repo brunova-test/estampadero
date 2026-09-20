@@ -6578,25 +6578,8 @@
   gap: 8px;
 }
 .home-club-showcase-card {
-  flex: 0 0 clamp(220px, 20vw, 300px);
-  min-height: clamp(300px, 24vw, 360px) !important;
-  gap: 12px !important;
-  padding: 18px !important;
+  flex: 0 0 min(84vw, 320px);
   scroll-snap-align: start;
-}
-.home-club-showcase-card > div:first-child {
-  width: clamp(90px, 7.5vw, 120px) !important;
-  height: clamp(90px, 7.5vw, 120px) !important;
-}
-.home-club-showcase-card h3 {
-  font-size: clamp(19px, 1.55vw, 26px) !important;
-}
-.home-club-showcase-card p {
-  font-size: clamp(13px, 1vw, 17px) !important;
-}
-.home-club-showcase-card > div:nth-child(3) span {
-  padding: 7px 11px;
-  font-size: 13px;
 }
 .home-clubs-carousel:not(.has-overflow) .home-clubs-arrow {
   display: none;
@@ -6631,6 +6614,23 @@
 @media (min-width: 768px) {
   .home-club-showcase-card {
     flex-basis: calc((100% - 24px) / 4);
+    min-height: clamp(300px, 24vw, 360px) !important;
+    gap: 12px !important;
+    padding: 18px !important;
+  }
+  .home-club-showcase-card > div:first-child > div:first-child {
+    width: clamp(90px, 7.5vw, 120px) !important;
+    height: clamp(90px, 7.5vw, 120px) !important;
+  }
+  .home-club-showcase-card h3 {
+    font-size: clamp(19px, 1.55vw, 26px) !important;
+  }
+  .home-club-showcase-card p {
+    font-size: clamp(13px, 1vw, 17px) !important;
+  }
+  .home-club-showcase-card > div:nth-child(2) span {
+    padding: 7px 11px;
+    font-size: 13px;
   }
 }
 .home-clubs-search > label {
