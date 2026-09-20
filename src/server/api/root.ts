@@ -18,12 +18,12 @@ import { settlementsRouter } from "elestampadero/server/modules/settlements";
 import { specialRequestsRouter } from "elestampadero/server/modules/special-requests";
 import { customerRequestsRouter } from "elestampadero/server/modules/customer-requests";
 
-/**
- * This is the primary router for your server.
- *
- * All domain routers (catalog, cart, checkout, orders, payments, clubs, ...)
- * should be composed here as they are implemented.
- */
+
+
+
+
+
+
 export const appRouter = createTRPCRouter({
   system: systemRouter,
   identity: identityRouter,
@@ -42,12 +42,12 @@ export const appRouter = createTRPCRouter({
   customerRequests: customerRequestsRouter,
 });
 
-// export type definition of API
+
 export type AppRouter = typeof appRouter;
 
-/**
- * Create a server-side caller for the tRPC API.
- * @example
- * const trpc = createCaller(createContext);
- */
+
+
+
+
+
 export const createCaller = createCallerFactory(appRouter);

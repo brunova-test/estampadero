@@ -69,7 +69,7 @@ export function AuthSessionGuard() {
           }
           lastSuccessfulCheckAt = Date.now();
         } catch {
-          // A temporary network failure is not proof that the session expired.
+
         } finally {
           sessionCheckInFlight = null;
         }

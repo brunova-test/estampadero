@@ -1,4 +1,4 @@
--- CreateTable
+
 CREATE TABLE "RateLimitHit" (
     "id" TEXT NOT NULL,
     "key" TEXT NOT NULL,
@@ -7,5 +7,5 @@ CREATE TABLE "RateLimitHit" (
     CONSTRAINT "RateLimitHit_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
+
 CREATE INDEX "RateLimitHit_key_createdAt_idx" ON "RateLimitHit"("key", "createdAt");

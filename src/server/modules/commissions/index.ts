@@ -12,11 +12,11 @@ export {
   syncCommissionEligibilityForPayment,
 } from "./infrastructure/commission-eligibility";
 
-/**
- * Public use case for the payments module: generates commission entries for
- * an order's club-linked lines once it has been paid. Bound to the Prisma
- * repository and the agreements module's rate resolver.
- */
+
+
+
+
+
 export const generateCommissionEntriesForOrderUseCase =
   generateCommissionEntriesForOrder({
     repository: prismaCommissionsRepository,

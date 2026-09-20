@@ -1,4 +1,4 @@
--- AUTOMATIC was added and committed by the previous migration.
+
 ALTER TABLE "Agreement"
   ALTER COLUMN "settlementFrequency" SET DEFAULT 'AUTOMATIC';
 

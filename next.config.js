@@ -1,12 +1,12 @@
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
- * for Docker builds.
- */
+
+
+
+
 import "./src/env.js";
 
 const isDev = process.env.NODE_ENV !== "production";
 
-/** @type {import("next").NextConfig} */
+
 const config = {
   output: "standalone",
   async headers() {
@@ -21,9 +21,9 @@ const config = {
             value: "camera=(), microphone=(), geolocation=()",
           },
           { key: "X-Frame-Options", value: "DENY" },
-          // Content-Security-Policy is set per-request in src/middleware.ts
-          // instead of here, because script-src needs a fresh nonce on
-          // every response — next.config.js's headers() are static.
+
+
+
           ...(isDev
             ? []
             : [

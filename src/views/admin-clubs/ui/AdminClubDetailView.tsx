@@ -92,7 +92,7 @@ export function AdminClubDetailView({ slug }: { slug: string }) {
     { enabled: !!club },
   );
   const productsQuery = api.catalog.list.useQuery(
-    { clubSlug: slug },
+    { clubSlug: slug, availableOnly: false },
     { enabled: !!club },
   );
   const balanceQuery = api.commissions.balance.useQuery(
@@ -1777,7 +1777,7 @@ export function AdminClubParticipationView({ slug }: { slug: string }) {
     { enabled: !!active },
   );
   const products = api.catalog.list.useQuery(
-    { clubSlug: slug },
+    { clubSlug: slug, availableOnly: false },
     { enabled: !!club },
   );
   const [page, setPage] = useState(1);

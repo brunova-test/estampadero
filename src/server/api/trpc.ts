@@ -1,11 +1,11 @@
-/**
- * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
- * 1. You want to modify request context (see Part 1).
- * 2. You want to create a new middleware or type of procedure (see Part 3).
- *
- * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
- * need to use are documented accordingly near the end.
- */
+
+
+
+
+
+
+
+
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
@@ -15,22 +15,22 @@ import { getCurrentSession } from "elestampadero/server/auth/current-session";
 import { db } from "elestampadero/server/db";
 import { checkRateLimit, getClientIp } from "elestampadero/server/security/rate-limit";
 
-/**
- * 1. CONTEXT
- *
- * This section defines the "contexts" that are available in the backend API.
- *
- * These allow you to access things when processing a request, like the database, the session, etc.
- *
- * This helper generates the "internals" for a tRPC context. The API handler and RSC clients each
- * wrap this and provides the required context.
- *
- * @see https://trpc.io/docs/server/context
- */
+
+
+
+
+
+
+
+
+
+
+
+
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  // `getCurrentSession` re-reads the role and active flag from the database.
-  // A forged client value, or an older yet valid JWT after an admin revokes a
-  // role, can therefore never authorize a tRPC procedure.
+
+
+
   const session = await getCurrentSession();
 
   return {
@@ -40,13 +40,13 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   };
 };
 
-/**
- * 2. INITIALIZATION
- *
- * This is where the tRPC API is initialized, connecting the context and transformer. We also parse
- * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
- * errors on the backend.
- */
+
+
+
+
+
+
+
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
@@ -61,38 +61,38 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   },
 });
 
-/**
- * Create a server-side caller.
- *
- * @see https://trpc.io/docs/server/server-side-calls
- */
+
+
+
+
+
 export const createCallerFactory = t.createCallerFactory;
 
-/**
- * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
- *
- * These are the pieces you use to build your tRPC API. You should import these a lot in the
- * "/src/server/api/routers" directory.
- */
 
-/**
- * This is how you create new routers and sub-routers in your tRPC API.
- *
- * @see https://trpc.io/docs/router
- */
+
+
+
+
+
+
+
+
+
+
+
 export const createTRPCRouter = t.router;
 
-/**
- * Middleware for timing procedure execution and adding an artificial delay in development.
- *
- * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
- * network latency that would occur in production but not in local development.
- */
+
+
+
+
+
+
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
 
   if (t._config.isDev) {
-    // artificial delay in dev
+
     const waitMs = Math.floor(Math.random() * 400) + 100;
     await new Promise((resolve) => setTimeout(resolve, waitMs));
   }
@@ -105,23 +105,23 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
-/**
- * Public (unauthenticated) procedure
- *
- * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
- * guarantee that a user querying is authorized, but you can still access user session data if they
- * are logged in.
- */
+
+
+
+
+
+
+
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
-/**
- * Protected (authenticated) procedure
- *
- * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
- * the session is valid and guarantees `ctx.session.user` is not null.
- *
- * @see https://trpc.io/docs/procedures
- */
+
+
+
+
+
+
+
+
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
@@ -130,7 +130,7 @@ export const protectedProcedure = t.procedure
     }
     return next({
       ctx: {
-        // infers the `session` as non-nullable
+
         session: { ...ctx.session, user: ctx.session.user },
       },
     });
@@ -139,11 +139,11 @@ export const protectedProcedure = t.procedure
 const ADMIN_ROLES = new Set(["ADMIN", "SUPER_ADMIN"]);
 const STAFF_ROLES = new Set(["ADMIN", "SUPER_ADMIN", "PRODUCTION_OPERATOR"]);
 
-/**
- * Requires an authenticated user with ADMIN or SUPER_ADMIN role. Scope is
- * re-checked here on every request rather than trusted from a stale client
- * claim.
- */
+
+
+
+
+
 export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (!ADMIN_ROLES.has(ctx.session.user.role)) {
     throw new TRPCError({ code: "FORBIDDEN" });
@@ -151,10 +151,10 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   return next({ ctx });
 });
 
-/**
- * Requires an authenticated user with staff-level access (admin roles plus
- * production operators, who need to move orders through production states).
- */
+
+
+
+
 export const staffProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (!STAFF_ROLES.has(ctx.session.user.role)) {
     throw new TRPCError({ code: "FORBIDDEN" });
@@ -162,18 +162,18 @@ export const staffProcedure = protectedProcedure.use(({ ctx, next }) => {
   return next({ ctx });
 });
 
-/**
- * Rate-limits a procedure. Must be chained after `.input(schema)` so
- * `input` is already parsed when the key function runs. Backed by Postgres
- * (see server/security/rate-limit.ts) — safe across serverless instances,
- * unlike a process-local counter.
- *
- * @example
- * publicProcedure
- *   .input(schema)
- *   .use(rateLimit({ limit: 10, windowMs: 10 * 60_000, key: ({ ctx }) => `checkout:${getClientIp(ctx.headers)}` }))
- *   .mutation(...)
- */
+
+
+
+
+
+
+
+
+
+
+
+
 export function rateLimit<TInput>(options: {
   limit: number;
   windowMs: number;
@@ -192,13 +192,13 @@ export function rateLimit<TInput>(options: {
   });
 }
 
-/**
- * Rate limit preset for admin/staff mutations, keyed per user id instead of
- * IP. These procedures are already role-gated (adminProcedure/
- * staffProcedure), so this isn't abuse prevention — it's a backstop against
- * a compromised session, a runaway script, or a buggy client retry loop.
- * Chain after `.input(...)`.
- */
+
+
+
+
+
+
+
 export function adminMutationRateLimit(
   action: string,
   { limit = 30, windowMs = 60_000 }: { limit?: number; windowMs?: number } = {},

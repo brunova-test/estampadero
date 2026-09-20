@@ -114,6 +114,10 @@ export function CartView() {
                     line.variantId,
                   );
                   const isUnavailable = availability?.isAvailable === false;
+                  const isAtStockLimit =
+                    availability?.availableStock !== null &&
+                    availability?.availableStock !== undefined &&
+                    line.quantity >= availability.availableStock;
 
                   return (
                     <div
@@ -180,7 +184,7 @@ export function CartView() {
                             onClick={() =>
                               updateQuantity(line.variantId, line.quantity - 1)
                             }
-                            disabled={isUnavailable}
+                            disabled={isUnavailable || isCheckingAvailability}
                             className="h-9 w-9 rounded border border-black/10 text-lg font-bold disabled:cursor-not-allowed disabled:opacity-35"
                           >
                             −
@@ -193,7 +197,11 @@ export function CartView() {
                             onClick={() =>
                               updateQuantity(line.variantId, line.quantity + 1)
                             }
-                            disabled={isUnavailable}
+                            disabled={
+                              isUnavailable ||
+                              isCheckingAvailability ||
+                              isAtStockLimit
+                            }
                             className="h-9 w-9 rounded border border-black/10 text-lg font-bold disabled:cursor-not-allowed disabled:opacity-35"
                           >
                             +

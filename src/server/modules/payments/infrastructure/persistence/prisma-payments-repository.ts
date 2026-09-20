@@ -38,9 +38,9 @@ function isUniqueConstraintError(error: unknown): boolean {
 export const prismaPaymentsRepository: PaymentsRepository = {
   async createPayment(input: CreatePaymentInput) {
     return db.$transaction(async (tx) => {
-      // Serialize payment-attempt creation per order without holding the lock
-      // during the provider request. Once a row exists, every concurrent
-      // caller observes it and cannot create another active charge.
+
+
+
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${input.orderId}))`;
 
       const replay = await tx.payment.findUnique({
@@ -121,8 +121,8 @@ export const prismaPaymentsRepository: PaymentsRepository = {
       });
       return true;
     } catch (error) {
-      // Unique constraint violation on (provider, providerEventId) means we
-      // already processed this event: treat as a safe duplicate, not an error.
+
+
       if (isUniqueConstraintError(error)) return false;
       throw error;
     }

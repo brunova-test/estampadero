@@ -29,10 +29,10 @@ interface VerifiedIdentity {
   role: string;
 }
 
-/**
- * Compares against a dummy hash for nonexistent/inactive accounts and returns
- * the same generic failure so login does not leak account existence via timing.
- */
+
+
+
+
 export async function verifyCredentials(
   email: string,
   plainPassword: string,
@@ -53,7 +53,7 @@ export async function verifyCredentials(
 
   const hashToCompare =
     user?.passwordHash ??
-    // Dummy Argon2id hash so a nonexistent account still pays the hashing cost.
+
     "$argon2id$v=19$m=19456,t=2,p=1$c29tZXNhbHR2YWx1ZQ$1f1i6dK4gj+g8m3G8sV0dQ";
 
   const passwordMatches = await verifyPasswordHash(

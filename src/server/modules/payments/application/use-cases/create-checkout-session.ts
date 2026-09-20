@@ -19,7 +19,7 @@ interface CreateCheckoutSessionDeps {
   gateway: PaymentGateway;
   repository: PaymentsRepository;
   getOrderById: (id: string) => Promise<OrderDetailDto | null>;
-  /** Which channel/provider/processor this gateway binding represents (e.g. MP_WALLET vs MODO). */
+
   channel: PaymentChannelValue;
   provider: PaymentProviderValue;
   processor: PaymentProcessorValue;
@@ -105,9 +105,9 @@ export function createCheckoutSession(deps: CreateCheckoutSessionDeps) {
         split,
       });
     } catch (error) {
-      // Creating a redirect session does not charge the customer. Releasing
-      // the local attempt is therefore safe even if the provider response was
-      // lost, and lets the customer try opening the checkout again.
+
+
+
       await deps.repository.markAttemptFailed?.(
         payment.id,
         "checkout_session_failed",

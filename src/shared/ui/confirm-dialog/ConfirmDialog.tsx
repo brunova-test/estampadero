@@ -3,11 +3,11 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
-/**
- * Admin-styled replacement for window.confirm(). Native confirm() dialogs
- * are ugly, block the whole tab, and don't match the app's design — use
- * this for any destructive/irreversible admin action instead.
- */
+
+
+
+
+
 export function ConfirmDialog({
   open,
   title,

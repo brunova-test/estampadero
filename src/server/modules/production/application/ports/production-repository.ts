@@ -12,13 +12,13 @@ export interface ProductionRepository {
   getBatchById(id: string): Promise<BatchDetailDto | null>;
   listBatches(): Promise<BatchSummaryDto[]>;
   setPeriodDays(batchId: string, periodDays: number): Promise<void>;
-  /** Assigns a just-paid order to the current open batch (creating one if needed). */
+
   assignOrderToOpenBatch(orderId: string): Promise<void>;
-  /**
-   * Closes a batch, bulk-transitions its still-PAID orders to
-   * IN_PRODUCTION, and opens a new batch for subsequent orders. Returns
-   * false if the batch was already closed (idempotent no-op).
-   */
+
+
+
+
+
   closeBatch(batchId: string): Promise<boolean>;
   listProductionOrders(): Promise<ProductionOrderGroupDto[]>;
   listProductionHistory(): Promise<ProductionHistoryEntryDto[]>;

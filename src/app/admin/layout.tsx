@@ -15,10 +15,10 @@ export default async function AdminLayout({
   try {
     session = await getCurrentSession();
   } catch {
-    // A transient auth()/JWT decode failure right after a fresh sign-in
-    // must not crash the whole page (there's no error.tsx to catch it) —
-    // send the user back through the login flow instead, same as an
-    // actually-missing session below.
+
+
+
+
     redirect("/ingresar?callbackUrl=/admin");
   }
 

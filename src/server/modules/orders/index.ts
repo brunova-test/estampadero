@@ -14,10 +14,10 @@ export type {
   CreateExternalOrderInput,
 } from "./application/ports/orders-repository";
 
-/**
- * Public use cases for other modules (checkout, payments) to read/persist
- * orders. Bound to the Prisma repository.
- */
+
+
+
+
 export const createOrderUseCase = createOrder(prismaOrdersRepository);
 export const getOrderByIdUseCase = getOrderById(prismaOrdersRepository);
 export const expireUnpaidOrdersUseCase = expireUnpaidOrders(

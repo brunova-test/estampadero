@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { createAdminProductInputSchema } from "./schemas";
+import {
+  createAdminProductInputSchema,
+  listProductsInputSchema,
+} from "./schemas";
 
 const validProduct = {
   name: "Remera entrenamiento",
@@ -48,5 +51,14 @@ describe("createAdminProductInputSchema", () => {
       ],
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe("listProductsInputSchema", () => {
+  it("shows only available products by default and allows admin overrides", () => {
+    expect(listProductsInputSchema.parse({}).availableOnly).toBe(true);
+    expect(
+      listProductsInputSchema.parse({ availableOnly: false }).availableOnly,
+    ).toBe(false);
   });
 });

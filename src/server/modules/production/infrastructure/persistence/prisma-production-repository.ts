@@ -357,7 +357,7 @@ export const prismaProductionRepository: ProductionRepository = {
         });
       }
 
-      // Open a fresh batch for orders paid after this point.
+
       await tx.productionBatch.create({ data: {} });
 
       return true;

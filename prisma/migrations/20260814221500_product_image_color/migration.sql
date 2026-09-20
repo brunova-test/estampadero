@@ -1,4 +1,4 @@
--- Associate a catalog image with the garment color it actually represents.
+
 ALTER TABLE "ProductImage" ADD COLUMN "color" TEXT;
 
 UPDATE "ProductImage" AS image

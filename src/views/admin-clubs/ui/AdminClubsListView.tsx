@@ -365,9 +365,9 @@ function CreateClubModal({
                 {canPreviewLogo ? (
                   <div className="admin-club-logo-preview">
                     <div className="admin-club-logo-preview__image">
-                      {/* A native image also previews remote URLs without requiring
-                          every club domain in Next.js image configuration. */}
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+
+
+
                       <img
                         src={normalizedLogoUrl}
                         alt="Vista previa del logo del club"

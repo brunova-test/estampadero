@@ -11,8 +11,8 @@ export default async function AccountLayout({
   try {
     session = await getCurrentSession();
   } catch {
-    // See admin/layout.tsx: don't let a transient auth() failure crash the
-    // page with no error boundary — fall back to the login flow.
+
+
     redirect(routes.signIn);
   }
 

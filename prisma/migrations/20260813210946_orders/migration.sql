@@ -1,10 +1,10 @@
--- CreateEnum
+
 CREATE TYPE "OrderStatus" AS ENUM ('PENDING_PAYMENT', 'PAID', 'IN_PRODUCTION', 'READY_FOR_SHIPPING', 'SHIPPED', 'DELIVERED', 'CANCELLED');
 
--- CreateEnum
+
 CREATE TYPE "DeliveryMethod" AS ENUM ('SHIPPING', 'PICKUP');
 
--- CreateTable
+
 CREATE TABLE "Order" (
     "id" TEXT NOT NULL,
     "orderNumber" SERIAL NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "Order" (
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "OrderItem" (
     "id" TEXT NOT NULL,
     "orderId" TEXT NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE "OrderItem" (
     CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "OrderStatusHistory" (
     "id" TEXT NOT NULL,
     "orderId" TEXT NOT NULL,
@@ -57,23 +57,23 @@ CREATE TABLE "OrderStatusHistory" (
     CONSTRAINT "OrderStatusHistory_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
+
 CREATE INDEX "Order_status_idx" ON "Order"("status");
 
--- CreateIndex
+
 CREATE INDEX "Order_contactEmail_idx" ON "Order"("contactEmail");
 
--- CreateIndex
+
 CREATE INDEX "OrderItem_orderId_idx" ON "OrderItem"("orderId");
 
--- CreateIndex
+
 CREATE INDEX "OrderStatusHistory_orderId_idx" ON "OrderStatusHistory"("orderId");
 
--- AddForeignKey
+
 ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "OrderStatusHistory" ADD CONSTRAINT "OrderStatusHistory_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -12,13 +12,13 @@ import type {
 
 export interface RefundPaymentCommand {
   paymentId: string;
-  /**
-   * Amount to reverse, in cents. Omit for a full reversal — this covers
-   * both Payway's "Anulación" (pre-settlement void) and "Devolución total"
-   * (post-settlement refund), which are the same POST /payments/{id}/refunds
-   * call with an empty body; Payway distinguishes them internally by
-   * whether the batch has already closed, not by a different endpoint.
-   */
+
+
+
+
+
+
+
   amountInCents?: number;
 }
 
@@ -31,16 +31,16 @@ export interface RefundPaymentOutcome {
 interface RefundPaymentDeps {
   gateway: PaymentGateway;
   repository: PaymentsRepository;
-  /** Only payments from this provider are routed to `gateway`. */
+
   provider: PaymentProviderValue;
 }
 
-// A payment can only be refunded again while it still has an un-refunded
-// balance. Attempting a *second* refund on an already-REFUNDED payment
-// isn't a real business operation — Payway certification's "Anulación de
-// devolución total/parcial" negative test targets that case differently,
-// via the dedicated void-refund use case (DELETE /refunds/{refundId}),
-// not by resending this same POST.
+
+
+
+
+
+
 const REFUNDABLE_STATUSES = new Set(["APPROVED", "PARTIALLY_REFUNDED"]);
 
 export function refundPayment(deps: RefundPaymentDeps) {
@@ -99,9 +99,9 @@ export function refundPayment(deps: RefundPaymentDeps) {
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Payway rechazó la operación.";
-      // Surface Payway's own rejection as a clean 409 instead of an opaque
-      // 500. Batch closure, when required by Payway, belongs to Payway's
-      // merchant operation and must not rely on guessed local credentials.
+
+
+
       throw new TRPCError({ code: "CONFLICT", message });
     }
 

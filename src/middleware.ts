@@ -13,9 +13,9 @@ const CLUB_ROLES = new Set([
 
 const isDev = process.env.NODE_ENV !== "production";
 
-// Payment SDKs and hosted checkouts use these origins for scripts, API
-// requests and PCI-scoped frames. The older providers remain allowed so
-// historical payment operations can still be managed.
+
+
+
 const PAYMENT_SCRIPT =
   "https://sdk.mercadopago.com https://*.mercadopago.com https://*.mlstatic.com https://ventasonline.payway.com.ar https://api-homo.payway.com.ar https://api.mobbex.com https://*.mobbex.com";
 const PAYMENT_CONNECT =
@@ -26,13 +26,13 @@ const MAP_FRAME = "https://www.google.com https://maps.google.com";
 const PAYMENT_IMG =
   "https://*.mercadopago.com https://*.mercadolibre.com https://*.mlstatic.com https://*.mobbex.com";
 
-/**
- * script-src uses a per-request nonce instead of 'unsafe-inline'. This has
- * to live here rather than next.config.js's static headers() because the
- * nonce must be fresh on every request. Host allowlists (PAYMENT_SCRIPT) still
- * work alongside the nonce — only 'unsafe-inline' gets ignored when a
- * nonce is present, not host sources.
- */
+
+
+
+
+
+
+
 function buildCsp(nonce: string) {
   return [
     `default-src 'self'`,
@@ -49,30 +49,30 @@ function buildCsp(nonce: string) {
   ].join("; ");
 }
 
-// Edge-safe NextAuth instance: reads/verifies the JWT session only, no
-// providers or Prisma. Keeps argon2 and other Node-only deps out of the
-// Edge middleware bundle. See src/server/auth/edge-config.ts.
+
+
+
 const { auth } = NextAuth(edgeAuthConfig);
 
-/**
- * Also the CSP nonce boundary: every request gets a fresh nonce, forwarded
- * to the app via the `x-nonce` request header (Next.js applies it to its
- * own injected bootstrap/hydration scripts) and echoed in the
- * Content-Security-Policy response header.
- *
- * The auth check below is UX-only: it redirects unauthenticated/
- * unauthorized visitors away from /admin and /club. It is not the
- * authorization boundary — every protected tRPC procedure re-checks
- * role/membership server-side.
- */
+
+
+
+
+
+
+
+
+
+
+
 export default auth((req) => {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const csp = buildCsp(nonce);
 
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-nonce", nonce);
-  // Next.js reads the CSP from the forwarded request while rendering and
-  // copies this nonce onto its bootstrap and hydration scripts.
+
+
   requestHeaders.set("Content-Security-Policy", csp);
 
   const { pathname } = req.nextUrl;

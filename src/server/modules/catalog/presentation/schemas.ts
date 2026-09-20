@@ -9,6 +9,7 @@ export const listProductsInputSchema = z.object({
   search: safeTextSchema({ max: 120 }).optional(),
   featured: z.boolean().optional(),
   sort: z.enum(["NEWEST", "BEST_SELLING"]).optional(),
+  availableOnly: z.boolean().default(true),
 });
 
 export const getProductBySlugInputSchema = z.object({

@@ -15,6 +15,10 @@ interface ProductCardProps {
   onOpen: () => void;
 }
 
+function isVariantAvailable(showStock: boolean, stock: number | null) {
+  return showStock ? (stock ?? 0) > 0 : stock !== 0;
+}
+
 export function ProductCard({ product, onOpen }: ProductCardProps) {
   const images =
     product.images.length > 0
@@ -45,17 +49,25 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
     product.variants.find(
       (variant) =>
         variant.color === selectedColor &&
-        (!product.showStock || (variant.stock ?? 0) > 0),
+        isVariantAvailable(product.showStock, variant.stock),
     ) ??
-    product.variants.find((variant) => variant.color === selectedColor) ??
     product.variants.find(
-      (variant) => variant.id === product.defaultVariant?.id,
+      (variant) =>
+        variant.id === product.defaultVariant?.id &&
+        isVariantAvailable(product.showStock, variant.stock),
+    ) ??
+    product.variants.find((variant) =>
+      isVariantAvailable(product.showStock, variant.stock),
     );
+  const cartQuantity = useCartStore(
+    (state) =>
+      state.lines.find((line) => line.variantId === selectedVariant?.id)
+        ?.quantity ?? 0,
+  );
   const isOutOfStock =
-    product.showStock &&
-    (product.totalStock <= 0 ||
-      !selectedVariant ||
-      (selectedVariant.stock ?? 0) <= 0);
+    !selectedVariant ||
+    !isVariantAvailable(product.showStock, selectedVariant.stock) ||
+    (product.showStock && (selectedVariant.stock ?? 0) <= cartQuantity);
 
   useEffect(
     () => () => {
@@ -72,6 +84,13 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
         .getState()
         .lines.find((line) => line.variantId === selectedVariant.id)
         ?.quantity ?? 0;
+
+    if (
+      !isVariantAvailable(product.showStock, selectedVariant.stock) ||
+      (product.showStock && (selectedVariant.stock ?? 0) <= currentQuantity)
+    ) {
+      return;
+    }
 
     addLine(
       {
@@ -203,7 +222,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
           ) : null}
         </div>
 
-        {product.showStock && isOutOfStock ? (
+        {isOutOfStock ? (
           <span className="catalog-product-card__status mt-1 text-xs font-bold text-red-600">
             Sin stock
           </span>
@@ -265,9 +284,7 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
               }`}
             >
               <CartIcon className="h-5 w-5 shrink-0 @[176px]:h-6 @[176px]:w-6" />
-              {product.showStock && isOutOfStock
-                ? "Sin stock"
-                : "Agregar al carrito"}
+              {isOutOfStock ? "Sin stock" : "Agregar al carrito"}
             </span>
 
             {quantityFeedback !== null ? (

@@ -73,8 +73,8 @@ const spaceMono = Space_Mono({
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // A fresh CSP nonce is generated for every request. Waiting for the request
-  // prevents static HTML from being built without that nonce.
+
+
   await connection();
 
   return (

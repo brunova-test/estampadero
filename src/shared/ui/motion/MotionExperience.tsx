@@ -11,18 +11,18 @@ import {
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-// Travel only, no scale: resizing a whole section reads as a lurch, and it is
-// the first thing to drop when softening the reveal. Kept in step with the
-// RevealOnScroll defaults so pages using either path feel the same.
+
+
+
 const HIDDEN_SECTION = "translateY(22px)";
 const HIDDEN_ITEM = "translateY(18px)";
 const VISIBLE = "translateY(0px)";
 const EASE = [0.33, 1, 0.68, 1] as const;
-/** Fraction of the element (or of the viewport, whichever is smaller) that has
- * to be on screen before the reveal fires. */
+
+
 const ENTER_RATIO = 0.15;
-/** Enough steps that the observer keeps reporting while a section crosses the
- * trigger line, instead of only at 0% and 100%. */
+
+
 const THRESHOLDS = Array.from({ length: 21 }, (_, step) => step / 20);
 
 export function MotionExperience({ children }: { children: React.ReactNode }) {
@@ -32,9 +32,9 @@ export function MotionExperience({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const root = rootRef.current;
-    // Admin pages contain nested client boundaries. Mutating their sections
-    // from this parent effect can happen before those boundaries hydrate and
-    // leaves React comparing server markup against animation inline styles.
+
+
+
     if (
       !root ||
       pathname.startsWith("/admin") ||
@@ -49,15 +49,15 @@ export function MotionExperience({ children }: { children: React.ReactNode }) {
     ).filter(
       (element, index, items) =>
         items.indexOf(element) === index &&
-        // Anything wrapped in a <RevealOnScroll> already declares its own
-        // reveal; animating it here too would double up the fade.
+
+
         !element.closest("[data-reveal-root]"),
     );
 
-    // Which sections are currently shown. A section only re-arms once it has
-    // left the viewport completely, so the reveal replays every time you scroll
-    // past it — in either direction — without flickering when you park the
-    // scroll right on the trigger line.
+
+
+
+
     const shown = new Set<HTMLElement>();
     const running = new Map<HTMLElement, ReturnType<typeof animate>[]>();
 
@@ -113,8 +113,8 @@ export function MotionExperience({ children }: { children: React.ReactNode }) {
       (entries) => {
         entries.forEach((entry) => {
           const element = entry.target as HTMLElement;
-          // Compare visible pixels rather than the raw ratio: a section taller
-          // than the viewport can never reach ENTER_RATIO of its own height.
+
+
           const trigger =
             Math.min(entry.boundingClientRect.height, window.innerHeight) *
             ENTER_RATIO;
@@ -130,9 +130,9 @@ export function MotionExperience({ children }: { children: React.ReactNode }) {
           } else if (
             !entry.isIntersecting &&
             shown.has(element) &&
-            // Only re-arm once the section has dropped back below the viewport.
-            // A section that passed above it stays revealed, so scrolling up
-            // never replays the reveal.
+
+
+
             entry.boundingClientRect.top > 0
           ) {
             shown.delete(element);

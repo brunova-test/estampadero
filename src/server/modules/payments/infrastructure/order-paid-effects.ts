@@ -8,11 +8,11 @@ import type { OrderDetailDto } from "elestampadero/server/modules/orders";
 
 import { sendOrderReceiptEmail } from "./order-receipt-email";
 
-/**
- * Side effects run once an order is confirmed paid (via webhook or a
- * synchronous card payment). Each effect is independently idempotent, so
- * running this more than once for the same order is safe.
- */
+
+
+
+
+
 export async function runOrderPaidEffects(
   order: OrderDetailDto,
 ): Promise<void> {
@@ -21,8 +21,8 @@ export async function runOrderPaidEffects(
     assignOrderToOpenBatchUseCase(order.id),
   ]);
 
-  // The customer does not need to wait for the external email provider after
-  // the paid order, commission and production assignment are already durable.
+
+
   after(async () => {
     try {
       await sendOrderReceiptEmail(order);

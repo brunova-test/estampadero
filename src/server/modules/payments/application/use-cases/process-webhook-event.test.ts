@@ -137,7 +137,7 @@ describe("processWebhookEvent", () => {
   it("reports amount_mismatch and does not touch the order when provider amount disagrees", async () => {
     const deps = makeDeps({
       gateway: {
-        // local payment below is 10_000
+
         getPayment: vi.fn(async () => makeProviderResult({ amountInCents: 5_000 })),
       },
       repository: {
@@ -175,7 +175,7 @@ describe("processWebhookEvent", () => {
         findById: vi.fn(async () =>
           makePayment({ providerPaymentId: "mp-payment-1", status: "APPROVED" }),
         ),
-        // already approved: repository guard returns false
+
         markApprovedAndPayOrder: vi.fn(async () => false),
       },
       onOrderPaid,

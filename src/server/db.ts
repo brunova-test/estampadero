@@ -8,8 +8,8 @@ function getApplicationDatabaseUrl() {
   const usesRailwayTransactionPooler =
     railwayUnpooledUrl && railwayUnpooledUrl !== env.DATABASE_URL;
 
-  // Supavisor transaction mode (6543) and Railway PgBouncer do not support
-  // Prisma prepared statements. Session/direct connections must keep them.
+
+
   if (
     (usesSupavisorTransactionMode || usesRailwayTransactionPooler) &&
     !databaseUrl.searchParams.has("pgbouncer")

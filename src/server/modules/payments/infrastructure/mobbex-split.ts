@@ -11,12 +11,12 @@ import type { CreateCheckoutSessionInput } from "../application/ports/payment-ga
 
 type SplitItem = NonNullable<CreateCheckoutSessionInput["split"]>[number];
 
-/**
- * Freezes the commercial agreement into the Mobbex checkout. Each club entry
- * covers the gross value of its lines; fee is the store's share and the
- * remainder is what Mobbex sends to the club. Store-only lines and shipping
- * are assigned to the originator entity so split totals equal the order total.
- */
+
+
+
+
+
+
 export async function buildMobbexSplit(
   order: OrderDetailDto,
 ): Promise<CreateCheckoutSessionInput["split"]> {

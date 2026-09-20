@@ -223,9 +223,9 @@ export const prismaSettlementsRepository: SettlementsRepository = {
     commissionEntryId?: string,
   ): Promise<SettlementDetailDto | null> {
     const newSettlementId = await db.$transaction(async (tx) => {
-      // The PostgreSQL lock function returns `void`. `$queryRaw` attempts to
-      // deserialize that unsupported type and fails before the transaction can
-      // continue, so execute it as a statement with no result set instead.
+
+
+
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`${clubId}:${periodStart.toISOString()}:${periodEnd.toISOString()}`}))`;
       const existing = await tx.settlement.findUnique({
         where: {
@@ -251,9 +251,9 @@ export const prismaSettlementsRepository: SettlementsRepository = {
         (sum, entry) => sum + entry.amountInCents,
         0,
       );
-      // A negative balance represents a refund/chargeback the club still
-      // owes. Keep it in the ledger until future sales offset it; never create
-      // an impossible "transfer" with a zero or negative amount.
+
+
+
       if (totalInCents <= 0) return null;
 
       const settlement = await tx.settlement.create({

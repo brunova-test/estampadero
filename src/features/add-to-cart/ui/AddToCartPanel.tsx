@@ -14,6 +14,10 @@ interface AddToCartPanelProps {
   onColorChange?: (color: string) => void;
 }
 
+function isVariantAvailable(showStock: boolean, stock: number | null) {
+  return showStock ? (stock ?? 0) > 0 : stock !== 0;
+}
+
 export function AddToCartPanel({
   product,
   compact = false,
@@ -45,7 +49,7 @@ export function AddToCartPanel({
             (variant) =>
               variant.size === availableSize &&
               variant.color === availableColor &&
-              (!product.showStock || (variant.stock ?? 0) > 0),
+              isVariantAvailable(product.showStock, variant.stock),
           ),
         ),
       );
@@ -67,9 +71,15 @@ export function AddToCartPanel({
   const selectedVariant = product.variants.find(
     (variant) => variant.size === size && variant.color === color,
   );
+  const cartQuantity = useCartStore(
+    (state) =>
+      state.lines.find((line) => line.variantId === selectedVariant?.id)
+        ?.quantity ?? 0,
+  );
   const isAvailable =
     Boolean(selectedVariant) &&
-    (!product.showStock || (selectedVariant?.stock ?? 0) > 0);
+    isVariantAvailable(product.showStock, selectedVariant?.stock ?? null) &&
+    (!product.showStock || (selectedVariant?.stock ?? 0) > cartQuantity);
   const primaryImage =
     product.images.find((image) => image.color === color)?.url ??
     product.images[0]?.url ??
@@ -90,6 +100,13 @@ export function AddToCartPanel({
         .getState()
         .lines.find((line) => line.variantId === selectedVariant.id)
         ?.quantity ?? 0;
+
+    if (
+      !isVariantAvailable(product.showStock, selectedVariant.stock) ||
+      (product.showStock && (selectedVariant.stock ?? 0) <= currentQuantity)
+    ) {
+      return;
+    }
 
     addLine(
       {

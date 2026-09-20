@@ -65,9 +65,9 @@ const refundPaywayPaymentUseCase = refundPayment({
   provider: "PAYWAY",
 });
 
-// Certification step "Anulación de devolución total/parcial" — voids the
-// most recently created refund via DELETE /refunds/{refundId}, distinct
-// from refundPaymentUseCase above.
+
+
+
 const voidRefundUseCase = voidRefund({
   gateway: paywayGateway,
   repository: prismaPaymentsRepository,
@@ -79,8 +79,8 @@ const setRefundReferenceUseCase = setRefundReference({
   provider: "PAYWAY",
 });
 
-// On-demand payment status lookup for a Payway payment stuck in a
-// non-terminal status (e.g. a provider timeout) — see query-payment-status.ts.
+
+
 const queryPaywayPaymentStatusUseCase = queryPaymentStatus({
   gateway: paywayGateway,
   repository: prismaPaymentsRepository,
@@ -118,9 +118,9 @@ function rejectDirectPayment<T>(
 }
 
 export const paymentsRouter = createTRPCRouter({
-  // Kept in the tRPC contract while old, no-longer-rendered clients remain in
-  // the source tree. These direct-payment routes reject every new operation so
-  // a caller cannot bypass Mobbex and its split.
+
+
+
   tokenizeCard: publicProcedure
     .input(tokenizeCardInputSchema)
     .use(

@@ -77,10 +77,10 @@ export function PaywayCardForm({
     }, PAYMENT_RESPONSE_TIMEOUT_MS);
 
     try {
-      // Tokenization is relayed through our own backend (tokenizeCard ->
-      // paywayTokenizeCard), not called directly from the browser: Payway's
-      // /tokens endpoint doesn't accept cross-origin requests for this
-      // merchant's credentials. See payway-gateway.ts for details.
+
+
+
+
       const payerDocNumber = value("card_holder_doc_number");
       const response = await tokenizeCard.mutateAsync({
         cardNumber: value("card_number"),

@@ -63,8 +63,8 @@ export function processWebhookEvent(deps: ProcessWebhookDeps) {
       return { outcome: "processed" };
     }
 
-    // Authoritative state comes from querying the provider directly, never
-    // from the webhook body itself.
+
+
     const providerResult = await deps.gateway.getPayment(
       verified.providerPaymentId,
     );

@@ -12,7 +12,7 @@ function isRealProviderId(value: string) {
   return normalized.length > 0 && normalized !== "0";
 }
 
-/** Stores a refund id obtained from Payway for a refund created before it was persisted. */
+
 export function setRefundReference(deps: {
   repository: PaymentsRepository;
   provider: PaymentProviderValue;

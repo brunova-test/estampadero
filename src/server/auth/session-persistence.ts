@@ -1,11 +1,11 @@
 const SESSION_COOKIE_PATTERN =
   /^(?:(?:__Secure|__Host)-)?authjs\.session-token(?:\.\d+)?=/;
 
-/**
- * Auth.js always adds an expiry to its JWT cookie. For a login where the user
- * did not choose "Recordarme", turn that cookie into a browser-session cookie
- * while preserving all of its security attributes (HttpOnly, SameSite, etc.).
- */
+
+
+
+
+
 export function applySessionPersistence(
   response: Response,
   persistent: boolean,

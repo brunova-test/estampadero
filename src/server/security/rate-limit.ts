@@ -7,12 +7,12 @@ export interface RateLimitResult {
   retryAfterSeconds: number;
 }
 
-/**
- * Fixed-window limiter backed by one atomic Postgres UPSERT. This keeps the
- * limit shared across replicas without writing one row and issuing a COUNT
- * for every request. The increment is serialized by Postgres, so concurrent
- * requests cannot all observe the same stale count.
- */
+
+
+
+
+
+
 export async function checkRateLimit(
   key: string,
   limit: number,
@@ -29,8 +29,8 @@ export async function checkRateLimit(
     select: { count: true },
   });
 
-  // Old buckets are independent from the active one, so cleanup can run in
-  // the background without affecting the result of this request.
+
+
   if (Math.random() < 0.01) {
     void db.rateLimitBucket.deleteMany({
       where: { expiresAt: { lt: new Date(now - windowMs) } },
@@ -46,13 +46,13 @@ export async function checkRateLimit(
   };
 }
 
-/**
- * Best-effort client identity from request headers. Trusts
- * `x-forwarded-for` because this app is deployed behind a reverse proxy
- * network, which sets/overwrites that header itself — it is not
- * client-controllable in that deployment. If self-hosting behind a
- * different proxy, verify the trusted-proxy chain before relying on this.
- */
+
+
+
+
+
+
+
 export function getClientIp(headers: Headers): string {
   const forwardedFor = headers.get("x-forwarded-for");
   if (forwardedFor) {

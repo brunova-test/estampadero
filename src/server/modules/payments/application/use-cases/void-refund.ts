@@ -23,23 +23,23 @@ interface VoidRefundDeps {
   provider: PaymentProviderValue;
 }
 
-/**
- * A provider identifier must be the value returned by Payway. In
- * particular, reject the placeholder values that used to reach the URL
- * path and trigger Payway's misleading `path_params_payment_id` response.
- */
+
+
+
+
+
 function isRealProviderId(value: string | null | undefined): value is string {
   if (!value) return false;
   const normalizedValue = value.trim();
   return normalizedValue.length > 0 && normalizedValue !== "0";
 }
 
-/**
- * Payway certification step "Anulación de devolución total/parcial": voids
- * the most recently created refund via DELETE /payments/{id}/refunds/
- * {refundId} — a distinct operation from creating a new refund (see
- * refund-payment.ts), confirmed against Payway's own e-commerce docs.
- */
+
+
+
+
+
+
 export function voidRefund(deps: VoidRefundDeps) {
   return async (command: VoidRefundCommand): Promise<VoidRefundOutcome> => {
     const payment = await deps.repository.findById(command.paymentId);
@@ -87,8 +87,8 @@ export function voidRefund(deps: VoidRefundDeps) {
     }
 
     try {
-      // Temporary, safe diagnostic for certification Case 10. These are
-      // Payway resource ids, never API keys, card tokens, or card data.
+
+
       console.log({
         paywayPaymentId: payment.providerPaymentId,
         paywayRefundId: payment.lastProviderRefundId,

@@ -1,5 +1,5 @@
--- Production is managed per order item. Existing data inherits the current
--- order-level state so no item moves backwards when this migration is applied.
+
+
 CREATE TYPE "ProductionItemStatus" AS ENUM (
   'WAITING',
   'SCHEDULED',

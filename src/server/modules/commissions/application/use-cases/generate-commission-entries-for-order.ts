@@ -13,12 +13,12 @@ interface GenerateCommissionEntriesDeps {
   getReturnWindowDays?: () => Promise<number>;
 }
 
-/**
- * Called after an order transitions to PAID. Generates one CommissionEntry
- * per club-linked line, using the club's active agreement rate (product
- * override or base). Idempotent per orderItemId — safe to call more than
- * once for the same order.
- */
+
+
+
+
+
+
 export function generateCommissionEntriesForOrder(
   deps: GenerateCommissionEntriesDeps,
 ) {

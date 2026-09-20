@@ -1,13 +1,13 @@
--- CreateEnum
+
 CREATE TYPE "SettlementMethod" AS ENUM ('TRANSFER', 'SPLIT_MP');
 
--- CreateEnum
+
 CREATE TYPE "AgreementStatus" AS ENUM ('ACTIVE', 'EXPIRED', 'CANCELLED');
 
--- CreateEnum
+
 CREATE TYPE "CommissionStatus" AS ENUM ('ACCRUED', 'SETTLED');
 
--- CreateTable
+
 CREATE TABLE "Agreement" (
     "id" TEXT NOT NULL,
     "clubId" TEXT NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE "Agreement" (
     CONSTRAINT "Agreement_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "AgreementProductRate" (
     "id" TEXT NOT NULL,
     "agreementId" TEXT NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE "AgreementProductRate" (
     CONSTRAINT "AgreementProductRate_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "CommissionEntry" (
     "id" TEXT NOT NULL,
     "clubId" TEXT NOT NULL,
@@ -53,35 +53,35 @@ CREATE TABLE "CommissionEntry" (
     CONSTRAINT "CommissionEntry_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
+
 CREATE UNIQUE INDEX "Agreement_code_key" ON "Agreement"("code");
 
--- CreateIndex
+
 CREATE INDEX "Agreement_clubId_idx" ON "Agreement"("clubId");
 
--- CreateIndex
+
 CREATE INDEX "Agreement_status_idx" ON "Agreement"("status");
 
--- CreateIndex
+
 CREATE UNIQUE INDEX "AgreementProductRate_agreementId_productId_key" ON "AgreementProductRate"("agreementId", "productId");
 
--- CreateIndex
+
 CREATE UNIQUE INDEX "CommissionEntry_orderItemId_key" ON "CommissionEntry"("orderItemId");
 
--- CreateIndex
+
 CREATE INDEX "CommissionEntry_clubId_idx" ON "CommissionEntry"("clubId");
 
--- CreateIndex
+
 CREATE INDEX "CommissionEntry_status_idx" ON "CommissionEntry"("status");
 
--- AddForeignKey
+
 ALTER TABLE "Agreement" ADD CONSTRAINT "Agreement_clubId_fkey" FOREIGN KEY ("clubId") REFERENCES "Club"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "AgreementProductRate" ADD CONSTRAINT "AgreementProductRate_agreementId_fkey" FOREIGN KEY ("agreementId") REFERENCES "Agreement"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "CommissionEntry" ADD CONSTRAINT "CommissionEntry_clubId_fkey" FOREIGN KEY ("clubId") REFERENCES "Club"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "CommissionEntry" ADD CONSTRAINT "CommissionEntry_agreementId_fkey" FOREIGN KEY ("agreementId") REFERENCES "Agreement"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -9,10 +9,10 @@ export type {
 } from "./application/dto/product-detail";
 export type { VariantForPricingDto } from "./application/dto/variant-pricing";
 
-/**
- * Public use case for other modules (e.g. checkout) that need authoritative
- * pricing/stock for a set of variants. Bound to the Prisma repository.
- */
+
+
+
+
 export const getVariantsForPricingUseCase = getVariantsForPricing(
   prismaCatalogRepository,
 );

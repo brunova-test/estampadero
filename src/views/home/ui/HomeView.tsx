@@ -29,7 +29,7 @@ export async function HomeView() {
     <div className="flex min-h-screen flex-col">
       <StoreHeader />
       <main className="flex flex-1 flex-col gap-4 pb-4 md:gap-[clamp(28px,3.4vw,64px)] md:pb-[clamp(28px,3.4vw,64px)]">
-        {/* Above the fold: a plain fade, no travel, so nothing shifts on load. */}
+
         <RevealOnScroll direction="none" duration={0.5}>
           <HeroCarousel />
         </RevealOnScroll>

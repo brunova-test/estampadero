@@ -3,12 +3,12 @@ import { after, type NextRequest, NextResponse } from "next/server";
 import { processModoWebhookEvent } from "elestampadero/server/modules/payments";
 import { checkRateLimit } from "elestampadero/server/security/rate-limit";
 
-/**
- * Thin HTTP adapter mirroring src/app/api/webhooks/mercado-pago/route.ts.
- * modoGateway.verifyWebhook checks the JWS signature against MODO's JWKS
- * endpoint (see modo-gateway.ts); register this URL with MODO to receive
- * callbacks.
- */
+
+
+
+
+
+
 export async function POST(request: NextRequest): Promise<Response> {
   const burstGuard = await checkRateLimit("modo-webhook", 600, 60_000);
   if (!burstGuard.allowed) {

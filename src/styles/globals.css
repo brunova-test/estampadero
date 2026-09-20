@@ -5,7 +5,7 @@
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 
-  /* El Estampadero brand palette */
+
   --color-ink: #0e0a1a;
   --color-deep: #2e0470;
   --color-mid: #3e068e;
@@ -79,7 +79,7 @@
     var(--font-inter), ui-sans-serif, system-ui, sans-serif !important;
 }
 
-/* Escala de lectura del portal: 5% por encima de la escala base. */
+
 .club-portal-shell .text-xs {
   font-size: 0.7875rem;
 }
@@ -112,7 +112,7 @@
   font-weight: 650;
 }
 
-/* Admin readability and operational modals */
+
 .admin-design-detail-page .admin-page-title,
 .admin-production-page .admin-page-title,
 .admin-content-page .admin-page-title {
@@ -574,7 +574,7 @@
   color: #ffffff;
 }
 
-/* El portal de socios comparte la misma cabecera y navegación visual del admin. */
+
 .club-portal-page-header {
   position: relative;
   z-index: 1;
@@ -1792,7 +1792,7 @@
   }
 }
 
-/* Selector de tiendas en la cabecera del catálogo general. */
+
 .catalog-club-stores-shell {
   position: relative;
   z-index: 2;
@@ -3297,7 +3297,7 @@
   }
 }
 
-/* Producción: tablero operativo agrupado por pedido. */
+
 .admin-production-page {
   width: min(1480px, calc(100vw - 288px));
   font-family: var(--font-inter), sans-serif;
@@ -6020,8 +6020,8 @@
   }
 }
 
-/* Join-club hero: the complete composition stays inside the first viewport
-   across both short laptop screens and taller desktop/mobile displays. */
+
+
 .join-club-hero,
 .join-club-hero__inner {
   min-height: calc(100svh - 70px);
@@ -6483,8 +6483,8 @@
   }
 
   .hero-slide-ribbon {
-    /* Keep the angled ticker locked in place while its content changes.
-       Translating a rotated layer makes its edges shimmer and appear wavy. */
+
+
     transform: translate3d(0, 0, 0) scale(1);
     backface-visibility: hidden;
     transition: opacity 1100ms ease-in-out 100ms;
@@ -6837,9 +6837,9 @@
     scale: 1;
   }
 }
-/* The link whose destination is loading: same label, just held back. Nothing
-   about its box changes, so the surrounding layout never shifts. If the
-   navigation runs long the full-screen loader takes over from here. */
+
+
+
 a[data-nav-loading="true"] {
   cursor: wait;
   opacity: 0.45;
@@ -6956,11 +6956,11 @@ a[data-nav-loading="true"] {
   .motion-route {
     transform: none !important;
   }
-  /* Scroll reveals keep fading but stop travelling. Motion sickness comes from
-     the movement, not the opacity, so the reveal stays legible while the
-     translation is dropped. Handled here rather than in JS: the server can't
-     know the visitor's preference, so branching during render would desync
-     hydration. Covers RevealOnScroll wrappers and RevealGroup children. */
+
+
+
+
+
   [data-reveal-root],
   [data-reveal-root] > * {
     transform: none !important;
@@ -7149,6 +7149,10 @@ a[data-nav-loading="true"] {
   display: none;
 }
 
+.catalog-products-more {
+  display: none;
+}
+
 @media (max-width: 767px) {
   .catalog-explorer {
     gap: 0;
@@ -7169,6 +7173,54 @@ a[data-nav-loading="true"] {
   .catalog-product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+  }
+
+  .catalog-product-grid[data-mobile-expanded="false"]
+    > .catalog-product-card:nth-child(n + 5) {
+    display: none;
+  }
+
+  .catalog-products-more {
+    display: flex;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: fit-content;
+    margin: 14px auto 2px;
+    border: 1px solid rgb(46 4 112 / 22%);
+    border-radius: 999px;
+    padding: 7px 15px;
+    background: #ffffff;
+    color: var(--color-deep);
+    box-shadow: 0 8px 20px -14px rgb(46 4 112 / 48%);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .catalog-products-more:hover,
+  .catalog-products-more:focus-visible {
+    border-color: var(--color-deep);
+    background: var(--color-deep);
+    color: #ffffff;
+    outline: none;
+  }
+
+  .catalog-products-more svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 180ms ease;
+  }
+
+  .catalog-products-more[aria-expanded="true"] svg {
+    transform: rotate(180deg);
   }
 
   .catalog-product-grid .catalog-product-card {
@@ -8145,7 +8197,7 @@ a[data-nav-loading="true"] {
   }
 }
 
-/* Admin interface */
+
 .admin-shell {
   --font-archivo: var(--font-barlow);
   --font-ibm-plex-mono: var(--font-barlow);
@@ -14807,7 +14859,7 @@ a[data-nav-loading="true"] {
   font-weight: 800;
 }
 
-/* Liquidaciones: composición alineada con el tablero de referencia. */
+
 .admin-settlements-page {
   width: min(1480px, calc(100vw - 288px));
   font-family: var(--font-inter), sans-serif;
@@ -15347,7 +15399,7 @@ a[data-nav-loading="true"] {
   transform: translate(-50%, 0);
 }
 
-/* Estados compactos: una sola línea y sin adornos redundantes. */
+
 .admin-settlement-movement-table-wrap {
   overflow: visible;
 }
@@ -16332,7 +16384,7 @@ a[data-nav-loading="true"] {
   }
 }
 
-/* Keep these final overrides after the legacy admin module rules. */
+
 body .admin-settlements-grid {
   display: block;
 }
@@ -16390,7 +16442,7 @@ body .admin-content-grid--stacked .admin-content-editor {
   padding: 28px;
 }
 
-/* Encabezado compartido de los módulos administrativos. */
+
 body .admin-page:not(.admin-orders-page) .admin-page-header {
   margin-bottom: 0;
   border-radius: 13px 13px 0 0;
@@ -16416,8 +16468,8 @@ body
   color: #e1d7e8;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
-/* Los módulos operativos que usan un encabezado propio siguen la misma
-   jerarquía visual que las páginas administrativas estándar. */
+
+
 body .admin-orders-page .admin-orders-panel,
 body .admin-settlements-page .admin-settlements-panel,
 body .admin-production-page .admin-production-workspace {
@@ -16954,8 +17006,8 @@ body .admin-editor-actions {
   }
 }
 
-/* Prominent primary action inside the join-club hero. Kept at the end so it
-   wins over the shared button utility sizing and colour rules. */
+
+
 .join-club-hero__cta {
   padding: 20px 44px;
   font-size: 19px;
@@ -17040,7 +17092,7 @@ body .admin-editor-actions {
   font-size: 12px;
 }
 
-/* Editorial join-club landing page. */
+
 .join-club-page {
   background: #f8f6ff;
   color: var(--color-ink);
@@ -17683,8 +17735,8 @@ body .admin-editor-actions {
   }
 }
 
-/* Compact desktop mode: browser chrome and the Windows taskbar can leave less
-   than 600px of real page height even on a 1366×768 display. */
+
+
 @media (min-width: 900px) and (max-height: 680px) {
   .join-club-editorial__content {
     padding-top: 20px;
@@ -18191,8 +18243,8 @@ body .admin-editor-actions {
   }
 }
 
-/* Connected timeline used in the join-club process section. These final
-   overrides intentionally restore the original four-step visual language. */
+
+
 .join-club-process__grid {
   position: relative;
   display: grid;
@@ -18775,7 +18827,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Patrón compartido de estados para todo el panel administrativo. */
+
 .admin-page
   .admin-chip:is(
     .admin-chip--success,
@@ -18864,7 +18916,7 @@ body .admin-editor-actions {
   color: currentColor;
 }
 
-/* Estados compactos del detalle de versiones de diseño. */
+
 .admin-page .admin-design-version-status {
   display: inline-flex;
   min-height: 32px;
@@ -18910,7 +18962,7 @@ body .admin-editor-actions {
   color: #5933a2;
 }
 
-/* Historial de producción: registro de solo lectura para envíos y bajas. */
+
 .admin-production-page [hidden] {
   display: none !important;
 }
@@ -19140,7 +19192,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Alta de clubes: tipografía ligeramente mayor y acciones más legibles. */
+
 .admin-club-create-modal {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
@@ -19327,7 +19379,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Credenciales del socio: el correo es visible y la clave solo se regenera. */
+
 .admin-club-access-card {
   display: grid;
   gap: 16px;
@@ -19587,7 +19639,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Button hovers use color only: avoid glow/brightness effects across the UI. */
+
 @media (hover: hover) and (pointer: fine) {
   button:not(:disabled):hover {
     filter: none !important;
@@ -19595,7 +19647,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Detalle de club: bloques compactos, sin columnas con espacio residual. */
+
 .admin-club-detail-page {
   width: min(1240px, calc(100vw - 288px));
   zoom: 1;
@@ -20088,7 +20140,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Navegación principal del detalle: mismo patrón visual que Productos. */
+
 .admin-club-detail-page .admin-club-detail-hero {
   position: relative;
   padding: 28px 28px 16px;
@@ -20139,7 +20191,7 @@ body .admin-editor-actions {
   background: transparent;
 }
 
-/* Tiendas individuales de clubes */
+
 .club-store-hero {
   position: relative;
 }
@@ -20203,7 +20255,7 @@ body .admin-editor-actions {
 .club-store-logo__image {
   transform: scale(1.24);
 }
-/* Administración de tienda y QR dentro del perfil del club. */
+
 .admin-club-store-panel {
   display: grid;
   gap: 22px;
@@ -20520,8 +20572,8 @@ body .admin-editor-actions {
   white-space: nowrap;
 }
 
-/* Product editor: keep the association control self-contained even when
-   browser/default admin styles are loaded after the legacy form rules. */
+
+
 .admin-product-information-card
   .admin-product-partner-select
   > details
@@ -20755,7 +20807,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Escala tipográfica del detalle de clubes. */
+
 .admin-club-detail-page .admin-club-detail-hero .admin-eyebrow {
   font-size: 14.3px;
 }
@@ -20830,7 +20882,7 @@ body .admin-editor-actions {
   font-size: 14.3px;
 }
 
-/* Tarjetas de clubes: cada dato conserva su propia zona, sin superponerse. */
+
 .admin-clubs-list > a {
   grid-template-columns: 74px minmax(0, 1fr) auto;
   grid-template-areas:
@@ -20879,7 +20931,7 @@ body .admin-editor-actions {
   outline-offset: 2px;
 }
 
-/* Acción de compra: lectura clara y feedback cromático al interactuar. */
+
 .catalog-product-card__cart-button {
   font-family: var(--font-sans);
   font-weight: 620;
@@ -20927,9 +20979,14 @@ body .admin-editor-actions {
   outline-offset: 3px;
 }
 
-/* Escala de lectura del catálogo y de las tiendas filtradas por club.
-   La ampliación se limita a escritorio: `zoom` sobre mobile hacía que filtros
-   y tarjetas fueran más anchos que el viewport. */
+
+
+
+.catalog-page {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
 .catalog-explorer--scaled {
   width: 100%;
   min-width: 0;
@@ -20968,13 +21025,41 @@ body .admin-editor-actions {
     padding-top: 0;
   }
 
+  .catalog-container,
+  .catalog-explorer,
+  .catalog-filters,
+  .catalog-products,
+  .catalog-filters-mobile-toolbar,
+  .catalog-filters-mobile-actions,
+  .catalog-filters-panel,
+  .catalog-products-meta,
+  .catalog-sort-control {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .catalog-explorer,
+  .catalog-filters-mobile-actions,
+  .catalog-filters-panel,
+  .catalog-products-meta,
+  .catalog-sort-control {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
   .catalog-filters-mobile-toolbar {
-    width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-    border-radius: 0 0 12px 12px;
-    padding: 12px;
+    position: relative;
+    z-index: 20;
+    width: calc(100% + 2rem);
+    max-width: none;
+    margin: 0 -1rem;
+    border-radius: 0;
+    padding: 14px 1rem 12px;
+    border-bottom: 1px solid rgb(46 4 112 / 8%);
+    background: #f7f5fa;
     overflow: visible;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 80%);
   }
 
   .catalog-filters-mobile-actions,
@@ -20985,12 +21070,39 @@ body .admin-editor-actions {
 
   .catalog-filters-mobile-actions {
     width: 100%;
+    max-width: 100%;
+    min-height: 52px;
+    border: 1px solid rgb(46 4 112 / 12%);
+    border-radius: 14px;
+    outline: none;
+    box-shadow: 0 10px 26px -20px rgb(46 4 112 / 55%);
+  }
+
+  .catalog-filters-mobile-actions form {
+    width: 0;
+    flex: 1 1 auto;
+  }
+
+  .catalog-filters-mobile-actions input,
+  .catalog-filters-mobile-trigger {
+    height: 50px;
+  }
+
+  .catalog-filters-mobile-trigger {
+    flex: 0 0 auto;
+    min-width: 92px;
+  }
+
+  .catalog-filters-mobile-trigger[aria-expanded="true"] {
+    background: #eee8ff;
+    color: var(--color-deep);
   }
 
   .catalog-filters-panel {
     width: 100%;
-    margin-top: 8px;
-    padding: 14px;
+    max-width: 100%;
+    margin-top: 12px;
+    padding: 16px;
   }
 
   .catalog-products-meta {
@@ -21011,21 +21123,50 @@ body .admin-editor-actions {
 
   .catalog-sort-control > button {
     width: 100%;
+    min-height: 50px;
+    border-radius: 14px;
+    box-shadow: 0 10px 26px -22px rgb(46 4 112 / 48%);
   }
-
+}
+@media (min-width: 640px) and (max-width: 767px) {
+  .catalog-filters-mobile-toolbar {
+    width: calc(100% + 3rem);
+    margin-right: -1.5rem;
+    margin-left: -1.5rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
 }
 @media (max-width: 420px) {
   .catalog-filters-mobile-actions {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .catalog-filters-mobile-actions > button {
-    width: 100%;
+    width: auto;
     justify-content: center;
   }
 
   .catalog-filters-panel ul {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 340px) {
+  .catalog-filters-mobile-trigger {
+    width: auto !important;
+    min-width: 84px;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  .catalog-filters-mobile-trigger-label {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: nowrap;
   }
 }
 .catalog-product-card__club,
@@ -21222,7 +21363,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Cabecera administrativa de ancho completo, alineada con el portal de clubes. */
+
 .admin-shell {
   --admin-sidebar-width: 240px;
 }
@@ -21295,7 +21436,7 @@ body .admin-editor-actions {
   }
 }
 
-/* Los tabs principales del administrador continúan el banner de lado a lado. */
+
 :is(
   .admin-content-tabs,
   .admin-orders-tabs,
@@ -21385,7 +21526,7 @@ body .admin-editor-actions {
   color: #ffffff;
 }
 
-/* El lienzo administrativo completo continúa debajo del banner, sin marco exterior. */
+
 .admin-page,
 .admin-shell--collapsed .admin-page {
   width: 100%;
@@ -21405,7 +21546,7 @@ body .admin-editor-actions {
   box-shadow: none;
 }
 
-/* Pedidos: encabezado y tabs forman una sola pieza, sin franja ni esquinas. */
+
 body .admin-orders-page .admin-orders-panel {
   overflow: visible;
   border-radius: 0;
@@ -21422,7 +21563,7 @@ body .admin-orders-page .admin-orders-tabs {
   background: #281a33;
 }
 
-/* Liquidaciones: banner recto y filtros internos fuera del patrón de tabs. */
+
 body .admin-settlements-page .admin-settlements-panel {
   overflow: visible;
   border-radius: 0;
@@ -21431,7 +21572,7 @@ body .admin-settlements-page .admin-settlement-module-heading {
   border-radius: 0;
 }
 
-/* Producción: encabezado y flujo unidos, con contraste correcto en cada paso. */
+
 body .admin-production-page .admin-production-workspace {
   overflow: visible;
   border-radius: 0;
@@ -21493,7 +21634,7 @@ body .admin-production-page .admin-production-products-section {
   box-shadow: none;
 }
 
-/* El panel del portal conserva la distribución del QR al animar el menú. */
+
 @media (min-width: 900px) {
   .admin-club-store-panel--portal .admin-club-store-panel__grid {
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);

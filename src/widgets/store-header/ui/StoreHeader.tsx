@@ -38,7 +38,7 @@ export function StoreHeader() {
         if (active) setSession(nextSession?.user ? nextSession : null);
       })
       .catch(() => {
-        // Keep the public action if the session endpoint is temporarily down.
+
       });
     return () => {
       active = false;
@@ -64,9 +64,9 @@ export function StoreHeader() {
           accountLabel={accountLabel}
         />
 
-        {/* The wordmark gets a colour shift and the mark a small lift rather
-            than the rule used on the text links: a bar under a logo lock-up
-            reads as an underlined image, not as a link affordance. */}
+
+
+
         <Link
           href={routes.home}
           data-loading-label="Inicio"

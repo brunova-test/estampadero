@@ -1,7 +1,7 @@
--- CreateEnum
+
 CREATE TYPE "SpecialRequestStatus" AS ENUM ('NEW', 'CONTACTED', 'CONVERTED', 'DECLINED');
 
--- CreateTable
+
 CREATE TABLE "SpecialRequest" (
     "id" TEXT NOT NULL,
     "status" "SpecialRequestStatus" NOT NULL DEFAULT 'NEW',
@@ -18,5 +18,5 @@ CREATE TABLE "SpecialRequest" (
     CONSTRAINT "SpecialRequest_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
+
 CREATE INDEX "SpecialRequest_status_idx" ON "SpecialRequest"("status");

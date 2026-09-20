@@ -20,7 +20,7 @@ interface ClubStoreManagementPanelProps {
     productCount: number;
     hasActiveAgreement: boolean;
   };
-  /** Oculta las acciones administrativas cuando se muestra en el portal del club. */
+
   mode?: "admin" | "portal";
 }
 
@@ -301,7 +301,7 @@ export function ClubStoreManagementPanel({
           </div>
           <div className="admin-club-qr-card__preview">
             {qrDataUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
+
               <img
                 src={qrDataUrl}
                 alt={`Código QR de la tienda de ${club.name}`}

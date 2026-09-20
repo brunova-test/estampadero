@@ -72,7 +72,7 @@ async function assertClubAccess(
   }
 }
 
-/** Loads the design and authorizes access to its club in one step. */
+
 async function assertDesignAccess(
   userId: string,
   role: string,

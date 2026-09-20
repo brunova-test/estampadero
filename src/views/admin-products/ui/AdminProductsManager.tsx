@@ -1747,7 +1747,7 @@ function ProductEditorModal({
                     <div className="admin-product-partner-select__locked-value">
                       <span aria-hidden="true">
                         {selectedClub?.logoUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
+
                           <img src={selectedClub.logoUrl} alt="" />
                         ) : (
                           <ProductPartnerIcon linked={Boolean(selectedClub)} />
@@ -1769,7 +1769,7 @@ function ProductEditorModal({
                       <summary>
                         <span aria-hidden="true">
                           {selectedClub?.logoUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
+
                             <img src={selectedClub.logoUrl} alt="" />
                           ) : (
                             <ProductPartnerIcon
@@ -1832,7 +1832,7 @@ function ProductEditorModal({
                           >
                             <span aria-hidden="true">
                               {club.logoUrl ? (
-                                // eslint-disable-next-line @next/next/no-img-element
+
                                 <img src={club.logoUrl} alt="" />
                               ) : (
                                 <ProductPartnerIcon linked />
@@ -1990,7 +1990,7 @@ function ProductEditorModal({
                       {draft.images.map((image, index) =>
                         image.url ? (
                           <figure key={image.id ?? `${image.url}-${index}`}>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
+
                             <img src={image.url} alt={image.alt || ""} />
                             <figcaption>
                               {image.color === UNDEFINED_COLOR
@@ -2072,7 +2072,7 @@ function ProductEditorModal({
                         {image.url ? (
                           <div className="admin-product-image-color-preview">
                             <span>
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
+
                               <img src={image.url} alt="" />
                             </span>
                             <div>

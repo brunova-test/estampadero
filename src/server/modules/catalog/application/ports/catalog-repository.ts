@@ -9,6 +9,7 @@ export interface ListProductsFilters {
   search?: string;
   featured?: boolean;
   sort?: "NEWEST" | "BEST_SELLING";
+  availableOnly?: boolean;
 }
 
 export interface CatalogRepository {

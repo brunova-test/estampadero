@@ -2,13 +2,13 @@
 
 import { useEffect } from "react";
 
-/**
- * Error boundary for the whole /admin segment. Without this, any uncaught
- * error thrown while rendering an admin page or layout (e.g. a transient
- * auth()/session failure right after login, or a data-fetch error) falls
- * through to Next.js's bare default error screen with no way to recover
- * short of a manual refresh. This gives the user a way to retry in place.
- */
+
+
+
+
+
+
+
 export default function AdminError({
   error,
   reset,

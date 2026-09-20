@@ -16,9 +16,9 @@ import { LoadingOverlay } from "./LoadingOverlay";
 
 const MIN_VISIBLE_MS = 480;
 const MAX_VISIBLE_MS = 12_000;
-/** How long a navigation may run before the full-screen overlay takes over.
- * Anything quicker is acknowledged by the inline loader on the link alone,
- * which keeps ordinary navigation from flashing a blocking panel. */
+
+
+
 const OVERLAY_DELAY_MS = 600;
 
 interface LoadingContextValue {
@@ -185,8 +185,8 @@ export function GlobalLoadingProvider({
     };
   }, [stopLoading]);
 
-  // Marks the clicked link so CSS can mute it and take it out of the tab order
-  // while its destination loads.
+
+
   useEffect(() => {
     if (!activeLink) return;
 
@@ -201,7 +201,7 @@ export function GlobalLoadingProvider({
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
       if (visible) return;
 
-      // Hold the overlay back — see OVERLAY_DELAY_MS.
+
       const overlayTimer = setTimeout(() => {
         visibleSinceRef.current = Date.now();
         setVisible(true);
@@ -257,10 +257,10 @@ export function GlobalLoadingProvider({
   return (
     <LoadingContext.Provider value={contextValue}>
       {children}
-      {/* This provider sits above <MotionExperience>, so its LazyMotion does
-          not reach here. Without a provider of its own, `m` components render
-          frozen at their `initial` state — which is why the overlay and its
-          spinner stayed at opacity 0. `children` keeps its own. */}
+
+
+
+
       <LazyMotion features={domAnimation} strict>
         <LoadingOverlay
           visible={visible}

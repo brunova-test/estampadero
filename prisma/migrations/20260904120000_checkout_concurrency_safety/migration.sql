@@ -5,9 +5,9 @@ ADD COLUMN "stockReleasedAt" TIMESTAMP(3);
 ALTER TABLE "OrderItem"
 ADD COLUMN "stockReserved" BOOLEAN NOT NULL DEFAULT false;
 
--- Existing pending orders were created by the previous implementation, which
--- already decremented stock for stock-controlled products. Mark those lines so
--- the expiration job can return exactly what was reserved before this deploy.
+
+
+
 UPDATE "OrderItem" AS item
 SET "stockReserved" = true
 FROM "Order" AS orders, "Product" AS product

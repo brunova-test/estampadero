@@ -22,12 +22,12 @@ const credentialsSchema = z.object({
 
 const LOGIN_WINDOW_MS = 15 * 60_000;
 
-/**
- * Full NextAuth config, used by Route Handlers and Server Components
- * (Node.js runtime only — depends on argon2 and Prisma).
- *
- * @see https://next-auth.js.org/configuration/options
- */
+
+
+
+
+
+
 export const authConfig = {
   ...edgeAuthConfig,
   trustHost: process.env.AUTH_TRUST_HOST === "true",
@@ -46,11 +46,11 @@ export const authConfig = {
         const normalizedEmail = parsed.data.email.trim().toLowerCase();
         const ip = getClientIp(request.headers);
 
-        // Two independent guards, per baseline: a tight one keyed to the
-        // targeted account (stops credential stuffing on one victim) and a
-        // looser one keyed to the source IP (stops spraying many accounts
-        // from one origin). Both fail generically — no account-existence
-        // leak either way.
+
+
+
+
+
         const [accountLimit, ipLimit] = await Promise.all([
           checkRateLimit(
             `login:account:${normalizedEmail}:${ip}`,

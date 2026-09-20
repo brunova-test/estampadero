@@ -45,8 +45,8 @@ export const prismaCommissionsRepository: CommissionsRepository = {
         },
       });
     } catch (error) {
-      // Unique constraint on orderItemId: entry already generated for this
-      // line, safe to ignore (idempotent by design).
+
+
       if (!isUniqueConstraintError(error)) throw error;
     }
   },

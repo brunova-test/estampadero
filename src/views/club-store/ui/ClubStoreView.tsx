@@ -23,8 +23,8 @@ export async function ClubStoreView({
   slug,
   searchParams,
 }: ClubStoreViewProps) {
-  // La tienda ya está filtrada por institución; no mostramos ni aplicamos
-  // una línea redundante dentro del catálogo del club.
+
+
   const line = undefined;
   const [club, products, categories] = await Promise.all([
     api.clubs.publicBySlug({ slug }),

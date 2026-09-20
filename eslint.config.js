@@ -36,9 +36,9 @@ export default tseslint.config(
     },
   },
   {
-    // `expect(mockObject.method).toHaveBeenCalled()` triggers this rule as
-    // a false positive — it's a vitest mock assertion, not an unbound
-    // method call. Standard typescript-eslint recommendation for test files.
+
+
+
     files: ["**/*.test.ts"],
     rules: {
       "@typescript-eslint/unbound-method": "off",

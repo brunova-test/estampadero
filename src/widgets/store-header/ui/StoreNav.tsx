@@ -9,15 +9,15 @@ interface NavLink {
   href: string;
 }
 
-/** Breathing room above a section that is taller than the screen. */
+
 const CLEARANCE = 24;
 
-/**
- * Distance from the top of the document, from layout rather than
- * `getBoundingClientRect`. A section still waiting to be revealed carries the
- * reveal's `translateY`, which the rect would include and the scroll would then
- * overshoot by once the section settled.
- */
+
+
+
+
+
+
 function layoutTop(element: HTMLElement) {
   let top = 0;
   let node: HTMLElement | null = element;
@@ -33,18 +33,18 @@ function layoutTop(element: HTMLElement) {
 export function StoreNav({ links }: { links: readonly NavLink[] }) {
   const pathname = usePathname();
 
-  /**
-   * Centres the target instead of parking its top edge under the header, which
-   * left short sections showing little more than their heading. Sections taller
-   * than the viewport fill it either way, so those keep a top alignment.
-   */
+
+
+
+
+
   function scrollToSection(
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) {
     const [path, fragment] = href.split("#");
     if (!fragment) return;
-    // Coming from another view, let Next load the page and land on the anchor.
+
     if (pathname !== (path === "" ? "/" : path)) return;
 
     const target = document.getElementById(fragment);
@@ -71,12 +71,12 @@ export function StoreNav({ links }: { links: readonly NavLink[] }) {
   function isActive(href: string) {
     const [path, fragment] = href.split("#");
 
-    // Links like `/#clubes` only scroll to a section of the page you are
-    // already on, so they never claim the current-view marker.
+
+
     if (fragment) return false;
 
     const target = path === "" ? "/" : path;
-    // A product page keeps its catalogue entry lit.
+
     return pathname === target || pathname.startsWith(`${target}/`);
   }
 

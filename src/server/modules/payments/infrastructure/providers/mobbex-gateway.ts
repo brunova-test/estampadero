@@ -74,9 +74,9 @@ function normalizedStatus(
   }
   if (code === "602") return "REFUNDED";
   if (code === "605") return "PARTIALLY_REFUNDED";
-  // An approved card payment reversed before settlement is reported by
-  // Mobbex as 601/Cancelado with "Anulación Exitosa", although for the
-  // store and customer it is a complete refund.
+
+
+
   if (code === "601" && /anulaci[oó]n exitosa/i.test(message ?? "")) {
     return "REFUNDED";
   }

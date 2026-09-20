@@ -25,13 +25,18 @@ export function checkCartAvailability(deps: CheckCartAvailabilityDeps) {
     return lines.map((line) => {
       const variant = variantsById.get(line.variantId);
       const hasEnoughStock =
-        !variant?.showStock ||
-        variant.stock === null ||
-        variant.stock >= line.quantity;
+        variant?.showStock === false
+          ? variant.stock !== 0
+          : (variant?.stock ?? 0) >= line.quantity;
 
       return {
         variantId: line.variantId,
         isAvailable: Boolean(variant) && hasEnoughStock,
+        availableStock: variant?.showStock
+          ? (variant.stock ?? 0)
+          : variant?.stock === 0
+            ? 0
+            : null,
         reason: !variant
           ? ("UNAVAILABLE" as const)
           : !hasEnoughStock

@@ -69,11 +69,11 @@ export interface PaymentsRepository {
     providerPreferenceId: string,
   ): Promise<PaymentRecord | null>;
 
-  /**
-   * Records a webhook event with a unique (provider, providerEventId)
-   * constraint. Returns false when the event was already recorded, so the
-   * caller can skip re-applying side effects.
-   */
+
+
+
+
+
   recordWebhookEventOnce(input: {
     provider: PaymentProviderValue;
     providerEventId: string;
@@ -95,11 +95,11 @@ export interface PaymentsRepository {
     amountRefundedInCents?: number;
   }): Promise<void>;
 
-  /**
-   * Atomically marks a payment approved (only if not already approved) and
-   * transitions the related order to PAID in the same transaction. Returns
-   * false if the payment was already approved (idempotent no-op).
-   */
+
+
+
+
+
   markApprovedAndPayOrder(input: {
     paymentId: string;
     providerPaymentId: string;
@@ -114,14 +114,14 @@ export interface PaymentsRepository {
   }): Promise<void>;
   markAttemptFailed?(paymentId: string, providerStatus: string): Promise<void>;
 
-  /**
-   * Persists the result of a void ("anulación") or refund ("devolución")
-   * against the provider: the new cumulative refunded amount and the
-   * resulting status (PARTIALLY_REFUNDED while some amount remains
-   * captured, REFUNDED once the full amount has been reversed). Also keeps
-   * the provider's refund id/amount around so a later "anular esta
-   * devolución" action (see recordRefundVoided) can target it specifically.
-   */
+
+
+
+
+
+
+
+
   recordRefund?(input: {
     paymentId: string;
     amountRefundedInCents: number;
@@ -130,12 +130,12 @@ export interface PaymentsRepository {
     lastRefundAmountInCents: number;
   }): Promise<void>;
 
-  /**
-   * Reverses the bookkeeping after Payway confirms voiding the most recent
-   * refund (DELETE /payments/{id}/refunds/{refundId}) — certification step
-   * "Anulación de devolución total/parcial". Clears lastProviderRefundId so
-   * the admin can't try to void the same refund twice.
-   */
+
+
+
+
+
+
   recordRefundVoided?(input: {
     paymentId: string;
     amountRefundedInCents: number;
@@ -147,13 +147,13 @@ export interface PaymentsRepository {
     lastRefundAmountInCents: number;
   }): Promise<void>;
 
-  /**
-   * Payments stuck in a non-terminal status — candidates for daily
-   * reconciliation against Mercado Pago, in case their webhook was never
-   * delivered. Bounded by a lookback window (older payments are treated as
-   * abandoned, not reconciled) and a grace period (skip payments still in
-   * their normal in-flight window).
-   */
+
+
+
+
+
+
+
   findStaleNonTerminalPayments(input: {
     provider?: PaymentProviderValue;
     olderThan: Date;

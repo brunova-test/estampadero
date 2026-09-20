@@ -93,12 +93,12 @@ export async function matureCommissionEntries(now = new Date()): Promise<void> {
   }
 }
 
-/**
- * Covers refunds made directly in a provider (outside our admin). Since those
- * events do not identify an order line, their amount is distributed
- * proportionally across the club-linked lines. Refunds created by our admin
- * already have item-level adjustments, so the delta is zero and this no-ops.
- */
+
+
+
+
+
+
 async function syncProviderRefundAdjustments(
   paymentId: string,
   now: Date,

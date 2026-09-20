@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
 
 generator client {
   provider      = "prisma-client-js"
@@ -12,9 +12,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// =========================================================================
-// identity-access — users, credentials, roles, sessions (NextAuth compatible)
-// =========================================================================
+
+
+
 
 enum UserRole {
   SUPER_ADMIN
@@ -46,19 +46,19 @@ model User {
   @@index([role])
 }
 
-// Required by Auth.js
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? // @db.Text
-  access_token             String? // @db.Text
+  refresh_token            String?
+  access_token             String?
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String? // @db.Text
+  id_token                 String?
   session_state            String?
   user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   refresh_token_expires_in Int?
@@ -82,9 +82,9 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// =========================================================================
-// clubs — institutional identity, authorized users
-// =========================================================================
+
+
+
 
 model Club {
   id                             String                 @id @default(cuid())
@@ -95,7 +95,7 @@ model Club {
   logoUrl                        String?
   isActive                       Boolean                @default(true)
   payoutCbu                      String?
-  // UID de la entidad creada y habilitada en Mobbex para recibir splits.
+
   mobbexEntityId                 String?                @unique
   mobbexSubmittedEntityId        String?
   mobbexOnboardingStatus         MobbexOnboardingStatus @default(NOT_STARTED)
@@ -141,9 +141,9 @@ model ClubUser {
   @@unique([clubId, userId])
 }
 
-// =========================================================================
-// catalog — products, variants, categories, images
-// =========================================================================
+
+
+
 
 enum ProductLine {
   CLUB
@@ -238,9 +238,9 @@ model ProductVariant {
   @@unique([productId, size, color])
 }
 
-// Image files uploaded from the admin panel. Keeping the binary in Postgres
-// makes uploads persistent across Railway deploys and avoids an executable
-// public upload directory.
+
+
+
 model UploadedImage {
   id           String   @id @default(cuid())
   originalName String
@@ -252,9 +252,9 @@ model UploadedImage {
   @@index([createdAt])
 }
 
-// =========================================================================
-// orders — pedido, líneas inmutables, historial de estado
-// =========================================================================
+
+
+
 
 enum OrderStatus {
   PENDING_PAYMENT
@@ -327,8 +327,8 @@ model Order {
   @@index([productionRemovedAt])
 }
 
-// Items created directly from the production board. They intentionally have
-// no Order relation, price or payment so they never affect sales/commissions.
+
+
 model ManualProductionItem {
   id          String  @id @default(cuid())
   productName String
@@ -401,9 +401,9 @@ model OrderStatusHistory {
   @@index([orderId])
 }
 
-// =========================================================================
-// payments — sesiones de pago, estado normalizado, eventos de webhook
-// =========================================================================
+
+
+
 
 enum PaymentChannel {
   MP_WALLET
@@ -467,10 +467,10 @@ model Payment {
   feeInCents              Int?
   financingFeeInCents     Int?
   amountRefundedInCents   Int       @default(0)
-  // Payway certification step "Anulación de devolución total/parcial"
-  // requires DELETE /payments/{id}/refunds/{refundId} — a distinct
-  // operation from creating a refund — so we keep the most recent refund's
-  // provider id/amount around to void it specifically.
+
+
+
+
   lastProviderRefundId    String?
   lastRefundAmountInCents Int?
 
@@ -501,9 +501,9 @@ model PaymentWebhookEvent {
   @@unique([provider, providerEventId])
 }
 
-// =========================================================================
-// agreements — convenios institucionales, porcentaje base y por producto
-// =========================================================================
+
+
+
 
 enum SettlementMethod {
   TRANSFER
@@ -537,7 +537,7 @@ model Agreement {
 
   basePercentage      Int
   settlementMethod    SettlementMethod    @default(TRANSFER)
-  // Kept for historical agreements. New agreements always use AUTOMATIC.
+
   settlementFrequency SettlementFrequency @default(AUTOMATIC)
   contractUrl         String?
 
@@ -577,9 +577,9 @@ model AgreementProductRate {
   @@unique([agreementId, productId])
 }
 
-// =========================================================================
-// commissions — ledger de participaciones devengadas por club
-// =========================================================================
+
+
+
 
 enum CommissionStatus {
   ACCRUED
@@ -643,9 +643,9 @@ model CommissionEntry {
   @@index([availableAt])
 }
 
-// =========================================================================
-// customer care — arrepentimientos, devoluciones y reclamos por línea
-// =========================================================================
+
+
+
 
 enum CustomerRequestType {
   WITHDRAWAL
@@ -716,9 +716,9 @@ model CustomerRequestItem {
   @@index([orderItemId])
 }
 
-// =========================================================================
-// settlements — cierre periódico de comisiones y liquidación al club
-// =========================================================================
+
+
+
 
 enum SettlementStatus {
   PENDING_PAYMENT
@@ -738,7 +738,7 @@ model Settlement {
   status       SettlementStatus @default(PENDING_PAYMENT)
   totalInCents Int
 
-  // Automatic, transaction-level payout state managed through Mobbex.
+
   transferProvider    String?
   transferId          String?
   transferStatus      String?
@@ -785,9 +785,9 @@ model UploadedDocument {
   @@index([createdAt])
 }
 
-// =========================================================================
-// designs — propuestas de diseño institucional, versiones y aprobación
-// =========================================================================
+
+
+
 
 enum DesignStatus {
   PENDING_SEND
@@ -887,9 +887,9 @@ model ProductDesign {
   @@unique([designId, productId])
 }
 
-// =========================================================================
-// production — tandas de producción (agrupan pedidos pagos por período)
-// =========================================================================
+
+
+
 
 enum ProductionBatchStatus {
   OPEN
@@ -910,9 +910,9 @@ model ProductionBatch {
   @@index([status])
 }
 
-// =========================================================================
-// content — piezas editables del home y configuración del carrusel
-// =========================================================================
+
+
+
 
 model HomeContentPiece {
   id String @id @default(cuid())
@@ -951,9 +951,9 @@ model SiteContentSetting {
   updatedAt          DateTime @updatedAt
 }
 
-// =========================================================================
-// special requests — pedidos de estampado a medida, fuera de la compra directa
-// =========================================================================
+
+
+
 
 enum SpecialRequestStatus {
   NEW
@@ -981,9 +981,9 @@ model SpecialRequest {
   @@index([status])
 }
 
-// =========================================================================
-// rate limiting — sliding-window log, backed by Postgres (no Redis available)
-// =========================================================================
+
+
+
 
 model RateLimitHit {
   id        String   @id @default(cuid())

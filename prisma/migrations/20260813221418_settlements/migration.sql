@@ -1,13 +1,13 @@
--- CreateEnum
+
 CREATE TYPE "SettlementStatus" AS ENUM ('PENDING_PAYMENT', 'PAID', 'CANCELLED');
 
--- AlterTable
+
 ALTER TABLE "Club" ADD COLUMN     "payoutCbu" TEXT;
 
--- AlterTable
+
 ALTER TABLE "CommissionEntry" ADD COLUMN     "settlementId" TEXT;
 
--- CreateTable
+
 CREATE TABLE "Settlement" (
     "id" TEXT NOT NULL,
     "clubId" TEXT NOT NULL,
@@ -23,17 +23,17 @@ CREATE TABLE "Settlement" (
     CONSTRAINT "Settlement_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
+
 CREATE INDEX "Settlement_clubId_idx" ON "Settlement"("clubId");
 
--- CreateIndex
+
 CREATE INDEX "Settlement_status_idx" ON "Settlement"("status");
 
--- CreateIndex
+
 CREATE INDEX "CommissionEntry_settlementId_idx" ON "CommissionEntry"("settlementId");
 
--- AddForeignKey
+
 ALTER TABLE "CommissionEntry" ADD CONSTRAINT "CommissionEntry_settlementId_fkey" FOREIGN KEY ("settlementId") REFERENCES "Settlement"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "Settlement" ADD CONSTRAINT "Settlement_clubId_fkey" FOREIGN KEY ("clubId") REFERENCES "Club"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

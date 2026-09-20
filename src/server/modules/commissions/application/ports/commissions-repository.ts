@@ -23,7 +23,7 @@ export interface CreateCommissionEntryInput {
 }
 
 export interface CommissionsRepository {
-  /** Idempotent: no-ops if an entry for this orderItemId already exists. */
+
   createEntryIfNotExists(input: CreateCommissionEntryInput): Promise<void>;
   listByClub(clubId: string): Promise<CommissionEntryDto[]>;
   getClubBalance(clubId: string): Promise<ClubBalanceDto>;

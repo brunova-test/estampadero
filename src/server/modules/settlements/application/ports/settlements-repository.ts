@@ -27,12 +27,12 @@ export interface SettlementsRepository {
   }): Promise<import("../dto/settlement").SettlementMovementDto[]>;
   getById(id: string): Promise<SettlementDetailDto | null>;
   listSettlementConfigurations(): Promise<SettlementConfiguration[]>;
-  /**
-   * Selects the club's unassigned ACCRUED commission entries, creates a
-   * Settlement covering them, and reserves those entries (settlementId) in
-   * the same transaction so they cannot be picked up by another generation
-   * run. Returns null if there is nothing to settle.
-   */
+
+
+
+
+
+
   generateSettlement(
     clubId: string,
     periodLabel: string,
@@ -42,16 +42,16 @@ export interface SettlementsRepository {
     createdByUserId: string,
     commissionEntryId?: string,
   ): Promise<SettlementDetailDto | null>;
-  /** Creates one settlement per AVAILABLE commission entry for automatic payouts. */
+
   generateAutomaticSettlements?(
     createdByUserId: string,
     now: Date,
   ): Promise<SettlementDetailDto[]>;
-  /**
-   * Marks a PENDING_PAYMENT settlement as PAID and its reserved entries as
-   * SETTLED, atomically. Returns false if it was already paid/cancelled
-   * (idempotent no-op) — a paid settlement is never silently re-processed.
-   */
+
+
+
+
+
   markPaid(input: {
     settlementId: string;
     receiptUrl: string;

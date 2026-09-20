@@ -49,12 +49,12 @@ export interface AgreementsRepository {
     percentage: number,
     changedByUserId: string,
   ): Promise<void>;
-  /**
-   * Resolves the commission percentage for a given club + product at the
-   * current moment: product-specific override if present, otherwise the
-   * agreement's base percentage. Returns null if the club has no active
-   * agreement.
-   */
+
+
+
+
+
+
   resolveRateForProduct(
     clubId: string,
     productId: string,

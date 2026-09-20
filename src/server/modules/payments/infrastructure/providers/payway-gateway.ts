@@ -25,11 +25,11 @@ class PaywayRequestError extends Error {
 }
 
 const BASE_URLS = {
-  // BASEPATH as issued by the certification portal for this merchant
-  // (certification ID 37e1a409-1409-482e-b205-805bf21d6442). The generic
-  // Payway docs list developers-ventasonline.payway.com.ar as "the"
-  // sandbox host, but our keys were issued against api-homo.payway.com.ar
-  // specifically, so that's the host that has to be used.
+
+
+
+
+
   sandbox: "https://api-homo.payway.com.ar/api/v2",
   production: "https://ventasonline.payway.com.ar/api/v2",
 } as const;
@@ -110,14 +110,14 @@ function releaseDateFor(paymentMethodId: string | null, paidAt: string | null) {
 }
 
 function safeProviderError(status: number, body: unknown): PaywayRequestError {
-  // Decidir/Payway returns two very different shapes depending on the
-  // failure: a rejected *payment* comes back as an object with
-  // status_details.error.{reason,type}, while a *request validation*
-  // error (bad apikey, malformed param, disallowed field, etc.) comes
-  // back as a bare array of { error, param, code } at the root. Handle
-  // both so validation errors don't collapse into a useless generic
-  // message. Neither shape can contain card data: we only ever send a
-  // one-time token, never PAN/CVV.
+
+
+
+
+
+
+
+
   if (isUnknownArray(body)) {
     const first = asObject(body[0]);
     const reason = asString(first.error) ?? asString(first.code);
@@ -162,8 +162,8 @@ async function paywayRequest(
   const response = await fetch(`${config.baseUrl}${path}`, {
     ...init,
     headers: {
-      // Per Payway's official docs ("Headers obligatorios"): the API key
-      // header is `apikey`, not `X-Api-Key`.
+
+
       apikey: config.privateApiKey,
       "Content-Type": "application/json",
       ...init.headers,
@@ -172,16 +172,16 @@ async function paywayRequest(
     signal: AbortSignal.timeout(15_000),
   });
   const body: unknown = await response.json().catch(() => ({}));
-  // Payway returns a fully formed payment with status=rejected as HTTP 402.
-  // It is a business outcome, not a malformed request.
+
+
   if (!response.ok && response.status !== 402) {
-    // TEMP DIAGNOSTIC: safeProviderError couldn't extract a reason from
-    // this body shape (neither the array-of-errors nor the
-    // status_details.error object we know about), so log the redacted
-    // raw body once to see what Payway actually sent back. Redacts any
-    // token/card-ish field even though we never send PAN/CVV, per the
-    // "never log payment tokens" rule in docs/payments-configuration.md.
-    // Remove this once the real cause is identified.
+
+
+
+
+
+
+
     console.error(
       `[payway diagnostic] ${response.status} ${path} body=${redactForLog(body)}`,
     );
@@ -206,18 +206,18 @@ export interface TokenizeCardResult {
   bin: string;
 }
 
-/**
- * Server-to-server tokenization. Payway's /tokens CORS config doesn't allow
- * a browser to call it directly with the keys issued for this merchant's
- * BASEPATH (api-homo.payway.com.ar) — confirmed via the browser's network
- * tab: the preflight explicitly rejects the `apikey` header for this
- * origin. This mirrors the "Requisitos técnicos" doc's server-to-server
- * requirement: the browser posts raw card data to our own domain (no CORS
- * involved), and this function relays it to Payway from the server, which
- * has no CORS restriction. The card data passes through in memory only —
- * it is never logged or persisted, only forwarded and immediately
- * discarded once the token comes back.
- */
+
+
+
+
+
+
+
+
+
+
+
+
 export async function paywayTokenizeCard(
   input: TokenizeCardInput,
 ): Promise<TokenizeCardResult> {
@@ -226,15 +226,15 @@ export async function paywayTokenizeCard(
     throw new Error("Payway no está configurado en el servidor.");
   }
   const baseUrl = BASE_URLS[env.PAYWAY_ENVIRONMENT];
-  // NOTE: payment_method_id was added here twice (as a Number, then as a
-  // string) chasing a Payway "invalid_param: payment_method_id" error on
-  // /tokens. Neither change altered Payway's response one bit — same
-  // error, byte-for-byte, whether the field was a Number, a string, or
-  // absent entirely. That means the field's presence/format was never the
-  // actual cause; the error is coming from something else (BIN-level
-  // classification on Payway's side, or an account/site config issue —
-  // see docs/payway-troubleshooting.md). Reverting to the form that
-  // successfully tokenized cards during certification Step 1.
+
+
+
+
+
+
+
+
+
   const requestBody = {
     card_number: input.cardNumber,
     security_code: input.securityCode,
@@ -396,9 +396,9 @@ export const paywayGateway: PaymentGateway = {
     const body = await paywayRequest(
       `/payments/${encodeURIComponent(providerPaymentId)}`,
     );
-    // TEMP DIAGNOSTIC: need to see whether Payway's payment-detail response
-    // exposes the refund's own id (to backfill lastProviderRefundId for
-    // refunds created before that field existed). Remove once confirmed.
+
+
+
     console.error(
       `[payway diagnostic] GET /payments body=${redactForLog(body)}`,
     );
@@ -422,10 +422,10 @@ export const paywayGateway: PaymentGateway = {
       const first = list?.[0];
       return first ? toProviderPaymentResult(asObject(first)) : null;
     } catch (error) {
-      // Some homologation sites reject the documented siteOperationId filter
-      // with `query_params_siteOperationId`. The unfiltered paginated listing
-      // is part of the same public API, so use it as a compatibility fallback
-      // and match the original site_transaction_id locally.
+
+
+
+
       if (
         env.PAYWAY_ENVIRONMENT !== "sandbox" ||
         !(error instanceof PaywayRequestError) ||
@@ -454,11 +454,11 @@ export const paywayGateway: PaymentGateway = {
   },
 
   async refundPayment(input): Promise<ProviderRefundResult> {
-    // Payway's /refunds endpoint requires an explicit "amount" in every
-    // request — an empty body (which some Payway docs describe as meaning
-    // "full reversal") is rejected with a 400 invalid_param on "amount".
-    // Always send the amount, whether it's the full remaining balance or a
-    // partial refund.
+
+
+
+
+
     const body = await paywayRequest(
       `/payments/${encodeURIComponent(input.providerPaymentId)}/refunds`,
       {
@@ -478,27 +478,27 @@ export const paywayGateway: PaymentGateway = {
   },
 
   async voidRefund(input): Promise<void> {
-    // Distinct from refundPayment: this cancels a refund that was already
-    // created, targeting it by its own provider id — confirmed against the
-    // official Payway SDK (sdk-net-ventaonline's DeleteRefund/
-    // DeletePartialRefund), since Payway's e-commerce REST reference isn't
-    // published. Certification step "Anulación de devolución total/parcial".
+
+
+
+
+
     await paywayRequest(
       `/payments/${encodeURIComponent(input.providerPaymentId)}/refunds/${encodeURIComponent(input.providerRefundId)}`,
       {
         method: "DELETE",
-        // Payway's homologation endpoint validates `amount` for a DELETE
-        // even though its public reference omits a request body. Sending the
-        // original refund amount is required by the live 400 `amount` error.
+
+
+
         body: JSON.stringify({ amount: input.amountInCents }),
       },
     );
   },
 
   async verifyWebhook(_input: VerifyWebhookInput) {
-    // Payway Ventas Online does not document a signed payment webhook for
-    // this direct-card API. Status is confirmed by the synchronous response
-    // and the authenticated reconciliation job.
+
+
+
     return null;
   },
 };

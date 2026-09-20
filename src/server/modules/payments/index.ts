@@ -14,11 +14,11 @@ export { paymentsRouter } from "./presentation/router";
 export type { ProcessWebhookResult } from "./application/use-cases/process-webhook-event";
 export type { ReconcilePaymentsResult } from "./application/use-cases/reconcile-payments";
 
-/**
- * Bound webhook processor for the Mercado Pago Route Handler
- * (src/app/api/webhooks/mercado-pago/route.ts). Route Handlers are thin
- * HTTP adapters that delegate straight to this use case.
- */
+
+
+
+
+
 export const processMercadoPagoWebhookEvent = processWebhookEvent({
   gateway: mercadoPagoGateway,
   repository: prismaPaymentsRepository,
@@ -28,12 +28,12 @@ export const processMercadoPagoWebhookEvent = processWebhookEvent({
   provider: "MERCADO_PAGO",
 });
 
-/**
- * Bound webhook processor for the MODO Route Handler
- * (src/app/api/webhooks/modo/route.ts). See modo-gateway.ts for why this
- * is inert scaffolding rather than a working integration — verifyWebhook
- * always returns null until real signature verification is implemented.
- */
+
+
+
+
+
+
 export const processModoWebhookEvent = processWebhookEvent({
   gateway: modoGateway,
   repository: prismaPaymentsRepository,
@@ -52,10 +52,10 @@ export const processMobbexWebhookEvent = processWebhookEvent({
   provider: "MOBBEX",
 });
 
-/**
- * Bound daily reconciliation job for the cron Route Handler
- * (src/app/api/cron/reconcile-payments/route.ts).
- */
+
+
+
+
 export const reconcileMercadoPagoPayments = reconcilePayments({
   gateway: mercadoPagoGateway,
   repository: prismaPaymentsRepository,

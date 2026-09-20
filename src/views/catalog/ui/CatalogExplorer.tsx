@@ -210,7 +210,7 @@ export function CatalogExplorer({
         <m.div
           className="relative z-0"
         >
-          <ProductGrid products={visibleProducts} />
+          <ProductGrid products={visibleProducts} mobileExpandable />
           {pageCount > 1 ? (
             <nav
               className="mt-8 flex flex-wrap items-center justify-center gap-2"

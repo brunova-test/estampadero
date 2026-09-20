@@ -101,7 +101,7 @@ describe("generateCommissionEntriesForOrder", () => {
 
   it("rounds to the nearest cent instead of truncating or accumulating drift", async () => {
     const repository = makeRepository();
-    // 333 * 12.5% = 41.625 -> should round to 42, not floor to 41.
+
     const resolveRateForProduct = vi.fn(async () => ({
       agreementId: "agreement-1",
       percentage: 12.5,

@@ -434,8 +434,8 @@ export const prismaOrdersRepository: OrdersRepository = {
 
     for (const candidate of candidates) {
       const didExpire = await db.$transaction(async (tx) => {
-        // Uses the same per-order lock as payment-attempt creation. A payment
-        // cannot start while this reservation is being released (or vice versa).
+
+
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${candidate.id}))`;
 
         const protectedPayment = await tx.payment.count({
@@ -643,8 +643,8 @@ export const prismaOrdersRepository: OrdersRepository = {
   ): Promise<OrderDetailDto> {
     const order = await db.$transaction(async (tx) => {
       if (status === "CANCELLED") {
-        // Coordinate cancellation with checkout/payment creation and make the
-        // stock return idempotent when an admin repeats the action.
+
+
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${id}))`;
 
         const current = await tx.order.findUniqueOrThrow({

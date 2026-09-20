@@ -13,14 +13,14 @@ export const tokenizeCardInputSchema = z.object({
   expirationYear: z.string().regex(/^\d{2}$/),
   docType: z.string().min(1).max(10),
   docNumber: z.string().min(1).max(20),
-  // Payway's /tokens endpoint requires this to disambiguate the card
-  // network/product for tokenization, same id used later in /payments.
+
+
   paymentMethodId: z.string().min(1).max(10),
 });
 
 export const refundPaymentInputSchema = z.object({
   paymentId: z.string().min(1).max(60),
-  // Omit for a full anulación/devolución; set it for a partial devolución.
+
   amountInCents: z.number().int().positive().optional(),
 });
 

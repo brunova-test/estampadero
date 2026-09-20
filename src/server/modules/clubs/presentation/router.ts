@@ -124,7 +124,17 @@ export const clubsRouter = createTRPCRouter({
         description: true,
         logoUrl: true,
         _count: {
-          select: { products: { where: { status: "PUBLISHED" } } },
+          select: {
+            products: {
+              where: {
+                status: "PUBLISHED",
+                OR: [
+                  { variants: { some: { stock: { gt: 0 } } } },
+                  { showStock: false, variants: { some: { stock: null } } },
+                ],
+              },
+            },
+          },
         },
       },
       orderBy: { name: "asc" },
@@ -152,7 +162,17 @@ export const clubsRouter = createTRPCRouter({
           description: true,
           logoUrl: true,
           _count: {
-            select: { products: { where: { status: "PUBLISHED" } } },
+            select: {
+              products: {
+                where: {
+                  status: "PUBLISHED",
+                  OR: [
+                    { variants: { some: { stock: { gt: 0 } } } },
+                    { showStock: false, variants: { some: { stock: null } } },
+                  ],
+                },
+              },
+            },
           },
         },
       });
@@ -520,7 +540,7 @@ export const clubsRouter = createTRPCRouter({
       return { success: true };
     }),
 
-  /** Clubs the current session user is a member of, for the club portal. */
+
   myClubs: protectedProcedure.query(async ({ ctx }) => {
     if (ADMIN_ROLES.has(ctx.session.user.role)) {
       return prismaClubsRepository.listClubs();

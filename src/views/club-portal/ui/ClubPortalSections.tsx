@@ -727,7 +727,7 @@ export function ClubDesignsSection({
 
   return (
     <div className="flex flex-col gap-5">
-      {/* El encabezado global ya identifica esta sección; priorizamos el catálogo. */}
+
       <div className="hidden">
         <span className="text-blue font-mono text-xs tracking-[.16em] uppercase">
           Diseños

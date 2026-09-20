@@ -26,11 +26,11 @@ interface ReconcilePaymentsDeps {
 }
 
 interface ReconcilePaymentsInput {
-  /** Skip payments created more recently than this — still in their normal in-flight window. */
+
   graceMs?: number;
-  /** Don't look further back than this — older abandoned payments aren't reconciled here. */
+
   lookbackMs?: number;
-  /** Caps provider API calls per run; remaining stale payments are picked up on the next run. */
+
   limit?: number;
 }
 
@@ -38,15 +38,15 @@ const DEFAULT_GRACE_MS = 15 * 60_000;
 const DEFAULT_LOOKBACK_MS = 3 * 24 * 60 * 60_000;
 const DEFAULT_LIMIT = 200;
 
-/**
- * Daily safety net for the webhook-driven payment flow: re-checks payments
- * that never left CREATED/PENDING/PROCESSING against Mercado Pago directly,
- * in case the webhook was dropped (provider outage, endpoint downtime,
- * delivery failure). Reuses the same idempotent repository writes the
- * webhook handler uses, so this is safe to run even if a webhook for the
- * same payment lands concurrently — whichever writes first wins, and the
- * mismatched retry becomes a no-op via `markApprovedAndPayOrder`'s guard.
- */
+
+
+
+
+
+
+
+
+
 export function reconcilePayments(deps: ReconcilePaymentsDeps) {
   return async (
     input: ReconcilePaymentsInput = {},
@@ -102,8 +102,8 @@ async function reconcileOne(
       : await deps.gateway.findByExternalReference(payment.id);
 
     if (!providerResult) {
-      // Provider has no record of a payment attempt yet — genuinely still
-      // pending (e.g. the buyer never completed Checkout Pro).
+
+
       result.stillPending += 1;
       return;
     }

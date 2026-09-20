@@ -22,8 +22,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   let persistent = readPersistenceCookie(request);
 
-  // Credentials are authoritative for the request that creates the session;
-  // the preference cookie mainly carries the choice through the Google flow.
+
+
   if (request.url.includes("/callback/credentials")) {
     const body = await request.clone().formData();
     persistent = body.get("rememberMe") === "true";

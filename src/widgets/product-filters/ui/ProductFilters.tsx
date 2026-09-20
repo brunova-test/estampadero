@@ -126,7 +126,7 @@ export function ProductFilters({
   return (
     <aside className="catalog-filters min-w-0 shrink-0 lg:w-64">
       <div className="catalog-filters-mobile-toolbar bg-ink -mx-4 px-4 pt-5 pb-5 text-white sm:-mx-6 sm:px-6 lg:hidden">
-        <div className="catalog-filters-mobile-actions flex gap-2.5">
+        <div className="catalog-filters-mobile-actions focus-within:ring-mint flex overflow-hidden rounded-xl bg-white shadow-[0_12px_30px_-18px_rgba(0,0,0,.8)] focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-white">
           <form onSubmit={handleSearch} className="relative min-w-0 flex-1">
             <svg
               aria-hidden="true"
@@ -143,16 +143,16 @@ export function ProductFilters({
               type="search"
               name="q"
               defaultValue={activeSearch}
-              placeholder="Buscar productos..."
+              placeholder="Buscar..."
               aria-label="Buscar productos"
-              className="text-ink focus:ring-mint h-12 w-full rounded-xl bg-white pr-3 pl-11 text-sm outline-none placeholder:text-gray-500 focus:ring-2"
+              className="text-ink h-12 w-full bg-transparent pr-2 pl-11 text-sm outline-none placeholder:text-gray-500"
             />
           </form>
           <button
             type="button"
             onClick={() => setMobileOpen((current) => !current)}
             aria-expanded={mobileOpen}
-            className="text-ink inline-flex h-12 shrink-0 items-center gap-2 rounded-xl bg-white px-4 text-sm font-bold"
+            className="catalog-filters-mobile-trigger text-ink hover:bg-paper focus-visible:bg-paper inline-flex h-12 shrink-0 items-center justify-center gap-2 border-l border-black/10 bg-white px-3.5 text-sm font-bold transition-colors outline-none"
           >
             <svg
               aria-hidden="true"
@@ -167,7 +167,9 @@ export function ProductFilters({
               <circle cx="15" cy="12" r="1.5" fill="currentColor" />
               <circle cx="12" cy="18" r="1.5" fill="currentColor" />
             </svg>
-            Filtros
+            <span className="catalog-filters-mobile-trigger-label">
+              Filtros
+            </span>
           </button>
         </div>
 

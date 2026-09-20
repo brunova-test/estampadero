@@ -755,7 +755,10 @@ export function AdminDesignProductsView({ designId }: { designId: string }) {
     { enabled: !!activeAgreement },
   );
   const productsQuery = api.catalog.list.useQuery(
-    { ...(design?.clubSlug ? { clubSlug: design.clubSlug } : {}) },
+    {
+      ...(design?.clubSlug ? { clubSlug: design.clubSlug } : {}),
+      availableOnly: false,
+    },
     { enabled: !!design },
   );
   const link = api.designs.linkProduct.useMutation({

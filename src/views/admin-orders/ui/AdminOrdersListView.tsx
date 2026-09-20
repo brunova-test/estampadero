@@ -43,17 +43,17 @@ const STATUS_LABEL = Object.fromEntries(FILTER_OPTIONS) as Record<
   string
 >;
 
-// Statuses that show the refund/void button — a payment can only be
-// refunded again while it still has an un-refunded balance. Voiding an
-// *existing* refund (certification's "Anulación de devolución") is a
-// separate action below, shown whenever lastProviderRefundId is set.
+
+
+
+
 const REFUNDABLE_PAYMENT_STATUSES = new Set(["APPROVED", "PARTIALLY_REFUNDED"]);
-// Payments that never reached a final state — worth an on-demand status
-// check with Payway directly (e.g. after a provider timeout), instead of
-// waiting for the daily reconciliation cron. Also includes REFUNDED/
-// PARTIALLY_REFUNDED temporarily, to force a GET /payments call (and its
-// diagnostic log) on payments refunded before we started tracking the
-// provider's refund id.
+
+
+
+
+
+
 const QUERYABLE_PAYMENT_STATUSES = new Set([
   "CREATED",
   "PENDING",
@@ -718,9 +718,9 @@ function AdminOrderDetailModal({
   const [isDiscardConfirmOpen, setIsDiscardConfirmOpen] = useState(false);
   const [isRefundConfirmOpen, setIsRefundConfirmOpen] = useState(false);
   const [isVoidRefundConfirmOpen, setIsVoidRefundConfirmOpen] = useState(false);
-  // Empty string = devolución/anulación total. A non-empty value is a
-  // partial devolución for that amount, in pesos (converted to cents when
-  // sent).
+
+
+
   const [refundAmountPesos, setRefundAmountPesos] = useState("");
   const [providerRefundId, setProviderRefundId] = useState("");
   const updateStatus = api.orders.updateStatus.useMutation({

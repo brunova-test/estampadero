@@ -75,9 +75,8 @@ export function submitCheckout(deps: SubmitCheckoutDeps) {
         });
       }
       if (
-        variant.showStock &&
-        variant.stock !== null &&
-        variant.stock < line.quantity
+        (variant.showStock && (variant.stock ?? 0) < line.quantity) ||
+        (!variant.showStock && variant.stock === 0)
       ) {
         throw new TRPCError({
           code: "CONFLICT",

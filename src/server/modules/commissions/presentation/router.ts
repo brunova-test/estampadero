@@ -18,10 +18,10 @@ const getClubBalanceUseCase = getClubBalance(prismaCommissionsRepository);
 
 const ADMIN_ROLES = new Set(["ADMIN", "SUPER_ADMIN"]);
 
-/**
- * Authorizes staff (full access) or a club member (own club only). Scope is
- * derived from the current session, never from a client-supplied flag.
- */
+
+
+
+
 async function assertClubAccess(
   userId: string,
   role: string,

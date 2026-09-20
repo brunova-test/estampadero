@@ -60,9 +60,9 @@ export function WorkshopLocationModal() {
           aria-hidden="true"
           className="bg-mint text-deep grid size-[clamp(28px,2vw,38px)] shrink-0 place-items-center rounded-full transition-transform duration-300 ease-out group-hover:translate-x-1"
         >
-          {/* Drawn rather than the "→" glyph: the glyph's width and optical
-              centre shift with the font, which left it sitting off-centre in
-              the circle. */}
+
+
+
           <svg
             viewBox="0 0 24 24"
             fill="none"

@@ -28,15 +28,15 @@ interface QueryPaymentStatusDeps {
   provider: PaymentProviderValue;
 }
 
-/**
- * On-demand version of reconcile-payments.ts's per-payment lookup, for a
- * single payment an admin explicitly asks about — e.g. a payment stuck in
- * CREATED/PENDING/PROCESSING after a provider timeout (Payway certification
- * step "Consulta de pago por Timeout": query the payment we sent using our
- * own site_transaction_id, since the provider never confirmed a result to
- * us and we may not even have their payment id yet). Unlike the daily cron,
- * this runs immediately, without waiting out the grace/lookback window.
- */
+
+
+
+
+
+
+
+
+
 export function queryPaymentStatus(deps: QueryPaymentStatusDeps) {
   return async (
     command: QueryPaymentStatusCommand,
@@ -52,8 +52,8 @@ export function queryPaymentStatus(deps: QueryPaymentStatusDeps) {
       });
     }
 
-    // Look it up by our own site_transaction_id (payment.id) when we never
-    // learned the provider's own payment id — exactly the timeout case.
+
+
     const providerResult = payment.providerPaymentId
       ? await deps.gateway.getPayment(payment.providerPaymentId)
       : await deps.gateway.findByExternalReference(payment.id);

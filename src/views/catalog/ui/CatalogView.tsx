@@ -43,7 +43,7 @@ export async function CatalogView({ searchParams }: CatalogViewProps) {
     api.clubs.publicList(),
   ]);
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="catalog-page flex min-h-screen flex-col bg-white">
       <StoreHeader />
       <main className="flex-1">
         <CatalogClubStores clubs={clubs} activeClub={searchParams.club} />

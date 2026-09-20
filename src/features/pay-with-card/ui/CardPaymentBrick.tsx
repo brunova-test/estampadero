@@ -158,7 +158,7 @@ export function CardPaymentBrick({
       brickControllerRef.current?.unmount();
       brickControllerRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- brick is created once per mount
+
   }, [sdkReady, containerId, amountInPesos, orderId]);
 
   return (

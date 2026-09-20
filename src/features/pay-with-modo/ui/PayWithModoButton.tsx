@@ -13,14 +13,14 @@ interface PayWithModoButtonProps {
   orderId: string;
 }
 
-/**
- * MODO isn't live yet (see modo-gateway.ts) — createModoSession always
- * throws PRECONDITION_FAILED server-side. Rather than surface that raw
- * tRPC error to a shopper, this button recognizes that specific case and
- * shows the same "próximamente" message the panel used to show statically.
- * Once real MODO credentials are configured, this starts working with no
- * UI changes needed.
- */
+
+
+
+
+
+
+
+
 export function PayWithModoButton({ orderId }: PayWithModoButtonProps) {
   const [error, setError] = useState<string | null>(null);
   const [unavailable, setUnavailable] = useState(false);

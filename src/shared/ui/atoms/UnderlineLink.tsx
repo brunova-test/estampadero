@@ -2,18 +2,18 @@ import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
 
 interface UnderlineLinkProps extends ComponentPropsWithoutRef<typeof Link> {
-  /** Holds the rule open, for the view the reader is already on. */
+
   active?: boolean;
 }
 
-/**
- * Text link whose underline grows out from the centre on hover and focus.
- *
- * Scaling a full-width bar keeps the effect on the compositor — animating
- * `width` would lay the surrounding text out again on every frame. `w-fit`
- * matters in stacked layouts such as the footer, where the link would otherwise
- * fill its column and draw a rule far wider than its label.
- */
+
+
+
+
+
+
+
+
 export function UnderlineLink({
   active = false,
   className = "",

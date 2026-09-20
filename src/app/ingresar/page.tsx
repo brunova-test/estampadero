@@ -8,9 +8,9 @@ export default async function SignInPage() {
   let session;
 
   try {
-    // Validate the account against the database so an expired, revoked, or
-    // deactivated session does not bounce back to /acceso instead of showing
-    // the login form.
+
+
+
     session = await getCurrentSession();
   } catch {
     session = null;

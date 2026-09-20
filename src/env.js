@@ -2,10 +2,10 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
-  /**
-   * Specify your server-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars.
-   */
+
+
+
+
   server: {
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
@@ -59,28 +59,28 @@ export const env = createEnv({
     APP_URL: z.string().url().default("http://localhost:3000"),
     RESEND_API_KEY: z.string().min(1).optional(),
     RECEIPT_EMAIL_FROM: z.string().min(3).optional(),
-    // MODO (via Payway Ventas Online) — channel is scaffolded but inert
-    // until real merchant credentials are set. See
-    // src/server/modules/payments/infrastructure/providers/modo-gateway.ts.
+
+
+
     MODO_ENVIRONMENT: z.enum(["sandbox", "production"]).default("sandbox"),
     MODO_USERNAME: z.string().min(1).optional(),
     MODO_PASSWORD: z.string().min(1).optional(),
     MODO_PROCESSOR_CODE: z.string().min(1).max(50).optional(),
     MODO_CC_CODE: z.string().min(1).max(50).optional(),
     MODO_MERCHANT_NAME: z.string().min(1).max(100).optional(),
-    // Authenticates the payment-reconciliation and settlement-generation jobs.
-    // Required in production so the cron endpoints aren't publicly callable.
+
+
     CRON_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(16)
         : z.string().min(16).optional(),
   },
 
-  /**
-   * Specify your client-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
-   */
+
+
+
+
+
   client: {
     NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: z.string().min(1).optional(),
     NEXT_PUBLIC_PAYWAY_PUBLIC_API_KEY: z.string().min(1).optional(),
@@ -90,10 +90,10 @@ export const env = createEnv({
     NEXT_PUBLIC_PAYWAY_INSTALLMENTS: z.string().default("1"),
   },
 
-  /**
-   * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
-   * middlewares) or client-side so we need to destruct manually.
-   */
+
+
+
+
   runtimeEnv: {
     AUTH_SECRET: process.env.AUTH_SECRET,
     AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST,
@@ -136,14 +136,14 @@ export const env = createEnv({
     NEXT_PUBLIC_PAYWAY_INSTALLMENTS:
       process.env.NEXT_PUBLIC_PAYWAY_INSTALLMENTS,
   },
-  /**
-   * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
-   * useful for Docker builds.
-   */
+
+
+
+
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
-  /**
-   * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
-   * `SOME_VAR=''` will throw an error.
-   */
+
+
+
+
   emptyStringAsUndefined: true,
 });

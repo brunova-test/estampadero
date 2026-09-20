@@ -30,11 +30,11 @@ function toSummaryDto(product: ProductWithSummaryRelations): ProductSummaryDto {
   const defaultVariant =
     product.variants.find(
       (variant) =>
-        (!product.showStock || (variant.stock ?? 0) > 0) &&
+        (product.showStock ? (variant.stock ?? 0) > 0 : variant.stock !== 0) &&
         imageColors.has(variant.color),
     ) ??
-    product.variants.find(
-      (variant) => !product.showStock || (variant.stock ?? 0) > 0,
+    product.variants.find((variant) =>
+      product.showStock ? (variant.stock ?? 0) > 0 : variant.stock !== 0,
     );
 
   return {
@@ -61,8 +61,13 @@ function toSummaryDto(product: ProductWithSummaryRelations): ProductSummaryDto {
     colors: [
       ...new Set(
         product.variants
-          .map((variant) => variant.color)
-          .filter((color) => imageColors.has(color)),
+          .filter(
+            (variant) =>
+              (product.showStock
+                ? (variant.stock ?? 0) > 0
+                : variant.stock !== 0) && imageColors.has(variant.color),
+          )
+          .map((variant) => variant.color),
       ),
     ],
     variants: product.variants.map((variant) => ({
@@ -100,6 +105,18 @@ export const prismaCatalogRepository: CatalogRepository = {
           }
         : {}),
       ...(filters.featured ? { isFeatured: true } : {}),
+      ...(filters.availableOnly === false
+        ? {}
+        : {
+            AND: [
+              {
+                OR: [
+                  { variants: { some: { stock: { gt: 0 } } } },
+                  { showStock: false, variants: { some: { stock: null } } },
+                ],
+              },
+            ],
+          }),
       ...(filters.search
         ? {
             OR: [
