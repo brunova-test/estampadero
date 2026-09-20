@@ -12,17 +12,8 @@
 /coverage
 
 
-/prisma/db.sqlite
-/prisma/db.sqlite-journal
-db.sqlite
 
 
-/.next/
-/out/
-next-env.d.ts
-
-
-/build
 
 
 /generated/prisma/libquery_engine-*.so.node
@@ -47,6 +38,7 @@ yarn-error.log*
 
 
 *.tsbuildinfo
-
+.codex-remove-comments.mjs
+.codex-restore-clean-files.mjs
 
 .idea

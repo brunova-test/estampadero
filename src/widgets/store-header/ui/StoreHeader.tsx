@@ -38,7 +38,7 @@ export function StoreHeader() {
         if (active) setSession(nextSession?.user ? nextSession : null);
       })
       .catch(() => {
-
+        setSession(null);
       });
     return () => {
       active = false;
